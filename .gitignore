@@ -10,7 +10,9 @@ data/external/
 outputs/external/
 outputs/magnetograms/
 
-# network weights and heavy derived artefacts (weights are a release asset, see README)
+# network weights and heavy derived artefacts. Exception: the 17 checkpoints of the submitted
+# system are tracked (added with `git add -f`; README, "Network weights"); a tracked file is not
+# affected by these patterns. Everything else under these paths stays out.
 *.pt
 *.pth
 *.onnx

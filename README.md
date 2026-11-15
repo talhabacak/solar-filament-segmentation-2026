@@ -79,7 +79,7 @@ There are three levels, and the notebook runs each of them (`MODE` in its first 
 | Route | What it shows | Rehearsed |
 |---|---|---|
 | 1. `FINAL_STAGE` | the selector and keep rule turn the shipped test candidate pool into the submitted file | yes, from a fresh clone |
-| 2. `REPRODUCE` | the released networks turn the test images into the submitted file | yes, 2026-11-15: fresh clone, fresh environment from `requirements.txt`, data downloaded by the notebook, released weights; 17.5 min on one RTX 5070 Ti (16 GB, Windows); the result is byte-identical to the submitted file (run twice; the second time with nothing installed or created by hand) |
+| 2. `REPRODUCE` | the stored networks turn the test images into the submitted file | yes, 2026-11-15: fresh clone, fresh environment from `requirements.txt`, data downloaded by the notebook, weights from the release archive (the same files, by hash, that the repository now stores); 17.5 min on one RTX 5070 Ti (16 GB, Windows); the result is byte-identical to the submitted file (run twice; the second time with nothing installed or created by hand) |
 | 3. `RETRAIN` | the raw data turn into the networks, the training pool and the selector | no (about 40 h of GPU time). Every step is the command that produced the shipped artefact. Its last stage was checked on its own: regenerated from the out-of-fold pool, the labelled pool equals the shipped one exactly and the ten extra features agree to within 4·10⁻⁵ (float rounding in two of them); a selector refitted on these regenerated inputs keeps 1109 of the 1117 submitted masks and adds 10, so a retrain is expected to come close to the submitted file, not to equal it |
 
 **1. Final stage, from this repository alone (CPU, seconds).** The repository ships the featurised
@@ -100,9 +100,9 @@ endings, as a Linux checkout holds it. The selector itself can be refitted from 
 labelled training pool in about a minute (`python src/models/fit_selector_bagged.py --out
 <new file>`); the refit also rebuilds the submission byte for byte.
 
-**2. Full inference from the released weights (one 16 GB GPU, about 20 min).** Unpack the released
-weights at the repository root (see below) and run the notebook with `MODE = 'REPRODUCE'`. It
-downloads the data if `data/MAGFiLO_1.0_Kaggle_2026/` is missing, runs the five detectors and the
+**2. Full inference from the stored weights (one 16 GB GPU, about 20 min).** The 17 network
+weights are in this repository (see below); run the notebook with `MODE = 'REPRODUCE'`. It loads
+them from `outputs/runs*/`, downloads the data if `data/MAGFiLO_1.0_Kaggle_2026/` is missing, runs the five detectors and the
 twelve semantic members on the test images, fuses and featurises the candidates into
 `outputs/eda/test_pool_rebuilt.parquet`, applies the shipped selector, and compares the result
 with the submitted file. The shipped pool, selector and submission are never overwritten; the
@@ -132,11 +132,11 @@ image, as the shipped ones were), rebuilds and labels the out-of-fold candidate 
 extra features, refits the bagged selector into a new file and writes the submission. This route
 has not been run end to end.
 
-### Released weights
+### Network weights
 
-The 17 network checkpoints (0.9 GB) are not in the Git history. They are published as a release
-asset of this repository (release tag `weights-v1`, file `artifacts_v1.tar`); unpacking it at the
-repository root restores
+The 17 network checkpoints of the submitted system (829 MB, 43 to 51 MB each) are stored in this
+repository, as the competition's Final Submission rules ask, so a clone holds everything the notebook
+needs and nothing has to be retrained:
 
 ```
 outputs/runs/e013_yolo11m_f{0..4}_1792/weights/best.pt          detector, one per fold
@@ -145,8 +145,9 @@ outputs/runs_aug/bloblocal_f{0..4}_s1536_w1.0_r40/best.pt       semantic lane, i
 outputs/runs_aug/aug_heavy_f0_{768,1536}_60ep/best.pt           semantic lane, heavy augmentation
 ```
 
-`artifacts_v1.sha256` in the same release lists the hash of every file, and the last cell of the
-notebook prints the hashes of what is on disk.
+The same 17 files are mirrored as a release asset (release tag `weights-v1`, file
+`artifacts_v1.tar`, unpacked at the repository root); `artifacts_v1.sha256` in that release lists
+the hash of every file, and the last cell of the notebook prints the hashes of what is on disk.
 
 ## Repository layout
 
