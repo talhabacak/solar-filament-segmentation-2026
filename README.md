@@ -10,7 +10,7 @@ Code, measurements and reports behind our two final submissions to the
 | Second final submission | `outputs/submissions/sub042_t020pox_bag5_cascade085.csv` (1182 instances) |
 | Local score | PQ 0.443, SQ 0.678, RQ 0.653 — pooled five-fold out-of-fold, all 707 training images |
 | Public leaderboard | 0.40 |
-| Technical report (4 pages) | source in the organisers' template: [`report/overleaf/main.tex`](report/overleaf/main.tex) · layout preview: [`report/Technical_Report_EN_preview.pdf`](report/Technical_Report_EN_preview.pdf) · Turkish translation: [`report/Technical_Report_TR_preview.pdf`](report/Technical_Report_TR_preview.pdf) |
+| Technical report (4 pages) | [`report/Technical_Report_EN.pdf`](report/Technical_Report_EN.pdf), compiled from the organisers' template ([`report/overleaf/main.tex`](report/overleaf/main.tex)) · Turkish translation: [`report/Technical_Report_TR.pdf`](report/Technical_Report_TR.pdf) |
 | Full report (62 pages) | [`report/Full_Report_EN.pdf`](report/Full_Report_EN.pdf) · Turkish: [`report/Full_Report_TR.pdf`](report/Full_Report_TR.pdf) |
 | Pipeline notebook | [`notebooks/00_end_to_end_pipeline.ipynb`](notebooks/00_end_to_end_pipeline.ipynb) |
 

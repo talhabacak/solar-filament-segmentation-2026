@@ -78,13 +78,13 @@ The data are 707 training and 180 test frames ($2048\times2048$, 8-bit JPEG) fro
 There is no separate held-out set: the training images are split into five folds with \texttt{GroupKFold} grouped by physical image, so that all annotator entries of an image share a fold. The assignment was frozen once (\texttt{data/splits/folds\_v1.parquet}) and used unchanged by every experiment. Every learned layer is cross-fitted. Network predictions for a training image come only from the fold model that did not see it, and the selector is fitted on four folds and applied to the fifth. Every annotator entry is a separate training sample in both lanes, because the metric scores against every copy ($+0.0051$ PQ over a consensus target). At test time the five fold models act as an ensemble.
 
 \subsection{Pre-processing}
-Images are used as delivered. There is no contrast equalisation, intensity harmonisation or limb-darkening correction. For the semantic lane the frame is resized once to $1536\times1536$, scaled to $[0,1]$ and replicated to three channels. Masks are downsampled by area averaging and thresholded at 0.5, which retains 98.1\,\% of the annotated area and deletes no instance. The detector uses the Ultralytics input pipeline at 1792\,px.
+Images are used as delivered. There is no contrast equalisation, intensity harmonisation or limb-darkening correction; a stack of physical channels (local contrast, radial map) measured $-0.005$ pixel-Dice and is not used. For the semantic lane the frame is resized once to $1536\times1536$, scaled to $[0,1]$ and replicated to three channels. Masks are downsampled by area averaging and thresholded at 0.5, which retains 98.1\,\% of the annotated area and deletes no instance. The detector uses the Ultralytics input pipeline at 1792\,px.
 
 \subsection{Detector lane}
-YOLO11m-seg \cite{yolo11}, initialised from COCO weights \cite{lin2014coco}, single class, one model per fold. Augmentations that break the full-disc geometry (mosaic, mixup, copy-paste, erasing, shear, perspective, vertical flip) are off. Candidates are kept at confidence $\geq 0.05$ with NMS IoU 0.5. In a sweep of input sizes from 1024 to 2048\,px, 1792 is the last that improves; larger backbones did not help.
+YOLO11m-seg \cite{yolo11}, initialised from COCO weights \cite{lin2014coco}, single class, one model per fold. Augmentations that break the full-disc geometry (mosaic, mixup, copy-paste, erasing, shear, perspective, vertical flip) are off. Candidates are kept at confidence $\geq 0.05$ with NMS IoU 0.5. In a sweep of input sizes from 1024 to 2048\,px, 1792 is the last that improves; larger backbones did not help (YOLO11l $+0.000$, YOLOv8x $-0.013$).
 
 \subsection{Semantic lane}
-U-Net \cite{ronneberger2015unet} with an ImageNet-initialised \cite{deng2009imagenet} EfficientNet-B3 encoder \cite{tan2019efficientnet} and scSE decoder attention \cite{roy2018scse}, built with \texttt{segmentation\_models\_pytorch} \cite{smp}. The loss is BCE + soft Dice + $0.3\cdot$clDice \cite{shit2021cldice}; clDice rewards skeleton overlap, because a one-pixel break splits an instance and PQ charges it twice. Three member types are trained: (a) the base recipe, one model per fold; (b) an instance-balanced variant, one per fold, whose loss weights each connected instance equally within a 40\,px radius, so that small filaments count as much as large ones; (c) two heavily augmented models trained for 60 epochs at 768 and 1536\,px on the fold-0 split. The test-time field is their weighted mean, 0.50 for (b), 1/6 for (a) and 1/6 for each model of (c), each member inferred at its training size with horizontal-flip averaging.
+U-Net \cite{ronneberger2015unet} with an ImageNet-initialised \cite{deng2009imagenet} EfficientNet-B3 encoder \cite{tan2019efficientnet} and scSE decoder attention \cite{roy2018scse}, built with Segmentation Models PyTorch \cite{smp}. The loss is BCE + soft Dice + $0.3\cdot$clDice \cite{shit2021cldice}; clDice rewards skeleton overlap, because a one-pixel break splits an instance and PQ charges it twice. Three member types are trained: (a) the base recipe, one model per fold; (b) an instance-balanced variant, one per fold, whose loss weights each connected instance equally within a 40\,px radius, so that small filaments count as much as large ones; (c) two heavily augmented models trained for 60 epochs at 768 and 1536\,px on the fold-0 split. The test-time field is their weighted mean, 0.50 for (b), 1/6 for (a) and 1/6 for each model of (c), each member inferred at its training size with horizontal-flip averaging.
 
 \begin{table}[t]
   \caption{All parameters of the submitted system.}
@@ -137,7 +137,7 @@ Table~\ref{tab:results} scores simpler systems built from the same components, b
 \begin{table}[t]
   \caption{Out-of-fold results on the 707 training images (8199 annotator copies).}
   \label{tab:results}
-  \small
+  \small\setlength{\tabcolsep}{4.2pt}
   \begin{tabular}{@{}lrrrrrr@{}}
     \toprule
     System & PQ & SQ & RQ & TP & FP & FN \\
@@ -168,13 +168,13 @@ Over the matched copies, IoU has median 0.683 (quartiles 0.615 and 0.742; 5th an
   \end{tabular}
 \end{table}
 
-The public leaderboard displays 0.40. The offset of $-0.04$ to $-0.05$ from the local estimate has been the same for every generation of the pipeline. Scoring the same masks against different annotators moves PQ by $-0.036$ to $+0.038$, so we attribute the offset to the test annotators. For the 180 test images, each of the twelve semantic members takes about 21\,s on one GPU, and fusion with featurisation takes 0.48\,s per image on a CPU.
+The public leaderboard displays 0.40. The offset of $-0.04$ to $-0.05$ from the local estimate has been the same for every generation of the pipeline, and the test images are statistically indistinguishable from the training images (classifier AUC 0.534). Scoring the same masks against different annotators moves PQ by $-0.036$ to $+0.038$, so we attribute the offset to the test annotators and expect 0.40 to 0.42 on the private half. For the 180 test images, each of the twelve semantic members takes about 21\,s on one GPU, and fusion with featurisation takes 0.48\,s per image on a CPU.
 
 \subsection{Strengths}
 Mask quality is at the reproducibility of the label: on the 2483 matched copies that two annotators drew, our mask is closer to an annotator than the second annotator is in 76.2\,\% of cases (SQ 0.678 against an inter-annotator IoU of 0.634). The instance structure is clean (Table~\ref{tab:relations}). The sixteen scored false positives with the highest selector score are all visibly filaments that no annotator of that image drew, so part of the false-positive count is recall of real structure. The keep threshold is derived, not tuned, and the result is reproducible to the byte (Section~\ref{sec:repro}).
 
 \subsection{Weaknesses and strategies for improvement}
-The remaining loss is recognition: recall is 0.588 at precision 0.736. Of the on-disc annotator copies, 60.6\,\% are matched, 11.5\,\% had a candidate above IoU 0.5 that the selector rejected, 3.4\,\% were never proposed, and 24.6\,\% have a candidate with IoU between 0.05 and 0.5, the right object with the wrong shape. Where a second annotator confirms such a copy, our candidate is too short, not too thin (median skeleton ratio 0.72, width ratio 1.04), and in 75\,\% of these cases the ensemble's probability is essentially zero over the missing part. Barbs show the same limit (Figure~\ref{fig:barbs}). Defining a barb pixel from the annotated spine as one thinner than the body and farther from the spine than half a body width, our matched masks cover 38.0\,\% of barb pixels where a second annotator covers 49.3\,\%, against 80.5\,\% and 79.7\,\% of the body. Recognition also falls at the limb (RQ 0.556 for $r/R$ in 0.8--0.9, against 0.66--0.67 on the disc), while SQ stays at 0.68.
+The remaining loss is recognition: recall is 0.588 at precision 0.736. Of the on-disc annotator copies, 60.6\,\% are matched, 11.5\,\% had a candidate above IoU 0.5 that the selector rejected, 3.4\,\% were never proposed, and 24.6\,\% have a candidate with IoU between 0.05 and 0.5, the right object with the wrong shape. Where a second annotator confirms such a copy, our candidate is too short, not too thin (median skeleton ratio 0.72, width ratio 1.04), and in 75\,\% of these cases the ensemble's probability is essentially zero over the missing part. Barbs show the same limit (Figure~\ref{fig:barbs}). Defining a barb pixel from the annotated spine as one thinner than the body and farther from the spine than half a body width, our matched masks cover 38.0\,\% of barb pixels where a second annotator covers 49.3\,\%, against 80.5\,\% and 79.7\,\% of the body. Recognition also falls at the limb (RQ 0.556 for $r/R$ in 0.8--0.9, against 0.66--0.67 on the disc) and in busy frames (PQ 0.464 to 0.416 across quartiles of disc high-frequency energy), while SQ stays at 0.68.
 
 \begin{figure}[t]
   \centering
@@ -184,7 +184,7 @@ The remaining loss is recognition: recall is 0.588 at precision 0.736. Of the on
   \label{fig:barbs}
 \end{figure}
 
-Table~\ref{tab:negative} lists changes that were implemented and measured under the same protocol and did not pass the floor. They locate the limit in the networks' response to faint structure, not in fusion, selection or post-processing: moving the fusion vote towards the union costs $-0.058$ PQ, snapping masks to image intensity costs $-0.070$, and the apparent headroom of selection (reordering the pool with knowledge of one annotator, $+0.033$) is lost when the same choice is scored on another annotator. We therefore see two directions. First, supervision aimed at faint length and barbs, for which PQ itself gives no incentive (barbs are 0.17\,\% of the annotated area). Second, labels with several annotators per image: 66.5\,\% of the wrong-shape copies were drawn by one annotator only, and the consensus oracle shows how much of the gap is label variance.
+Table~\ref{tab:negative} lists changes that were implemented and measured under the same protocol and did not pass the floor. They locate the limit in the networks' response to faint structure, not in fusion, selection or post-processing: moving the fusion vote towards the union costs $-0.058$ PQ, snapping masks to image intensity costs $-0.070$, and the apparent headroom of selection (reordering the pool with knowledge of one annotator, $+0.033$) is lost when the same choice is scored on another annotator. We therefore see three directions. First, supervision aimed at faint length and barbs, for which PQ itself gives no incentive (barbs are 0.17\,\% of the annotated area). Second, labels with several annotators per image: 66.5\,\% of the wrong-shape copies were drawn by one annotator only, and the consensus oracle shows how much of the gap is label variance. Third, averaging validation over several fold partitions, because differences below about 0.003 cannot be resolved on one.
 
 \begin{table}[t]
   \caption{Changes measured under the same protocol that did not pass the $\pm0.003$ floor (effect on PQ unless stated).}
@@ -195,9 +195,12 @@ Table~\ref{tab:negative} lists changes that were implemented and measured under 
     Change & Measured effect \\
     \midrule
     Nine encoders (13--93\,M parameters), UNet++, UPerNet, SegFormer as a member & within $\pm0.001$ of a seed replicate \\
+    Native-resolution (2048\,px) tiled lane & 0.4277 against 0.4286 \\
     Mask2Former as a third lane & $+0.0020$ $[-0.0027, +0.0066]$ \\
     Candidate-conditioned mask refiner & best of three $-0.015$ \\
+    Pretraining on unlabelled GONG frames & equal to a seed replicate \\
     HMI magnetogram as teacher input & $+0.0015$, $+0.0003$ (two folds) \\
+    Centre-to-limb rotation augmentation & $+0.0000$, $-0.0036$ (two folds) \\
     Semantic threshold 0.10, selector refitted & $+0.0010$ $[-0.0019, +0.0038]$ \\
     Keep threshold set by image regime & $+0.0019$ $[-0.0006, +0.0044]$ \\
     \bottomrule
@@ -208,9 +211,9 @@ Table~\ref{tab:negative} lists changes that were implemented and measured under 
 %      REPRODUCIBILITY AND COMPLIANCE  %
 % ==================================== %
 \section{Reproducibility and compliance}\label{sec:repro}
-The repository is modular (metric, cache builders, training and inference, one script per measurement) and \texttt{requirements.txt} pins every package. The notebook \texttt{notebooks/00\_end\_to\_end\_pipeline.ipynb} runs the pipeline in three modes: the final stage from the shipped test candidate pool (CPU, seconds), full inference from the released weights, or a complete retrain. From the candidate pool both submitted files are rebuilt byte for byte, and so is the first after refitting the selector from the shipped training pool.
+The repository is modular (metric, cache builders, training and inference, one script per measurement) and \texttt{requirements.txt} pins every package. The notebook in \texttt{notebooks/} runs the pipeline in three modes: the final stage from the shipped test candidate pool (CPU, seconds), full inference from the released weights, or a complete retrain. From the candidate pool both submitted files are rebuilt byte for byte, and so is the first after refitting the selector from the shipped training pool. Rebuilt from the checkpoints, the predecessor system was byte-identical on the original machine; on a different GPU architecture 1091 of 1117 encodings were identical and one instance changed ($\pm0.0004$ PQ).
 
-No external annotation was used. ImageNet encoder weights and COCO-pretrained detector weights are the only external inputs to the submitted models; magnetograms appear only in an experiment of Table~\ref{tab:negative}, and inference reads only the provided H-$\alpha$ images. AI tools were used for coding and drafting, as the organisers permit; every design decision above traces to a recorded measurement in the repository.
+No external annotation was used. ImageNet encoder weights and COCO-pretrained detector weights are the only external inputs to the submitted models; magnetograms and unlabelled GONG frames appear only in experiments of Table~\ref{tab:negative}, and inference reads only the provided H-$\alpha$ images. AI tools were used for coding and drafting, as the organisers permit; every design decision above traces to a recorded measurement in the repository.
 
 % ==================================== %
 %            ACKNOWLEDGMENT            %

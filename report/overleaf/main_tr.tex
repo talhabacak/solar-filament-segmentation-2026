@@ -55,13 +55,13 @@ Veri, altı GONG istasyonundan \cite{harvey1996gong} 707 eğitim ve 180 test gö
 Ayrı bir tutulan küme yoktur: eğitim görüntüleri, fiziksel görüntüye göre gruplanmış \texttt{GroupKFold} ile beş kata bölünür; böylece bir görüntünün bütün anotatör girişleri aynı kattadır. Atama bir kez donduruldu (\texttt{data/splits/folds\_v1.parquet}) ve her deneyde değiştirilmeden kullanıldı. Öğrenilen her katman çapraz-uydurulmuştur. Bir eğitim görüntüsü için ağ tahminleri yalnızca o görüntüyü görmemiş kat modelinden gelir; seçici dört katta uydurulup beşincisine uygulanır. Her anotatör girişi iki hatta da ayrı bir eğitim örneğidir, çünkü metrik her kopyaya karşı puanlar (konsensüs hedefine göre $+0.0051$ PQ). Test zamanında beş kat modeli bir topluluk olarak çalışır.
 
 \subsection{Ön-işleme}
-Görüntüler teslim edildiği gibi kullanılır. Kontrast eşitleme, yoğunluk uyumlama ya da kenar kararması düzeltmesi yoktur. Semantik hat için görüntü bir kez $1536\times1536$'ya yeniden boyutlandırılır, $[0,1]$ aralığına ölçeklenir ve üç kanala kopyalanır. Maskeler alan ortalamasıyla küçültülür ve 0.5'te eşiklenir; bu, etiketli alanın \%98.1'ini korur ve hiçbir örneği silmez. Dedektör, 1792\,px'te Ultralytics girdi hattını kullanır.
+Görüntüler teslim edildiği gibi kullanılır. Kontrast eşitleme, yoğunluk uyumlama ya da kenar kararması düzeltmesi yoktur; fiziksel kanal yığını (yerel kontrast, radyal harita) $-0.005$ piksel-Dice ölçülmüş ve kullanılmamıştır. Semantik hat için görüntü bir kez $1536\times1536$'ya yeniden boyutlandırılır, $[0,1]$ aralığına ölçeklenir ve üç kanala kopyalanır. Maskeler alan ortalamasıyla küçültülür ve 0.5'te eşiklenir; bu, etiketli alanın \%98.1'ini korur ve hiçbir örneği silmez. Dedektör, 1792\,px'te Ultralytics girdi hattını kullanır.
 
 \subsection{Dedektör hattı}
-COCO ağırlıklarından \cite{lin2014coco} başlatılmış YOLO11m-seg \cite{yolo11}, tek sınıf, kat başına bir model. Tam-disk geometrisini bozan augmentasyonlar (mosaic, mixup, copy-paste, silme, shear, perspektif, dikey çevirme) kapalıdır. Adaylar güven $\geq 0.05$ ve NMS IoU 0.5 ile tutulur. 1024--2048\,px arasındaki girdi boyutu taramasında iyileşme sağlayan son boyut 1792'dir; daha büyük gövde ağları fayda sağlamadı.
+COCO ağırlıklarından \cite{lin2014coco} başlatılmış YOLO11m-seg \cite{yolo11}, tek sınıf, kat başına bir model. Tam-disk geometrisini bozan augmentasyonlar (mosaic, mixup, copy-paste, silme, shear, perspektif, dikey çevirme) kapalıdır. Adaylar güven $\geq 0.05$ ve NMS IoU 0.5 ile tutulur. 1024--2048\,px arasındaki girdi boyutu taramasında iyileşme sağlayan son boyut 1792'dir; daha büyük gövde ağları fayda sağlamadı (YOLO11l $+0.000$, YOLOv8x $-0.013$).
 
 \subsection{Semantik hat}
-ImageNet ile başlatılmış \cite{deng2009imagenet} EfficientNet-B3 kodlayıcılı \cite{tan2019efficientnet} ve scSE kod çözücü dikkatli \cite{roy2018scse} U-Net \cite{ronneberger2015unet}; \texttt{segmentation\_models\_pytorch} \cite{smp} ile kurulmuştur. Kayıp BCE + yumuşak Dice + $0.3\cdot$clDice'tır \cite{shit2021cldice}; clDice iskelet örtüşmesini ödüllendirir, çünkü tek piksellik bir kopukluk bir örneği ikiye böler ve PQ bunu iki kez cezalandırır. Üç üye türü eğitilir: (a) temel tarif, kat başına bir model; (b) örnek-dengeli varyant, kat başına bir model; kaybı, 40\,px yarıçap içindeki her bağlı örneği eşit ağırlıklandırır, böylece küçük filamanlar büyükler kadar sayılır; (c) kat-0 bölmesinde, 768 ve 1536\,px'te 60 epoch eğitilmiş, ağır augmentasyonlu iki model. Test zamanı alanı bunların ağırlıklı ortalamasıdır: (b) için 0.50, (a) için 1/6 ve (c)'nin her modeli için 1/6; her üye kendi eğitim boyutunda, yatay çevirme ortalamasıyla çalıştırılır.
+ImageNet ile başlatılmış \cite{deng2009imagenet} EfficientNet-B3 kodlayıcılı \cite{tan2019efficientnet} ve scSE kod çözücü dikkatli \cite{roy2018scse} U-Net \cite{ronneberger2015unet}; Segmentation Models PyTorch \cite{smp} ile kurulmuştur. Kayıp BCE + yumuşak Dice + $0.3\cdot$clDice'tır \cite{shit2021cldice}; clDice iskelet örtüşmesini ödüllendirir, çünkü tek piksellik bir kopukluk bir örneği ikiye böler ve PQ bunu iki kez cezalandırır. Üç üye türü eğitilir: (a) temel tarif, kat başına bir model; (b) örnek-dengeli varyant, kat başına bir model; kaybı, 40\,px yarıçap içindeki her bağlı örneği eşit ağırlıklandırır, böylece küçük filamanlar büyükler kadar sayılır; (c) kat-0 bölmesinde, 768 ve 1536\,px'te 60 epoch eğitilmiş, ağır augmentasyonlu iki model. Test zamanı alanı bunların ağırlıklı ortalamasıdır: (b) için 0.50, (a) için 1/6 ve (c)'nin her modeli için 1/6; her üye kendi eğitim boyutunda, yatay çevirme ortalamasıyla çalıştırılır.
 
 \begin{table}[t]
   \caption{Gönderilen sistemin bütün parametreleri.}
@@ -111,7 +111,7 @@ Tablo~\ref{tab:results}, aynı bileşenlerden kurulan daha basit sistemleri iki 
 \begin{table}[t]
   \caption{707 eğitim görüntüsünde kat-dışı sonuçlar (8199 anotatör kopyası).}
   \label{tab:results}
-  \small
+  \small\setlength{\tabcolsep}{3.6pt}
   \begin{tabular}{@{}lrrrrrr@{}}
     \toprule
     Sistem & PQ & SQ & RQ & TP & FP & FN \\
@@ -142,13 +142,13 @@ Eşleşen kopyalarda IoU'nun medyanı 0.683 (çeyrekler 0.615 ve 0.742; 5. ve 95
   \end{tabular}
 \end{table}
 
-Açık liderlik tablosu 0.40 gösterir. Yerel tahmine göre $-0.04$ ile $-0.05$ arasındaki fark, boru hattının her neslinde aynıdır. Aynı maskeleri farklı anotatörlere karşı puanlamak PQ'yu $-0.036$ ile $+0.038$ arasında oynatır; bu yüzden farkı test anotatörlerine bağlıyoruz. 180 test görüntüsü için on iki semantik üyenin her biri tek GPU'da yaklaşık 21\,s sürer; füzyon ve öznitelik çıkarımı CPU'da görüntü başına 0.48\,s sürer.
+Açık liderlik tablosu 0.40 gösterir. Yerel tahmine göre $-0.04$ ile $-0.05$ arasındaki fark, boru hattının her neslinde aynıdır ve test görüntüleri eğitim görüntülerinden istatistiksel olarak ayırt edilemez (sınıflandırıcı AUC 0.534). Aynı maskeleri farklı anotatörlere karşı puanlamak PQ'yu $-0.036$ ile $+0.038$ arasında oynatır; bu yüzden farkı test anotatörlerine bağlıyor ve gizli yarıda 0.40--0.42 bekliyoruz. 180 test görüntüsü için on iki semantik üyenin her biri tek GPU'da yaklaşık 21\,s sürer; füzyon ve öznitelik çıkarımı CPU'da görüntü başına 0.48\,s sürer.
 
 \subsection{Güçlü yönler}
 Maske kalitesi etiketin tekrarlanabilirliği düzeyindedir: iki anotatörün çizdiği 2483 eşleşen kopyada maskemiz, vakaların \%76.2'sinde bir anotatöre ikinci anotatörden daha yakındır (SQ 0.678, anotatörler arası IoU 0.634). Örnek yapısı temizdir (Tablo~\ref{tab:relations}). Seçici skoru en yüksek on altı yanlış pozitifin hepsi, o görüntünün hiçbir anotatörünün çizmediği, gözle açıkça filaman olan yapılardır; yani yanlış pozitif sayısının bir kısmı gerçek yapının yakalanmasıdır. Tutma eşiği ayarlanmamış, türetilmiştir ve sonuç bayt düzeyinde yeniden üretilebilir (Bölüm~\ref{sec:repro}).
 
 \subsection{Zayıf yönler ve iyileştirme stratejileri}
-Kalan kayıp tanımadadır: duyarlılık (recall) 0.588, kesinlik 0.736'dır. Disk üzerindeki anotatör kopyalarının \%60.6'sı eşleşir; \%11.5'inde IoU 0.5'in üstünde bir aday vardı ama seçici reddetti; \%3.4'ü hiç önerilmedi; \%24.6'sının IoU'su 0.05 ile 0.5 arasında bir adayı vardır, yani doğru nesne, yanlış şekil. İkinci bir anotatörün doğruladığı böyle kopyalarda adayımız ince değil kısadır (medyan iskelet oranı 0.72, genişlik oranı 1.04) ve bu vakaların \%75'inde eksik kısım üzerinde topluluğun olasılığı neredeyse sıfırdır. Barb'lar aynı sınırı gösterir (Şekil~\ref{fig:barbs}). Barb pikselini, etiketli omurgaya göre, gövdeden ince ve omurgadan yarım gövde genişliğinden uzak piksel olarak tanımlarsak, eşleşen maskelerimiz barb piksellerinin \%38.0'ini kapsar, ikinci bir anotatör \%49.3'ünü; gövdede bu oranlar \%80.5 ve \%79.7'dir. Tanıma kenarda da düşer ($r/R$ 0.8--0.9 için RQ 0.556, disk üzerinde 0.66--0.67); SQ ise 0.68'de kalır.
+Kalan kayıp tanımadadır: duyarlılık (recall) 0.588, kesinlik 0.736'dır. Disk üzerindeki anotatör kopyalarının \%60.6'sı eşleşir; \%11.5'inde IoU 0.5'in üstünde bir aday vardı ama seçici reddetti; \%3.4'ü hiç önerilmedi; \%24.6'sının IoU'su 0.05 ile 0.5 arasında bir adayı vardır, yani doğru nesne, yanlış şekil. İkinci bir anotatörün doğruladığı böyle kopyalarda adayımız ince değil kısadır (medyan iskelet oranı 0.72, genişlik oranı 1.04) ve bu vakaların \%75'inde eksik kısım üzerinde topluluğun olasılığı neredeyse sıfırdır. Barb'lar aynı sınırı gösterir (Şekil~\ref{fig:barbs}). Barb pikselini, etiketli omurgaya göre, gövdeden ince ve omurgadan yarım gövde genişliğinden uzak piksel olarak tanımlarsak, eşleşen maskelerimiz barb piksellerinin \%38.0'ini kapsar, ikinci bir anotatör \%49.3'ünü; gövdede bu oranlar \%80.5 ve \%79.7'dir. Tanıma kenarda da düşer ($r/R$ 0.8--0.9 için RQ 0.556, disk üzerinde 0.66--0.67) ve yoğun karelerde de (disk yüksek-frekans enerjisinin çeyrekleri boyunca PQ 0.464'ten 0.416'ya); SQ ise 0.68'de kalır.
 
 \begin{figure}[t]
   \centering
@@ -158,7 +158,7 @@ Kalan kayıp tanımadadır: duyarlılık (recall) 0.588, kesinlik 0.736'dır. Di
   \label{fig:barbs}
 \end{figure}
 
-Tablo~\ref{tab:negative}, aynı protokolle uygulanıp ölçülen ve ölçüm tabanını geçemeyen değişiklikleri listeler. Bunlar sınırı füzyonda, seçimde ya da ardıl-işlemede değil, ağların soluk yapıya verdiği yanıtta konumlandırır: füzyon oyunu birleşime doğru kaydırmak $-0.058$ PQ'ya, maskeleri görüntü yoğunluğuna oturtmak $-0.070$'e mal olur; seçimin görünen payı (havuzu tek bir anotatörün bilgisiyle yeniden sıralamak, $+0.033$) aynı seçim başka bir anotatöre karşı puanlandığında kaybolur. Bu yüzden iki yön görüyoruz. Birincisi, soluk uzunluğu ve barb'ları hedefleyen gözetim; PQ'nun kendisi buna teşvik vermez (barb'lar etiketli alanın \%0.17'sidir). İkincisi, görüntü başına birden çok anotatörlü etiketler: yanlış şekilli kopyaların \%66.5'ini yalnızca bir anotatör çizmiştir ve konsensüs oracle'ı açığın ne kadarının etiket varyansı olduğunu gösterir.
+Tablo~\ref{tab:negative}, aynı protokolle uygulanıp ölçülen ve ölçüm tabanını geçemeyen değişiklikleri listeler. Bunlar sınırı füzyonda, seçimde ya da ardıl-işlemede değil, ağların soluk yapıya verdiği yanıtta konumlandırır: füzyon oyunu birleşime doğru kaydırmak $-0.058$ PQ'ya, maskeleri görüntü yoğunluğuna oturtmak $-0.070$'e mal olur; seçimin görünen payı (havuzu tek bir anotatörün bilgisiyle yeniden sıralamak, $+0.033$) aynı seçim başka bir anotatöre karşı puanlandığında kaybolur. Bu yüzden üç yön görüyoruz. Birincisi, soluk uzunluğu ve barb'ları hedefleyen gözetim; PQ'nun kendisi buna teşvik vermez (barb'lar etiketli alanın \%0.17'sidir). İkincisi, görüntü başına birden çok anotatörlü etiketler: yanlış şekilli kopyaların \%66.5'ini yalnızca bir anotatör çizmiştir ve konsensüs oracle'ı açığın ne kadarının etiket varyansı olduğunu gösterir. Üçüncüsü, doğrulamanın birkaç kat bölüntüsü üzerinden ortalanması; çünkü yaklaşık 0.003'ün altındaki farklar tek bölüntüde çözülemez.
 
 \begin{table}[t]
   \caption{Aynı protokolle ölçülen ve $\pm0.003$ ölçüm tabanını geçemeyen değişiklikler (aksi belirtilmedikçe PQ üzerindeki etki).}
@@ -169,9 +169,12 @@ Tablo~\ref{tab:negative}, aynı protokolle uygulanıp ölçülen ve ölçüm tab
     Değişiklik & Ölçülen etki \\
     \midrule
     Dokuz kodlayıcı (13--93\,M parametre), UNet++, UPerNet, SegFormer üye olarak & tohum tekrarının $\pm0.001$ içinde \\
+    Yerel çözünürlükte (2048\,px) karolu hat & 0.4286'ya karşı 0.4277 \\
     Üçüncü hat olarak Mask2Former & $+0.0020$ $[-0.0027, +0.0066]$ \\
     Adaya koşullu maske iyileştirici & üç biçimin en iyisi $-0.015$ \\
+    Etiketsiz GONG görüntüleriyle ön-eğitim & tohum tekrarına eşit \\
     HMI manyetogramı, öğretmen girdisi olarak & $+0.0015$, $+0.0003$ (iki kat) \\
+    Merkezden kenara döndürme augmentasyonu & $+0.0000$, $-0.0036$ (iki kat) \\
     Semantik eşik 0.10, seçici yeniden uydurularak & $+0.0010$ $[-0.0019, +0.0038]$ \\
     Görüntü rejimine göre tutma eşiği & $+0.0019$ $[-0.0006, +0.0044]$ \\
     \bottomrule
@@ -179,9 +182,9 @@ Tablo~\ref{tab:negative}, aynı protokolle uygulanıp ölçülen ve ölçüm tab
 \end{table}
 
 \section{Yeniden üretilebilirlik ve uyum}\label{sec:repro}
-Depo modülerdir (metrik, önbellek kurucular, eğitim ve çıkarım, ölçüm başına bir betik) ve \texttt{requirements.txt} her paketi sürümüyle sabitler. \texttt{notebooks/00\_end\_to\_end\_pipeline.ipynb} boru hattını üç modda çalıştırır: depodaki test aday havuzundan son aşama (CPU, saniyeler), yayımlanan ağırlıklardan tam çıkarım ya da baştan eğitim. Aday havuzundan, gönderilen iki dosya da bayt bayt yeniden üretilir; seçici depodaki eğitim havuzundan yeniden uydurulduğunda birincisi yine bayt bayt aynıdır.
+Depo modülerdir (metrik, önbellek kurucular, eğitim ve çıkarım, ölçüm başına bir betik) ve \texttt{requirements.txt} her paketi sürümüyle sabitler. \texttt{notebooks/} altındaki notebook boru hattını üç modda çalıştırır: depodaki test aday havuzundan son aşama (CPU, saniyeler), yayımlanan ağırlıklardan tam çıkarım ya da baştan eğitim. Aday havuzundan, gönderilen iki dosya da bayt bayt yeniden üretilir; seçici depodaki eğitim havuzundan yeniden uydurulduğunda birincisi yine bayt bayt aynıdır. Kontrol noktalarından yeniden kurulumda önceki sistem özgün makinede bayt bayt aynı çıktı; farklı bir GPU mimarisinde 1117 kodlamanın 1091'i aynıydı ve bir örnek değişti ($\pm0.0004$ PQ).
 
-Hiçbir dış etiket kullanılmadı. Gönderilen modellerin tek dış girdileri ImageNet kodlayıcı ağırlıkları ve COCO ile ön-eğitilmiş dedektör ağırlıklarıdır; manyetogramlar yalnızca Tablo~\ref{tab:negative}'teki bir deneyde yer alır ve çıkarım yalnızca verilen H-$\alpha$ görüntülerini okur. Organizatörlerin izin verdiği biçimde, kodlama ve yazımda yapay zekâ araçları kullanıldı; yukarıdaki her tasarım kararı depodaki kayıtlı bir ölçüme dayanır.
+Hiçbir dış etiket kullanılmadı. Gönderilen modellerin tek dış girdileri ImageNet kodlayıcı ağırlıkları ve COCO ile ön-eğitilmiş dedektör ağırlıklarıdır; manyetogramlar ve etiketsiz GONG görüntüleri yalnızca Tablo~\ref{tab:negative}'teki deneylerde yer alır ve çıkarım yalnızca verilen H-$\alpha$ görüntülerini okur. Organizatörlerin izin verdiği biçimde, kodlama ve yazımda yapay zekâ araçları kullanıldı; yukarıdaki her tasarım kararı depodaki kayıtlı bir ölçüme dayanır.
 
 \section{Teşekkür}\label{sec:acknowledgment}
     Filament Segmentation Challenge 2026'nın düzenlenmesi, ABD Ulusal Bilim Vakfı (NSF) tarafından 2209912 ve 2433781 numaralı hibelerle (Computer and Information Science and Engineering direktörlüğü, Office of Advanced Cyberinfrastructure) ve 2511630 numaralı hibeyle (AST Division Of Astronomical Sciences, MPS Directorate for Mathematical and Physical Sciences) kısmen desteklenmektedir.
