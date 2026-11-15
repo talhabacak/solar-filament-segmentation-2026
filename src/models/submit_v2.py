@@ -317,6 +317,7 @@ def semantic_test_probs(which="prod5"):
         torch.cuda.empty_cache()
         log(f"  {Path(w).parent.name} @{imgsz} w={weight:.3f} "
             f"({time.time()-t0:.0f}s)")
+    cache.parent.mkdir(parents=True, exist_ok=True)
     np.savez_compressed(cache, **{s: (v * 255).astype(np.uint8) for s, v in acc.items()})
     # drop the 3.0 GB accumulator before the fusion loop, which needs the room
     acc.clear()

@@ -1,0 +1,5 @@
+# Only for two experiments that were measured and rejected (report, Table 4): the Mask2Former lane
+# (src/models/*m2f*) and the torchgeo encoders in src/models/train_semantic_arch.py. Not needed for the
+# submitted system. Install on top of requirements.txt: pip install -r requirements-experiments.txt
+transformers==5.16.1
+torchgeo==0.10.0

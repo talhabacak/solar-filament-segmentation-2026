@@ -18,7 +18,7 @@ Code, measurements and reports behind our final submission to the
 
 ```
 GONG H-alpha frame (2048 x 2048)
-  |-- detector lane   YOLO11m-seg @1792, one model per fold, all annotator copies
+  |-- detector lane   YOLO11m-seg @1792, one model per fold, medoid annotator copy
   |-- semantic lane   U-Net (EfficientNet-B3) @1536, BCE + Dice + clDice, 12-member ensemble
   +-> fusion          cluster at IoU > 0.5, confidence-weighted vote, pixel-disjoint masks
        -> 42 features per candidate
@@ -32,13 +32,32 @@ notebook.
 
 ## Reproducing the submitted predictions
 
-Install the pinned environment (Python 3.13, CUDA 12.8):
+Install the pinned environment into a fresh Python 3.13 virtual environment (CUDA 12.8 for the GPU
+routes). The file names the PyTorch package index itself, because the CUDA builds of torch are not
+on PyPI:
 
 ```bash
+python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
+The competition data are needed for routes 2 and 3. They are downloaded with the Kaggle API, which
+needs an API token (`~/.kaggle/kaggle.json`) and the competition rules accepted on the Kaggle page;
+the notebook then fetches and unpacks them itself. The expected layout is
+
+```
+data/MAGFiLO_1.0_Kaggle_2026/train/train_images/*.jpeg                    707 images
+data/MAGFiLO_1.0_Kaggle_2026/train/MAGFiLO_1.0_Annotations_kaggle2026_train.json
+data/MAGFiLO_1.0_Kaggle_2026/test/test_images/*.jpeg                      180 images
+```
+
 There are three levels, and the notebook runs each of them (`MODE` in its first code cell).
+
+| Route | What it shows | Rehearsed |
+|---|---|---|
+| 1. `FINAL_STAGE` | the selector and keep rule turn the shipped test candidate pool into the submitted file | yes, from a fresh clone |
+| 2. `REPRODUCE` | the released networks turn the test images into the submitted file | yes, 2026-11-15: fresh clone, fresh environment from `requirements.txt`, data downloaded by the notebook, released weights; 17.5 min on one RTX 5070 Ti (16 GB, Windows); the result is byte-identical to the submitted file |
+| 3. `RETRAIN` | the raw data turn into the networks, the training pool and the selector | no (about 40 h of GPU time); every step is the command that produced the shipped artefact, and the selector's training inputs were regenerated from the pool and matched the shipped files exactly |
 
 **1. Final stage, from this repository alone (CPU, seconds).** The repository ships the featurised
 test candidate pool and the fitted selector, so the final submission can be rebuilt and compared
@@ -51,24 +70,29 @@ python src/models/submit_from_pool.py --pool outputs/eda/test_pool_t020pox.parqu
     --check outputs/submissions/sub036_t020pox_bag5.csv
 ```
 
-The command ends with `byte-identical ...: True`. (Submission files are checked out with the
-platform's line ending, the one pandas writes; the uploaded file used CRLF and has SHA-256
-`63b570002a2be27d…`.) The selector itself can be refitted from the shipped labelled training pool
-in about a minute (`python src/models/fit_selector_bagged.py`); the refit also rebuilds the
-submission byte for byte.
+The command ends with `byte-identical ... (line endings normalised): True`. The submitted file
+has SHA-256 `63b570002a2be27ddb813c5ad249100df3b5f9fc27ada7f817a9ef974fd2e527` with CRLF line
+endings, as uploaded, and `43c9663abc4e91b4f8dc4081f86b04ffc86ffff80094727f92ae3879cfdcb97e` with LF
+endings, as a Linux checkout holds it. The selector itself can be refitted from the shipped
+labelled training pool in about a minute (`python src/models/fit_selector_bagged.py --out
+<new file>`); the refit also rebuilds the submission byte for byte.
 
-**2. Full inference from the released weights (one 16 GB GPU, about 1.5 h).** Download the
-competition data into `data/` (so that `data/MAGFiLO_1.0_Kaggle_2026/` exists), unpack the released
-weights at the repository root (see below), then run the notebook with `MODE = 'REPRODUCE'`. It
-runs the five detectors and the twelve semantic members on the test images, fuses and featurises
-the candidates, and then runs the final stage above. Rebuilt from checkpoints, the predictions are
-identical on the machine that produced them; on a different GPU architecture a rehearsal reproduced
-1091 of 1117 encodings exactly and changed one instance (±0.0004 PQ), which is floating-point
-noise at the keep gate (report, Section 7).
+**2. Full inference from the released weights (one 16 GB GPU, about 20 min).** Unpack the released
+weights at the repository root (see below) and run the notebook with `MODE = 'REPRODUCE'`. It
+downloads the data if `data/MAGFiLO_1.0_Kaggle_2026/` is missing, runs the five detectors and the
+twelve semantic members on the test images, fuses and featurises the candidates into
+`outputs/eda/test_pool_rebuilt.parquet`, applies the shipped selector, and compares the result
+with the submitted file. Shipped files are never overwritten. The test-time detector candidates are
+made with NMS IoU 0.05, the out-of-fold training candidates with 0.5; this is how the submitted
+system was built (report, Section 2.4). On another GPU architecture expect a few encodings to
+differ: an earlier rehearsal of the predecessor system on a different card reproduced 1091 of 1117
+exactly and changed one instance (±0.0004 PQ), floating-point noise at the keep gate.
 
 **3. Complete retrain (one A100-80GB, about 40 h).** Notebook with `MODE = 'RETRAIN'`: trains the
-17 networks from the raw competition data, rebuilds the out-of-fold candidate pool, refits the
-selector and writes the submissions.
+17 networks from the raw competition data (the five detectors on the medoid annotator copy of each
+image, as the shipped ones were), rebuilds and labels the out-of-fold candidate pool, computes its
+extra features, refits the bagged selector into a new file and writes the submission. This route
+has not been run end to end.
 
 ### Released weights
 
@@ -127,7 +151,7 @@ planning notes, machine-specific run scripts and third-party material were left 
 code, the measurement results and the report sources are unchanged. The full report refers to two
 tags of the development history (`solar-final-analysis-v1`, `solar-final-analysis-v2`); this
 snapshot corresponds to the second. Added for this release: the 4-page technical report with
-its three figure and uncertainty scripts (`src/eda/report_pipeline_figure.py`,
+its figure and measurement scripts (`src/eda/report_pipeline_figure.py`,
 `report_examples_figure.py`, `pq_uncertainty.py`, `matched_iou_dice_distribution.py`), the small artefacts that make the final stage
 reproducible from a clone, and a notebook that reproduces the final submission.
 The full report (written 2026-10-04) plans two final submissions, sub036 and sub042; the

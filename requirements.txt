@@ -20,5 +20,15 @@ joblib==1.5.2
 tqdm==4.67.1
 kaggle==2.2.4
 pycocotools==2.0.11
+scikit-image==0.25.2
 astropy==7.1.1
 pytest==8.4.2
+# to run notebooks/00_end_to_end_pipeline.ipynb
+notebook==7.4.5
+ipykernel==6.31.0
+# used by build_manifest.py (DataFrame.to_markdown), by some analysis scripts in src/eda and by the report tooling
+tabulate==0.9.0
+shapely==2.1.2
+pypdf==6.5.0
+# Two rejected experiments (the Mask2Former lane and the torchgeo encoders) also need transformers and torchgeo;
+# they are not part of the submitted system and are listed in requirements-experiments.txt.

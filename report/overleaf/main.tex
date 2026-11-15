@@ -76,16 +76,16 @@ with a match requiring $\mathrm{IoU}>0.5$, pooled over annotator-image entries: 
 \subsection{Data, splits and validation protocol}\label{sec:protocol}
 The data are 707 training and 180 test frames ($2048\times2048$, 8-bit JPEG) from the six GONG stations, with 8199 polygon annotations in 1154 annotator-image entries. The solar disc is centred at $(1023.6, 1024.6)$\,px with radius 899.95\,px (standard deviation 0.73\,px over all 887 frames), so no geometric registration is applied.
 
-There is no separate held-out set: the training images are split into five folds with \texttt{GroupKFold} grouped by physical image, so that all annotator entries of an image share a fold. The assignment was frozen once (\texttt{data/splits/folds\_v1.parquet}) and used unchanged by every experiment. Every learned layer is cross-fitted. Network predictions for a training image come only from the fold model that did not see it, and the selector is fitted on four folds and applied to the fifth. Every annotator entry is a separate training sample in both lanes, because the metric scores against every copy ($+0.0051$ PQ over a consensus target). At test time the five fold models act as an ensemble.
+There is no separate held-out set: the training images are split into five folds with \texttt{GroupKFold} grouped by physical image, so that all annotator entries of an image share a fold. The assignment was frozen once (\texttt{data/splits/folds\_v1.parquet}) and used unchanged by every experiment. Every learned layer is cross-fitted. Network predictions for a training image come only from the fold model that did not see it, and the selector is fitted on four folds and applied to the fifth. The semantic lane is trained on every annotator entry, because the metric scores against every copy. The five detectors are trained on one copy per image, the medoid annotator's; an all-copies detector later measured $+0.0051$ PQ on fold 0, but the production detectors were not retrained. At test time the five fold models act as an ensemble.
 
 \subsection{Pre-processing}
 Images are used as delivered. There is no contrast equalisation, intensity harmonisation or limb-darkening correction. For the semantic lane the frame is resized once to $1536\times1536$, scaled to $[0,1]$ and replicated to three channels. Masks are downsampled by area averaging and thresholded at 0.5, which retains 98.1\,\% of the annotated area and deletes no instance. The detector uses the Ultralytics input pipeline at 1792\,px.
 
 \subsection{Detector lane}
-YOLO11m-seg \cite{yolo11}, initialised from COCO weights \cite{lin2014coco}, single class, one model per fold. Augmentations that break the full-disc geometry (mosaic, mixup, copy-paste, erasing, shear, perspective, vertical flip) are off. Candidates are kept at confidence $\geq 0.05$ with NMS IoU 0.5. In a sweep of input sizes from 1024 to 2048\,px, 1792 is the last that improves; larger backbones did not help.
+YOLO11m-seg \cite{yolo11}, initialised from COCO weights \cite{lin2014coco}, single class, one model per fold. Augmentations that break the full-disc geometry (mosaic, mixup, copy-paste, erasing, shear, perspective, vertical flip) are off. Candidates are kept at confidence $\geq 0.05$. NMS is at IoU 0.5 for the out-of-fold candidates the selector is trained on but at 0.05 for the test-time candidates, a difference we found when reproducing the system and did not measure. In a sweep of input sizes from 1024 to 2048\,px, 1792 is the last that improves; larger backbones did not help.
 
 \subsection{Semantic lane}
-U-Net \cite{ronneberger2015unet} with an ImageNet-initialised \cite{deng2009imagenet} EfficientNet-B3 encoder \cite{tan2019efficientnet} and scSE decoder attention \cite{roy2018scse}, built with Segmentation Models PyTorch \cite{smp}. The loss is BCE + soft Dice + $0.3\cdot$clDice \cite{shit2021cldice}; clDice rewards skeleton overlap, because a one-pixel break splits an instance and PQ charges it twice. Three member types are trained: (a) the base recipe, one model per fold; (b) an instance-balanced variant, one per fold, whose loss weights each connected instance equally within a 40\,px radius, so that small filaments count as much as large ones; (c) two heavily augmented models trained for 60 epochs at 768 and 1536\,px on the fold-0 split. The test-time field is their weighted mean, 0.50 for (b), 1/6 for (a) and 1/6 for each model of (c), each member inferred at its training size with horizontal-flip averaging.
+U-Net \cite{ronneberger2015unet} with an ImageNet-initialised \cite{deng2009imagenet} EfficientNet-B3 encoder \cite{tan2019efficientnet} and scSE decoder attention \cite{roy2018scse}, built with Segmentation Models PyTorch \cite{smp}. The loss is BCE + soft Dice + $0.3\cdot$clDice \cite{shit2021cldice}; clDice rewards skeleton overlap, because a one-pixel break splits an instance and PQ charges it twice. Three member types are trained: (a) the base recipe, one model per fold; (b) an instance-balanced variant, one per fold, trained for 60 epochs with the heavy augmentation of (c), whose loss weights each connected instance equally within a 40\,px radius, so that small filaments count as much as large ones; (c) two heavily augmented models trained for 60 epochs at 768 and 1536\,px on the fold-0 split. The test-time field is their weighted mean, 0.50 for (b), 1/6 for (a) and 1/6 for each model of (c), each member inferred at its training size with horizontal-flip averaging.
 
 \begin{table}[t]
   \caption{All parameters of the submitted system.}
@@ -95,12 +95,12 @@ U-Net \cite{ronneberger2015unet} with an ImageNet-initialised \cite{deng2009imag
     \toprule
     Component & Setting \\
     \midrule
-    Detector & YOLO11m-seg, 1792\,px, single class, 40 epochs, patience 15, batch 2, lr0 0.01, lrf 0.01, momentum 0.937, weight decay 5e-4, warm-up 3 epochs \\
+    Detector & YOLO11m-seg, 1792\,px, single class, medoid targets, 40 epochs, patience 15, batch 2, optimizer \texttt{auto} (resolves to AdamW, lr 0.002, momentum 0.9), lrf 0.01, weight decay 5e-4, warm-up 3 epochs \\
     Detector augmentation & rotation $\pm10^\circ$, translate 0.05, scale 0.10, horizontal flip 0.5, brightness 0.3; all others off \\
-    Semantic model & U-Net, EfficientNet-B3, scSE, 1536\,px, batch 2, AdamW lr 3e-4, weight decay 1e-4, OneCycle (pct\_start 0.1), mixed precision, 30 epochs \\
+    Semantic model & U-Net, EfficientNet-B3, scSE, 1536\,px, batch 2, AdamW lr 3e-4, weight decay 1e-4, OneCycle (pct\_start 0.1), mixed precision, 30 epochs (instance-balanced and heavy members 60) \\
     Semantic loss & BCE + Dice + $0.3\cdot$clDice (5-epoch warm-up); instance-balanced variant: radius 40\,px, weight 1.0 \\
-    Semantic augmentation & horizontal flip 0.5, rotation $\pm10^\circ$ about the disc centre, gamma 0.8--1.25; heavy members: flips, $90^\circ$ rotations, $\pm20^\circ$, station-calibrated photometry \\
-    Fusion & semantic threshold 0.2, minimum area 256\,px, cluster IoU 0.5, vote 0.5, detector NMS 0.5, at most 300 detections \\
+    Semantic augmentation & horizontal flip 0.5, rotation $\pm10^\circ$ about the disc centre, gamma 0.8--1.25; instance-balanced and heavy members: flips, $90^\circ$ rotations, $\pm20^\circ$, station-calibrated photometry \\
+    Fusion & semantic threshold 0.2, minimum area 256\,px, cluster IoU 0.5, vote 0.5, detector NMS 0.5 out of fold and 0.05 at test time, at most 300 detections \\
     Selector & classifier: 300 iterations, lr 0.05, 31 leaves, minimum leaf 25, L2 1.0; regressor: 300 iterations, lr 0.06; 5 image-bootstrap copies; 10\,042 training candidates \\
     Keep rule & confidence $\geq 0.40$ and $p_\mathrm{sel}\geq 0.60$ \\
     \bottomrule
@@ -179,7 +179,7 @@ The remaining loss is recognition: recall is 0.588 at precision 0.736. Of the on
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.80\columnwidth]{figures/barbs.png}
+  \includegraphics[width=0.70\columnwidth]{figures/barbs.png}
   \caption{Barbs (shaded) of annotated training filaments with the annotator's outline (solid), our out-of-fold mask (dashed) and the annotated spine. Top row: the three matched copies whose barbs are recovered best; bottom row: the three recovered least.}
   \Description{Six enlarged H-alpha regions with annotator outlines, predicted outlines and spines; short barbs attached to dark bodies are followed and long faint ones are not.}
   \label{fig:barbs}
@@ -196,7 +196,6 @@ Table~\ref{tab:negative} lists changes that were implemented and measured under 
     Change & Measured effect \\
     \midrule
     Nine encoders (13--93\,M parameters), UNet++, UPerNet, SegFormer as a member & within $\pm0.001$ of a seed replicate \\
-    Native-resolution (2048\,px) tiled lane & 0.4277 against 0.4286 \\
     Mask2Former as a third lane & $+0.0020$ $[-0.0027, +0.0066]$ \\
     Candidate-conditioned mask refiner & best of three $-0.015$ \\
     Pretraining on unlabelled GONG frames & equal to a seed replicate \\

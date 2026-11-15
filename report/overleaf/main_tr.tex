@@ -53,16 +53,16 @@ eşleşme için $\mathrm{IoU}>0.5$ gerekir ve skor anotatör-görüntü girişle
 \subsection{Veri, bölmeler ve doğrulama protokolü}\label{sec:protocol}
 Veri, altı GONG istasyonundan 707 eğitim ve 180 test görüntüsüdür ($2048\times2048$, 8 bit JPEG); 1154 anotatör-görüntü girişinde 8199 poligon etiketi vardır. Güneş diski $(1023.6, 1024.6)$\,px merkezli ve 899.95\,px yarıçaplıdır (887 görüntünün tamamında standart sapma 0.73\,px); bu nedenle geometrik hizalama uygulanmaz.
 
-Ayrı bir tutulan küme yoktur: eğitim görüntüleri, fiziksel görüntüye göre gruplanmış \texttt{GroupKFold} ile beş kata bölünür; böylece bir görüntünün bütün anotatör girişleri aynı kattadır. Atama bir kez donduruldu (\texttt{data/splits/folds\_v1.parquet}) ve her deneyde değiştirilmeden kullanıldı. Öğrenilen her katman çapraz-uydurulmuştur. Bir eğitim görüntüsü için ağ tahminleri yalnızca o görüntüyü görmemiş kat modelinden gelir; seçici dört katta uydurulup beşincisine uygulanır. Her anotatör girişi iki hatta da ayrı bir eğitim örneğidir, çünkü metrik her kopyaya karşı puanlar (konsensüs hedefine göre $+0.0051$ PQ). Test zamanında beş kat modeli bir topluluk olarak çalışır.
+Ayrı bir tutulan küme yoktur: eğitim görüntüleri, fiziksel görüntüye göre gruplanmış \texttt{GroupKFold} ile beş kata bölünür; böylece bir görüntünün bütün anotatör girişleri aynı kattadır. Atama bir kez donduruldu (\texttt{data/splits/folds\_v1.parquet}) ve her deneyde değiştirilmeden kullanıldı. Öğrenilen her katman çapraz-uydurulmuştur. Bir eğitim görüntüsü için ağ tahminleri yalnızca o görüntüyü görmemiş kat modelinden gelir; seçici dört katta uydurulup beşincisine uygulanır. Semantik hat her anotatör girişiyle eğitilir, çünkü metrik her kopyaya karşı puanlar. Beş dedektör ise görüntü başına tek bir kopyayla, medoid anotatörün kopyasıyla eğitilir; bütün kopyalarla eğitilen bir dedektör daha sonra kat 0'da $+0.0051$ PQ ölçtü, ama üretimdeki dedektörler yeniden eğitilmedi. Test zamanında beş kat modeli bir topluluk olarak çalışır.
 
 \subsection{Ön-işleme}
 Görüntüler teslim edildiği gibi kullanılır. Kontrast eşitleme, yoğunluk uyumlama ya da kenar kararması düzeltmesi yoktur. Semantik hat için görüntü bir kez $1536\times1536$'ya yeniden boyutlandırılır, $[0,1]$ aralığına ölçeklenir ve üç kanala kopyalanır. Maskeler alan ortalamasıyla küçültülür ve 0.5'te eşiklenir; bu, etiketli alanın \%98.1'ini korur ve hiçbir örneği silmez. Dedektör, 1792\,px'te Ultralytics girdi hattını kullanır.
 
 \subsection{Dedektör hattı}
-COCO ağırlıklarından \cite{lin2014coco} başlatılmış YOLO11m-seg \cite{yolo11}, tek sınıf, kat başına bir model. Tam-disk geometrisini bozan augmentasyonlar (mosaic, mixup, copy-paste, silme, shear, perspektif, dikey çevirme) kapalıdır. Adaylar güven $\geq 0.05$ ve NMS IoU 0.5 ile tutulur. 1024--2048\,px arasındaki girdi boyutu taramasında iyileşme sağlayan son boyut 1792'dir; daha büyük gövde ağları fayda sağlamadı.
+COCO ağırlıklarından \cite{lin2014coco} başlatılmış YOLO11m-seg \cite{yolo11}, tek sınıf, kat başına bir model. Tam-disk geometrisini bozan augmentasyonlar (mosaic, mixup, copy-paste, silme, shear, perspektif, dikey çevirme) kapalıdır. Adaylar güven $\geq 0.05$ ile tutulur. NMS, seçicinin eğitildiği kat-dışı adaylarda IoU 0.5, test zamanı adaylarında ise 0.05'tir; bu farkı sistemi yeniden üretirken bulduk ve etkisini ölçmedik. 1024--2048\,px arasındaki girdi boyutu taramasında iyileşme sağlayan son boyut 1792'dir; daha büyük gövde ağları fayda sağlamadı.
 
 \subsection{Semantik hat}
-ImageNet ile başlatılmış \cite{deng2009imagenet} EfficientNet-B3 kodlayıcılı \cite{tan2019efficientnet} ve scSE kod çözücü dikkatli \cite{roy2018scse} U-Net \cite{ronneberger2015unet}; Segmentation Models PyTorch \cite{smp} ile kurulmuştur. Kayıp BCE + yumuşak Dice + $0.3\cdot$clDice'tır \cite{shit2021cldice}; clDice iskelet örtüşmesini ödüllendirir, çünkü tek piksellik bir kopukluk bir örneği ikiye böler ve PQ bunu iki kez cezalandırır. Üç üye türü eğitilir: (a) temel tarif, kat başına bir model; (b) örnek-dengeli varyant, kat başına bir model; kaybı, 40\,px yarıçap içindeki her bağlı örneği eşit ağırlıklandırır, böylece küçük filamanlar büyükler kadar sayılır; (c) kat-0 bölmesinde, 768 ve 1536\,px'te 60 epoch eğitilmiş, ağır augmentasyonlu iki model. Test zamanı alanı bunların ağırlıklı ortalamasıdır: (b) için 0.50, (a) için 1/6 ve (c)'nin her modeli için 1/6; her üye kendi eğitim boyutunda, yatay çevirme ortalamasıyla çalıştırılır.
+ImageNet ile başlatılmış \cite{deng2009imagenet} EfficientNet-B3 kodlayıcılı \cite{tan2019efficientnet} ve scSE kod çözücü dikkatli \cite{roy2018scse} U-Net \cite{ronneberger2015unet}; Segmentation Models PyTorch \cite{smp} ile kurulmuştur. Kayıp BCE + yumuşak Dice + $0.3\cdot$clDice'tır \cite{shit2021cldice}; clDice iskelet örtüşmesini ödüllendirir, çünkü tek piksellik bir kopukluk bir örneği ikiye böler ve PQ bunu iki kez cezalandırır. Üç üye türü eğitilir: (a) temel tarif, kat başına bir model; (b) örnek-dengeli varyant, kat başına bir model, (c)'nin ağır augmentasyonuyla 60 epoch eğitildi; kaybı, 40\,px yarıçap içindeki her bağlı örneği eşit ağırlıklandırır, böylece küçük filamanlar büyükler kadar sayılır; (c) kat-0 bölmesinde, 768 ve 1536\,px'te 60 epoch eğitilmiş, ağır augmentasyonlu iki model. Test zamanı alanı bunların ağırlıklı ortalamasıdır: (b) için 0.50, (a) için 1/6 ve (c)'nin her modeli için 1/6; her üye kendi eğitim boyutunda, yatay çevirme ortalamasıyla çalıştırılır.
 
 \begin{table}[t]
   \caption{Gönderilen sistemin bütün parametreleri.}
@@ -72,12 +72,12 @@ ImageNet ile başlatılmış \cite{deng2009imagenet} EfficientNet-B3 kodlayıcı
     \toprule
     Bileşen & Ayar \\
     \midrule
-    Dedektör & YOLO11m-seg, 1792\,px, tek sınıf, 40 epoch, patience 15, batch 2, lr0 0.01, lrf 0.01, momentum 0.937, weight decay 5e-4, ısınma 3 epoch \\
+    Dedektör & YOLO11m-seg, 1792\,px, tek sınıf, medoid hedefler, 40 epoch, patience 15, batch 2, optimizer \texttt{auto} (AdamW, lr 0.002, momentum 0.9 olarak çözülür), lrf 0.01, weight decay 5e-4, ısınma 3 epoch \\
     Dedektör augmentasyonu & döndürme $\pm10^\circ$, öteleme 0.05, ölçek 0.10, yatay çevirme 0.5, parlaklık 0.3; diğerleri kapalı \\
-    Semantik model & U-Net, EfficientNet-B3, scSE, 1536\,px, batch 2, AdamW lr 3e-4, weight decay 1e-4, OneCycle (pct\_start 0.1), karma hassasiyet, 30 epoch \\
+    Semantik model & U-Net, EfficientNet-B3, scSE, 1536\,px, batch 2, AdamW lr 3e-4, weight decay 1e-4, OneCycle (pct\_start 0.1), karma hassasiyet, 30 epoch (örnek-dengeli ve ağır üyeler 60) \\
     Semantik kayıp & BCE + Dice + $0.3\cdot$clDice (5 epoch ısınma); örnek-dengeli varyant: yarıçap 40\,px, ağırlık 1.0 \\
-    Semantik augmentasyon & yatay çevirme 0.5, disk merkezi etrafında döndürme $\pm10^\circ$, gama 0.8--1.25; ağır üyeler: çevirmeler, $90^\circ$ döndürmeler, $\pm20^\circ$, istasyona göre kalibre fotometri \\
-    Füzyon & semantik eşik 0.2, en küçük alan 256\,px, küme IoU 0.5, oy 0.5, dedektör NMS 0.5, en çok 300 tespit \\
+    Semantik augmentasyon & yatay çevirme 0.5, disk merkezi etrafında döndürme $\pm10^\circ$, gama 0.8--1.25; örnek-dengeli ve ağır üyeler: çevirmeler, $90^\circ$ döndürmeler, $\pm20^\circ$, istasyona göre kalibre fotometri \\
+    Füzyon & semantik eşik 0.2, en küçük alan 256\,px, küme IoU 0.5, oy 0.5, dedektör NMS kat-dışı 0.5, testte 0.05, en çok 300 tespit \\
     Seçici & sınıflandırıcı: 300 iterasyon, lr 0.05, 31 yaprak, en küçük yaprak 25, L2 1.0; regresör: 300 iterasyon, lr 0.06; 5 görüntü-bootstrap kopyası; 10\,042 eğitim adayı \\
     Tutma kuralı & güven $\geq 0.40$ ve $p_\mathrm{sel}\geq 0.60$ \\
     \bottomrule
@@ -153,7 +153,7 @@ Kalan kayıp tanımadadır: duyarlılık (recall) 0.588, kesinlik 0.736'dır. Di
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.80\columnwidth]{figures/barbs.png}
+  \includegraphics[width=0.70\columnwidth]{figures/barbs.png}
   \caption{Etiketli eğitim filamanlarının barb'ları (taralı); anotatörün konturu (düz), kat-dışı maskemiz (kesikli) ve etiketli omurga. Üst satır: barb'ları en iyi geri kazanılan üç eşleşen kopya; alt satır: en az geri kazanılan üçü.}
   \Description{Anotatör konturları, tahmin konturları ve omurgalarla altı büyütülmüş H-alfa bölgesi; koyu gövdeye bağlı kısa barb'lar izlenir, uzun ve soluk olanlar izlenmez.}
   \label{fig:barbs}
@@ -170,7 +170,6 @@ Tablo~\ref{tab:negative}, aynı protokolle uygulanıp ölçülen ve ölçüm tab
     Değişiklik & Ölçülen etki \\
     \midrule
     Dokuz kodlayıcı (13--93\,M parametre), UNet++, UPerNet, SegFormer üye olarak & tohum tekrarının $\pm0.001$ içinde \\
-    Yerel çözünürlükte (2048\,px) karolu hat & 0.4286'ya karşı 0.4277 \\
     Üçüncü hat olarak Mask2Former & $+0.0020$ $[-0.0027, +0.0066]$ \\
     Adaya koşullu maske iyileştirici & üç biçimin en iyisi $-0.015$ \\
     Etiketsiz GONG görüntüleriyle ön-eğitim & tohum tekrarına eşit \\

@@ -148,8 +148,13 @@ def main():
     df = write_submission(preds, out)
     print(f"kept {int(keep.sum())} candidates -> {len(df)} rows over {len(preds)} images -> {a.out}")
     if a.check:
-        same = filecmp.cmp(out, ROOT / a.check, shallow=False)
-        print(f"byte-identical to {a.check}: {same}")
+        # compared with line endings normalised: a checkout or a ZIP download may hold the reference
+        # file with LF while pandas writes the platform's ending (CRLF on Windows)
+        norm = lambda f: Path(f).read_bytes().replace(b"
+", b"
+")
+        same = norm(out) == norm(ROOT / a.check)
+        print(f"byte-identical to {a.check} (line endings normalised): {same}")
         if not same:
             sys.exit(1)
 

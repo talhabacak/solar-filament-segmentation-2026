@@ -122,8 +122,10 @@ def main():
                           on="cand_id", how="left", validate="one_to_one")
         feats = feats + list(REG)
     assert not pool[feats].isna().any().any(), f"{a.pool}: missing features"
-    if a.pool == "fused_pool_all_blob5_t020":
-        assert len(pool) == 10042, "pool is not the sub033 training pool"
+    if a.pool == "fused_pool_all_blob5_t020" and len(pool) != 10042:
+        # the submitted selector was fitted on the shipped 10042-candidate pool; a retrained pipeline
+        # builds its own pool under the same name, which is expected to differ in size
+        print(f"note: {a.pool} has {len(pool)} candidates; the shipped pool has 10042", flush=True)
     rng = np.random.default_rng(a.seed)
     X = pool[feats].to_numpy(np.float64)
     raw = np.zeros(len(pool))
