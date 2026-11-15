@@ -7,7 +7,7 @@ Code, measurements and reports behind our final submission to the
 | | |
 |---|---|
 | Final submission | `outputs/submissions/sub036_t020pox_bag5.csv` (1117 instances) |
-| Prepared alternative, not selected | `outputs/submissions/sub042_t020pox_bag5_cascade085.csv` (1182 instances; sub036 plus a marginal-band cascade) |
+| Prepared alternative, not selected | `outputs/submissions/sub042_t020pox_bag5_cascade085.csv` (sub036 plus a marginal-band cascade; how it is built: `experiments/sub042.md`) |
 | Local score | PQ 0.443, SQ 0.678, RQ 0.653 — pooled five-fold out-of-fold, all 707 training images |
 | Public leaderboard | 0.40 |
 | Technical report (4 pages) | [`report/Technical_Report_EN.pdf`](report/Technical_Report_EN.pdf), compiled from the organisers' template ([`report/overleaf/main.tex`](report/overleaf/main.tex)) · Turkish translation: [`report/Technical_Report_TR.pdf`](report/Technical_Report_TR.pdf) |
@@ -41,27 +41,21 @@ pip install -r requirements.txt
 There are three levels, and the notebook runs each of them (`MODE` in its first code cell).
 
 **1. Final stage, from this repository alone (CPU, seconds).** The repository ships the featurised
-test candidate pool and the fitted selector, so the final submission (and the prepared alternative)
-can be rebuilt and compared with the uploaded files byte for byte:
+test candidate pool and the fitted selector, so the final submission can be rebuilt and compared
+with the uploaded file byte for byte:
 
 ```bash
 python src/models/submit_from_pool.py --pool outputs/eda/test_pool_t020pox.parquet \
     --selector outputs/selector/selector_t020pox_bag5.joblib --conf 0.40 --p-min 0.60 \
-    --out outputs/submissions/final1_reproduced.csv \
+    --out outputs/submissions/final_reproduced.csv \
     --check outputs/submissions/sub036_t020pox_bag5.csv
-
-python src/models/submit_from_pool.py --pool outputs/eda/test_pool_t020pox.parquet \
-    --selector outputs/selector/selector_t020pox_bag5.joblib --conf 0.40 --p-min 0.60 \
-    --cascade-scores outputs/eda/bag5_oof_scores.parquet --cascade-q 0.85 \
-    --out outputs/submissions/final2_reproduced.csv \
-    --check outputs/submissions/sub042_t020pox_bag5_cascade085.csv
 ```
 
-Both commands end with `byte-identical ...: True`. (Submission files are checked out with the
-platform's line ending, the one pandas writes; the uploaded files used CRLF and have SHA-256
-`63b570002a2be27d…` and `c33fd83cc406854d…`.) The selector itself can be refitted from the
-shipped labelled training pool in about a minute (`python src/models/fit_selector_bagged.py`); the
-refit also rebuilds the first submission byte for byte.
+The command ends with `byte-identical ...: True`. (Submission files are checked out with the
+platform's line ending, the one pandas writes; the uploaded file used CRLF and has SHA-256
+`63b570002a2be27d…`.) The selector itself can be refitted from the shipped labelled training pool
+in about a minute (`python src/models/fit_selector_bagged.py`); the refit also rebuilds the
+submission byte for byte.
 
 **2. Full inference from the released weights (one 16 GB GPU, about 1.5 h).** Download the
 competition data into `data/` (so that `data/MAGFiLO_1.0_Kaggle_2026/` exists), unpack the released
@@ -135,7 +129,7 @@ tags of the development history (`solar-final-analysis-v1`, `solar-final-analysi
 snapshot corresponds to the second. Added for this release: the 4-page technical report with
 its three figure and uncertainty scripts (`src/eda/report_pipeline_figure.py`,
 `report_examples_figure.py`, `pq_uncertainty.py`, `matched_iou_dice_distribution.py`), the small artefacts that make the final stage
-reproducible from a clone, and a notebook that reproduces the final submission and the prepared alternative.
+reproducible from a clone, and a notebook that reproduces the final submission.
 The full report (written 2026-10-04) plans two final submissions, sub036 and sub042; the
 competition page allowed one selection, and the selected one is sub036.
 
