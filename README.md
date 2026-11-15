@@ -1,13 +1,13 @@
 # Solar Filament Segmentation Challenge 2026 — team TalhaBacak
 
-Code, measurements and reports behind our two final submissions to the
+Code, measurements and reports behind our final submission to the
 [Solar Filament Segmentation Challenge 2026](https://www.kaggle.com/competitions/filament-segmentation-2026)
 (instance segmentation of filaments on full-disc GONG H-alpha images, scored by Panoptic Quality).
 
 | | |
 |---|---|
-| First final submission | `outputs/submissions/sub036_t020pox_bag5.csv` (1117 instances) |
-| Second final submission | `outputs/submissions/sub042_t020pox_bag5_cascade085.csv` (1182 instances) |
+| Final submission | `outputs/submissions/sub036_t020pox_bag5.csv` (1117 instances) |
+| Prepared alternative, not selected | `outputs/submissions/sub042_t020pox_bag5_cascade085.csv` (1182 instances; sub036 plus a marginal-band cascade) |
 | Local score | PQ 0.443, SQ 0.678, RQ 0.653 — pooled five-fold out-of-fold, all 707 training images |
 | Public leaderboard | 0.40 |
 | Technical report (4 pages) | [`report/Technical_Report_EN.pdf`](report/Technical_Report_EN.pdf), compiled from the organisers' template ([`report/overleaf/main.tex`](report/overleaf/main.tex)) · Turkish translation: [`report/Technical_Report_TR.pdf`](report/Technical_Report_TR.pdf) |
@@ -41,8 +41,8 @@ pip install -r requirements.txt
 There are three levels, and the notebook runs each of them (`MODE` in its first code cell).
 
 **1. Final stage, from this repository alone (CPU, seconds).** The repository ships the featurised
-test candidate pool and the fitted selector, so both submission files can be rebuilt and compared
-with the submitted ones byte for byte:
+test candidate pool and the fitted selector, so the final submission (and the prepared alternative)
+can be rebuilt and compared with the uploaded files byte for byte:
 
 ```bash
 python src/models/submit_from_pool.py --pool outputs/eda/test_pool_t020pox.parquet \
@@ -105,7 +105,7 @@ notebook prints the hashes of what is on disk.
 | `tests/` | Scorer tests, including equality with the organisers' published scorer |
 | `data/splits/` | The frozen fold assignment (`folds_v1.parquet`), grouped by physical image |
 | `outputs/eda/`, `outputs/selector/` | Committed measurement results (JSON, Markdown, small tables) that the reports cite by path |
-| `outputs/submissions/` | The two final submission files and rehearsal rebuilds |
+| `outputs/submissions/` | The final submission, the prepared alternative and rehearsal rebuilds |
 | `report/` | The technical report and the full report, English and Turkish; `report/overleaf/` is the Overleaf project of the 4-page report (organisers' template, bibliography, figures) |
 | `docs/report/` | Source of the full report |
 | `docs/15_ABLATION_LEDGER.md`, `experiments/` | The working record of every experiment and of our own mistakes, as it was kept during the competition (in Turkish) |
@@ -135,7 +135,9 @@ tags of the development history (`solar-final-analysis-v1`, `solar-final-analysi
 snapshot corresponds to the second. Added for this release: the 4-page technical report with
 its three figure and uncertainty scripts (`src/eda/report_pipeline_figure.py`,
 `report_examples_figure.py`, `pq_uncertainty.py`, `matched_iou_dice_distribution.py`), the small artefacts that make the final stage
-reproducible from a clone, and a notebook that reproduces the two final submissions.
+reproducible from a clone, and a notebook that reproduces the final submission and the prepared alternative.
+The full report (written 2026-10-04) plans two final submissions, sub036 and sub042; the
+competition page allowed one selection, and the selected one is sub036.
 
 ## Licence
 

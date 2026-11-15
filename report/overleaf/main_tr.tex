@@ -24,7 +24,7 @@
 \email{talhadhh@gmail.com}
 
 \begin{abstract}
-    Bu rapor, GONG H-$\alpha$ gözlemlerinde güneş filamanlarının otomatik segmentasyonu üzerine bir Kaggle yarışması olan Solar Filament Segmentation Challenge~2026 için çözümümüzü anlatır. Tam-disk görüntüde filaman örneklerini iki bağımsız hat önerir: bir YOLO11m-seg dedektörü ve on iki üyeli bir U-Net topluluğu. Adaylar güven ağırlıklı oylamayla füzyonlanır, 42 öznitelikle tanımlanır ve torbalanmış, gradyan-artırmalı bir seçici tarafından tutulur ya da atılır; seçicinin tutma eşiği ayarlanmamış, Panoptic Quality formülünden türetilmiştir. Sistem 707 eğitim görüntüsünün tamamında kat-dışı olarak PQ 0.443 (\%95 aralık 0.434--0.452) değerine ulaşır; diğer anotatörlere karşı puanlanan tek bir anotatör 0.340 alır; açık liderlik tablosu 0.40 gösterir. Depo, gönderilen iki dosyayı da bayt bayt yeniden üretir.
+    Bu rapor, GONG H-$\alpha$ gözlemlerinde güneş filamanlarının otomatik segmentasyonu üzerine bir Kaggle yarışması olan Solar Filament Segmentation Challenge~2026 için çözümümüzü anlatır. Tam-disk görüntüde filaman örneklerini iki bağımsız hat önerir: bir YOLO11m-seg dedektörü ve on iki üyeli bir U-Net topluluğu. Adaylar güven ağırlıklı oylamayla füzyonlanır, 42 öznitelikle tanımlanır ve torbalanmış, gradyan-artırmalı bir seçici tarafından tutulur ya da atılır; seçicinin tutma eşiği ayarlanmamış, Panoptic Quality formülünden türetilmiştir. Sistem 707 eğitim görüntüsünün tamamında kat-dışı olarak PQ 0.443 (\%95 aralık 0.434--0.452) değerine ulaşır; diğer anotatörlere karşı puanlanan tek bir anotatör 0.340 alır; açık liderlik tablosu 0.40 gösterir. Depo, gönderilen dosyayı bayt bayt yeniden üretir.
 \end{abstract}
 
 \maketitle
@@ -90,13 +90,13 @@ Görüntü başına, dedektör maskeleri (güven $\geq 0.05$, ağırlık merkezi
 \subsection{Seçici ve tutma kuralı}\label{sec:selector}
 Seçici iki histogram gradyan-artırma modelidir \cite{pedregosa2011sklearn}: ``bu aday bir anotatör kopyasıyla eşleşir'' sınıflandırıcısı, yalnızca pozitiflerde uydurulmuş ve eşleştiği kopyalar üzerinden toplanan IoU'yu tahmin eden bir regresörle çarpılır. Çarpım, kendi kat-dışı dağılımının kantiline eşlenerek $p_\mathrm{sel}$ skorunu verir. Gönderilen seçici, her biri görüntülerin bootstrap örneğinde uydurulmuş beş böyle çiftin ortalamasıdır. Tutma kuralı Denklem~\ref{eq:pq}'den çıkar: bir aday eklemek, beklenen kopya ağırlıklı IoU toplamı $\tfrac12\,c\,\mathrm{PQ}$'yu aştığında PQ'yu yükseltir; burada $c$ görüntü başına ortalama kopya sayısıdır ve bu değer çalışma noktamızda 0.361'dir. Ölçülen kalibrasyon bu değeri 0.55--0.60 (0.364) ile 0.60--0.65 (0.485) skor bantları arasında keser; bu yüzden tutma kapısı güven $\geq 0.40$ ve $p_\mathrm{sel}\geq 0.60$'tır.
 
-\subsection{Ardıl-işleme ve iki gönderim}
-Öznitelik çıkarımından önce her maske bir piksellik sınır halkasını kaybeder; bu, konturlarımızın anotatörlerinkini içine alma yönündeki ölçülmüş eğilimini düzeltir ($+0.0128$ PQ). 64\,px'ten küçük maskeler atılır, kalanlar run-length kodlamasıyla yazılır. Birinci nihai gönderim 180 görüntünün 177'sinde 1117 örnek içerir (Şekil~\ref{fig:examples}). İkincisi bir kaskad ekler: $p_\mathrm{sel}\in[0.40,0.60)$ aralığındaki kat-dışı adaylarda uydurulmuş bir sınıflandırıcı, test adaylarından bu banttakileri 0.85 kantilinin üstündeyse kabul eder (65 örnek daha). Altı aday arasında, ikinci slot olarak birinciye en çok katkıyı o verir: rastgele 180 görüntülük alt kümelerde $\mathrm{E}[\max(\mathrm{PQ}_1,\mathrm{PQ}_2)]-\mathrm{E}[\mathrm{PQ}_1]=+0.0011$.
+\subsection{Ardıl-işleme ve gönderim}
+Öznitelik çıkarımından önce her maske bir piksellik sınır halkasını kaybeder; bu, konturlarımızın anotatörlerinkini içine alma yönündeki ölçülmüş eğilimini düzeltir ($+0.0128$ PQ). 64\,px'ten küçük maskeler atılır, kalanlar run-length kodlamasıyla yazılır. Nihai gönderim 180 görüntünün 177'sinde 1117 örnek içerir (Şekil~\ref{fig:examples}).
 
 \begin{figure*}[t]
   \centering
   \includegraphics[width=0.78\textwidth]{figures/examples.png}
-  \caption{Test görüntülerinde birinci nihai gönderim: tahmin edilen her örneğin konturuyla bir tam-disk görüntü ve bu görüntü ile başka yıllardan iki görüntünün büyütülmüş bölgeleri. Görüntüler kuralla seçilmiştir (en çok tahmin edilen örnek).}
+  \caption{Test görüntülerinde nihai gönderim: tahmin edilen her örneğin konturuyla bir tam-disk görüntü ve bu görüntü ile başka yıllardan iki görüntünün büyütülmüş bölgeleri. Görüntüler kuralla seçilmiştir (en çok tahmin edilen örnek).}
   \Description{Tahmin edilen filamanların renkli konturlarıyla bir tam-disk H-alfa görüntüsü ve konturların koyu, uzun filamanları izlediği üç büyütülmüş bölge.}
   \label{fig:examples}
 \end{figure*}
@@ -177,12 +177,13 @@ Tablo~\ref{tab:negative}, aynı protokolle uygulanıp ölçülen ve ölçüm tab
     HMI manyetogramı, öğretmen girdisi olarak & $+0.0015$, $+0.0003$ (iki kat) \\
     Semantik eşik 0.10, seçici yeniden uydurularak & $+0.0010$ $[-0.0019, +0.0038]$ \\
     Görüntü rejimine göre tutma eşiği & $+0.0019$ $[-0.0006, +0.0044]$ \\
+    $0.40\leq p_\mathrm{sel}<0.60$ bandında kaskad & $+0.0008$ $[-0.0011, +0.0026]$ \\
     \bottomrule
   \end{tabular}
 \end{table}
 
 \section{Yeniden üretilebilirlik ve uyum}\label{sec:repro}
-Depo modülerdir (metrik, önbellek kurucular, eğitim ve çıkarım, ölçüm başına bir betik) ve \texttt{requirements.txt} her paketi sürümüyle sabitler. \texttt{notebooks/} altındaki notebook boru hattını üç modda çalıştırır: depodaki test aday havuzundan son aşama (CPU, saniyeler), yayımlanan ağırlıklardan tam çıkarım ya da baştan eğitim. Aday havuzundan, gönderilen iki dosya da bayt bayt yeniden üretilir; seçici depodaki eğitim havuzundan yeniden uydurulduğunda birincisi yine bayt bayt aynıdır.
+Depo modülerdir (metrik, önbellek kurucular, eğitim ve çıkarım, ölçüm başına bir betik) ve \texttt{requirements.txt} her paketi sürümüyle sabitler. \texttt{notebooks/} altındaki notebook boru hattını üç modda çalıştırır: depodaki test aday havuzundan son aşama (CPU, saniyeler), yayımlanan ağırlıklardan tam çıkarım ya da baştan eğitim. Aday havuzundan, gönderilen dosya bayt bayt yeniden üretilir; seçici depodaki eğitim havuzundan yeniden uydurulduğunda da sonuç bayt bayt aynıdır.
 
 Hiçbir dış etiket kullanılmadı. Gönderilen modellerin tek dış girdileri ImageNet kodlayıcı ağırlıkları ve COCO ile ön-eğitilmiş dedektör ağırlıklarıdır; manyetogramlar ve etiketsiz GONG görüntüleri yalnızca Tablo~\ref{tab:negative}'teki deneylerde yer alır ve çıkarım yalnızca verilen H-$\alpha$ görüntülerini okur. Organizatörlerin izin verdiği biçimde, kodlama ve yazımda yapay zekâ araçları kullanıldı; yukarıdaki her tasarım kararı depodaki kayıtlı bir ölçüme dayanır.
 

@@ -41,7 +41,7 @@
 \email{talhadhh@gmail.com}
 
 \begin{abstract}
-    This report describes our solution to the Solar Filament Segmentation Challenge~2026, a Kaggle competition on automatic segmentation of solar filaments in GONG H-$\alpha$ observations. Two independent lanes propose filament instances on the full-disc frame: a YOLO11m-seg detector and a twelve-member U-Net ensemble. The candidates are fused by confidence-weighted voting, described by 42 features, and kept or dropped by a bagged gradient-boosted selector whose keep threshold is derived from the Panoptic Quality formula instead of being tuned. Out of fold on all 707 training images the system reaches PQ 0.443 (95\,\% interval 0.434--0.452), where one annotator scored against the others reaches 0.340; the public leaderboard displays 0.40. The repository rebuilds both submitted files byte for byte.
+    This report describes our solution to the Solar Filament Segmentation Challenge~2026, a Kaggle competition on automatic segmentation of solar filaments in GONG H-$\alpha$ observations. Two independent lanes propose filament instances on the full-disc frame: a YOLO11m-seg detector and a twelve-member U-Net ensemble. The candidates are fused by confidence-weighted voting, described by 42 features, and kept or dropped by a bagged gradient-boosted selector whose keep threshold is derived from the Panoptic Quality formula instead of being tuned. Out of fold on all 707 training images the system reaches PQ 0.443 (95\,\% interval 0.434--0.452), where one annotator scored against the others reaches 0.340; the public leaderboard displays 0.40. The repository rebuilds the submitted file byte for byte.
 \end{abstract}
 
 \maketitle
@@ -113,13 +113,13 @@ Per image, detector masks (confidence $\geq 0.05$, centroid $r/R\leq 0.97$) and 
 \subsection{Selector and keep rule}\label{sec:selector}
 The selector is two histogram gradient-boosting models \cite{pedregosa2011sklearn}: a classifier for ``this candidate matches some annotator copy'' multiplied by a regressor, fitted on positives only, for the IoU summed over the copies it matches. The product is mapped to a quantile of its out-of-fold distribution, giving a score $p_\mathrm{sel}$. The submitted selector averages five such pairs, each fitted on a bootstrap sample of images. The keep rule follows from Eq.~\ref{eq:pq}: adding a candidate raises PQ when its expected copy-weighted IoU sum exceeds $\tfrac12\,c\,\mathrm{PQ}$, where $c$ is the mean number of copies per image; this is 0.361 at our operating point. Measured calibration crosses that value between the score bands 0.55--0.60 (0.364) and 0.60--0.65 (0.485), so the gate is confidence $\geq 0.40$ and $p_\mathrm{sel}\geq 0.60$.
 
-\subsection{Post-processing and the two submissions}
-Before featurisation each mask loses its one-pixel boundary ring, which corrects a measured tendency of our contours to enclose the annotators' ($+0.0128$ PQ). Masks under 64\,px are dropped and the rest are written as run-length encodings. The first final submission holds 1117 instances on 177 of 180 images (Figure~\ref{fig:examples}). The second adds a cascade: a classifier fitted on out-of-fold candidates with $p_\mathrm{sel}\in[0.40,0.60)$ admits the test candidates of that band above its 0.85 quantile (65 more instances). Of six candidates it adds the most to the first as a second slot, $\mathrm{E}[\max(\mathrm{PQ}_1,\mathrm{PQ}_2)]-\mathrm{E}[\mathrm{PQ}_1]=+0.0011$ over random 180-image subsets.
+\subsection{Post-processing and submission}
+Before featurisation each mask loses its one-pixel boundary ring, which corrects a measured tendency of our contours to enclose the annotators' ($+0.0128$ PQ). Masks under 64\,px are dropped and the rest are written as run-length encodings. The final submission holds 1117 instances on 177 of 180 images (Figure~\ref{fig:examples}).
 
 \begin{figure*}[t]
   \centering
   \includegraphics[width=0.78\textwidth]{figures/examples.png}
-  \caption{The first final submission on test images: a full-disc frame with every predicted instance outlined, and enlarged regions of that frame and of two frames from other years. The frames are chosen by rule (most predicted instances).}
+  \caption{The final submission on test images: a full-disc frame with every predicted instance outlined, and enlarged regions of that frame and of two frames from other years. The frames are chosen by rule (most predicted instances).}
   \Description{A full-disc H-alpha image with coloured outlines of predicted filaments, and three enlarged regions showing outlines that follow dark elongated filaments.}
   \label{fig:examples}
 \end{figure*}
@@ -203,6 +203,7 @@ Table~\ref{tab:negative} lists changes that were implemented and measured under 
     HMI magnetogram as teacher input & $+0.0015$, $+0.0003$ (two folds) \\
     Semantic threshold 0.10, selector refitted & $+0.0010$ $[-0.0019, +0.0038]$ \\
     Keep threshold set by image regime & $+0.0019$ $[-0.0006, +0.0044]$ \\
+    Cascade over the band $0.40\leq p_\mathrm{sel}<0.60$ & $+0.0008$ $[-0.0011, +0.0026]$ \\
     \bottomrule
   \end{tabular}
 \end{table}
@@ -211,7 +212,7 @@ Table~\ref{tab:negative} lists changes that were implemented and measured under 
 %      REPRODUCIBILITY AND COMPLIANCE  %
 % ==================================== %
 \section{Reproducibility and compliance}\label{sec:repro}
-The repository is modular (metric, cache builders, training and inference, one script per measurement) and \texttt{requirements.txt} pins every package. The notebook in \texttt{notebooks/} runs the pipeline in three modes: the final stage from the shipped test candidate pool (CPU, seconds), full inference from the released weights, or a complete retrain. From the candidate pool both submitted files are rebuilt byte for byte, and so is the first after refitting the selector from the shipped training pool.
+The repository is modular (metric, cache builders, training and inference, one script per measurement) and \texttt{requirements.txt} pins every package. The notebook in \texttt{notebooks/} runs the pipeline in three modes: the final stage from the shipped test candidate pool (CPU, seconds), full inference from the released weights, or a complete retrain. From the candidate pool the submitted file is rebuilt byte for byte, also after refitting the selector from the shipped training pool.
 
 No external annotation was used. ImageNet encoder weights and COCO-pretrained detector weights are the only external inputs to the submitted models; magnetograms and unlabelled GONG frames appear only in experiments of Table~\ref{tab:negative}, and inference reads only the provided H-$\alpha$ images. AI tools were used for coding and drafting, as the organisers permit; every design decision above traces to a recorded measurement in the repository.
 
