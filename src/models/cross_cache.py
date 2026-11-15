@@ -120,6 +120,7 @@ if __name__ == "__main__":
     ap.add_argument("--flip", default="", help="'' or h/v/hv view for TTA members")
     ap.add_argument("--splits", default="train,test")
     a = ap.parse_args()
+    OUTD.mkdir(parents=True, exist_ok=True)
     if a.spec:
         for item in a.spec.split(","):
             mid, path = item.split(":", 1)
