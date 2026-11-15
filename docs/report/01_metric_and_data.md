@@ -170,7 +170,7 @@ range), and none produces a burst of false positives; frames with a disc darker 
 (0.4634 against 0.4411). The one recurring loss is long, well-defined filaments left just below the
 keep threshold, mostly near the limb or at high latitude. Out of fold, admitting the long
 high-latitude members of that band is worth +0.0009, of which +0.0003 is not already admitted by
-the marginal-band cascade of the second final submission (§3.6). The inspection produced no change
+the marginal-band cascade of the prepared alternative submission (§3.6). The inspection produced no change
 to the submission.
 
 **Expected score on the hidden labels.** The public leaderboard has displayed a score about 0.04 to
@@ -209,16 +209,20 @@ operating point at which §4 is measured reads 0.4421, and the submitted, bagged
 six paired observations (local 0.3551 → leaderboard 0.28 through local 0.4286 → leaderboard 0.38).
 The offset is ≈−0.05 only between like-for-like pooled measurements (−0.0500 and −0.0486 on the
 two such pairs); the early submissions based on fold 0 alone show −0.060 to −0.076, so the offset
-is not a constant and was never treated as one [`docs/21_LEADERBOARD_CALIBRATION.md`]. Its cause is
-not distributional: the out-of-fold pool uses one detector per fold, whereas the submission uses an
-ensemble of five. We later measured the consequence directly. Because only the model that did not
+is not a constant and was never treated as one [`docs/21_LEADERBOARD_CALIBRATION.md`]. One
+suspected cause was not distributional: the out-of-fold pool uses one detector per fold, whereas the
+submission uses an ensemble of five. We later measured the consequence directly. Because only the model that did not
 see an image may propose candidates for it out of fold, 74 % of local candidates carry a single
 detector vote against a median of four at test time, and the per-image mean of that count alone
 separates local from test images at AUC 0.996. There is therefore no common support on which to
 reweight local validation towards the test distribution (Shimodaira, 2000). The mismatch can,
 however, be run backwards on labelled data: scoring the held-out folds with their detector features
 transported onto the test marginal changes pooled PQ by +0.0000, because the selector barely uses
-the features that shift most [`src/eda/transfer_instrument.py`, `src/eda/mismatch_cost.py`]. We
+the features that shift most [`src/eda/transfer_instrument.py`, `src/eda/mismatch_cost.py`]. A
+second difference was found only when the system was reproduced: the test-time detector
+candidates are made with NMS 0.05, the out-of-fold ones with 0.5 (§3.2). Read through the
+out-of-fold selectors on all five folds, 0.05 costs −0.0016 [−0.0037, +0.0006] against 0.5, inside
+the ±0.003 floor described below [`src/eda/nms_sweep_5fold.py`]. We
 stopped relying on the offset once our submissions crossed the leaderboard's
 two-decimal display step; from then on the leaderboard was used only through the **ordering** of
 our own submissions, which the API returns on the unrounded score and which therefore resolves

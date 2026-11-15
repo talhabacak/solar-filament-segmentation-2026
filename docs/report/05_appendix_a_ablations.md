@@ -12,7 +12,7 @@ semantic lane.*
 | Change | Effect | Mechanism |
 |---|---|---|
 | clDice loss (w 0.3, 5-epoch warmup) | pixel-Dice 0.6919→0.7019; PQ 0.4011→0.4066 | centreline continuity keeps thin structures intact as single components |
-| All-copies training targets | 0.4283→0.4334 | learning the annotator distribution calibrates what to draw; FP 498→414 |
+| All-copies training targets | 0.4283→0.4334 (detector, fold 0) | learning the annotator distribution calibrates what to draw; FP 498→414. The semantic lane trains on all copies; the five production detectors had been trained on the medoid copy before this measurement and were not retrained |
 | Mask shrink (one-pixel boundary ring) | 0.4334→0.4387 (fold 0); 0.3995→0.4123 (5-fold) | contours systematically enclosed the GT; SQ 0.6632→0.6710 |
 | Semantic lane added to detector lane | leaderboard 0.36→0.37 | different error profile; the only addition the pipeline never absorbed |
 | Selector v5 (32 features, cross-lane) | 0.3954→0.4251 | provenance features carry the largest block (+0.0117) |

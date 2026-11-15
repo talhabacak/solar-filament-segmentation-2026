@@ -170,7 +170,7 @@ patlaması üretmez; diski eğitimin 10. yüzdeliğinden karanlık olan kareler 
 eğitimin %10.0'ını oluşturur ve yerelde daha yüksek puan alır (0.4634'e karşı 0.4411). Tekrarlayan
 tek kayıp, tutma eşiğinin hemen altında kalan uzun ve belirgin filamanlardır; çoğu kenara yakın ya
 da yüksek enlemdedir. Kat dışında bu bandın uzun ve yüksek enlemli üyelerini kabul etmek +0.0009
-değerindedir; bunun yalnızca +0.0003'ü, ikinci nihai gönderimin marjinal bant kaskadının zaten kabul
+değerindedir; bunun yalnızca +0.0003'ü, hazırlanan alternatif gönderimin marjinal bant kaskadının zaten kabul
 etmediği adaylardan gelir (§3.6). İnceleme gönderimde hiçbir değişikliğe yol açmadı.
 
 **Gizli etiketler üzerinde beklenen skor.** Açık liderlik tablosu, boru hattının her sürümü için yerel
@@ -212,8 +212,8 @@ doğru sıraladı (yerel 0.3551 → liderlik tablosu 0.28 ile yerel 0.4286 → l
 arasında). Fark yalnızca benzer türden havuzlanmış ölçümler arasında ≈−0.05'tir (bu türden iki
 çiftte −0.0500 ve −0.0486); yalnızca kat 0'a dayanan erken gönderimlerde −0.060 ile −0.076
 arasındadır, yani fark sabit değildir ve hiçbir zaman sabit gibi kullanılmamıştır
-[`docs/21_LEADERBOARD_CALIBRATION.md`]. Nedeni dağılımsal değildir: kat-dışı havuz kat başına tek
-dedektör kullanırken gönderim beş üyeli bir topluluk kullanır. Bu farkın sonucunu daha sonra doğrudan ölçtük. Kat dışında
+[`docs/21_LEADERBOARD_CALIBRATION.md`]. Şüphelenilen nedenlerden biri dağılımsal değildi: kat-dışı
+havuz kat başına tek dedektör kullanırken gönderim beş üyeli bir topluluk kullanır. Bu farkın sonucunu daha sonra doğrudan ölçtük. Kat dışında
 bir görüntü için yalnızca o görüntüyü görmemiş model aday önerebildiğinden, yerel adayların %74'ü
 tek bir dedektör oyu taşır; test zamanında ise ortanca dörttür ve yalnızca bu sayının görüntü başına
 ortalaması yerel görüntüleri test görüntülerinden AUC 0.996 ile ayırır. Dolayısıyla yerel doğrulamayı
@@ -221,7 +221,12 @@ test dağılımına doğru yeniden ağırlıklandırmayı mümkün kılacak bir 
 (Shimodaira, 2000). Ancak uyumsuzluk etiketli veri üzerinde tersine çalıştırılabilir: ayrılmış
 katları, dedektör öznitelikleri test marjinaline taşınmış hâlde puanlamak havuzlanmış PQ'yu +0.0000
 değiştirir, çünkü seçici en çok kayan öznitelikleri neredeyse hiç kullanmaz
-[`src/eda/transfer_instrument.py`, `src/eda/mismatch_cost.py`]. Gönderimlerimiz liderlik tablosunun
+[`src/eda/transfer_instrument.py`, `src/eda/mismatch_cost.py`]. İkinci bir fark ancak sistem
+yeniden üretilirken bulundu: test zamanı dedektör adayları NMS 0.05 ile, kat-dışı adaylar 0.5 ile
+üretilir (§3.2). Beş katın hepsinde kat-dışı seçicilerden geçirildiğinde 0.05, 0.5'e göre −0.0016
+[−0.0037, +0.0006] kaybettirir; bu, aşağıda anlatılan ±0.003 tabanının içindedir
+[`src/eda/nms_sweep_5fold.py`].
+Gönderimlerimiz liderlik tablosunun
 iki ondalıklı görüntüleme adımını geçtikten sonra bu farka güvenmeyi bıraktık; o noktadan itibaren
 liderlik tablosu yalnızca kendi gönderimlerimizin **sıralaması** üzerinden kullanıldı. API bu
 sıralamayı yuvarlanmamış skora göre döndürdüğü için görüntülenen değerin gizlediği farkları ayırt

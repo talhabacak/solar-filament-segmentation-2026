@@ -11,7 +11,7 @@ iyileşmediği değişiklikler (A.4). Aksi belirtilmedikçe yerel sayılar havuz
 | Değişiklik | Etki | Mekanizma |
 |---|---|---|
 | clDice kaybı (ağırlık 0.3, 5-epoch ısınma) | piksel-Dice 0.6919→0.7019; PQ 0.4011→0.4066 | merkez hat sürekliliği ince yapıları tek bileşen olarak bütün tutar |
-| Tüm-kopya eğitim hedefleri | 0.4283→0.4334 | anotatör dağılımını öğrenmek neyin çizileceğini kalibre eder; FP 498→414 |
+| Tüm-kopya eğitim hedefleri | 0.4283→0.4334 (dedektör, kat 0) | anotatör dağılımını öğrenmek neyin çizileceğini kalibre eder; FP 498→414. Semantik hat tüm kopyalarla eğitilir; beş üretim dedektörü bu ölçümden önce medoid kopyayla eğitilmişti ve yeniden eğitilmedi |
 | Maske daraltma (bir piksellik sınır halkası) | 0.4334→0.4387 (kat 0); 0.3995→0.4123 (5-kat) | konturlar yer gerçeğini sistematik olarak çevreliyordu; SQ 0.6632→0.6710 |
 | Dedektör hattına semantik hat eklenmesi | liderlik tablosu 0.36→0.37 | farklı hata profili; boru hattının hiç soğurmadığı tek ekleme |
 | Seçici v5 (32 öznitelik, hatlar arası) | 0.3954→0.4251 | en büyük bloğu köken öznitelikleri taşır (+0.0117) |

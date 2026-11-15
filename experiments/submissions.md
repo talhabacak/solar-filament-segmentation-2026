@@ -1,5 +1,8 @@
 # Submission ledger (regenerated from the Kaggle API, 2026-09-20)
 
+**Final selection (2026-11-15):** the competition allows one submission to be selected for the
+private leaderboard; the selected one is `sub036_t020pox_bag5.csv` (true rank 1 below).
+
 True rank = position in SUBMISSION_SORT_BY_PUBLIC_SCORE (unrounded); shown = 2-decimal display. Descriptions are the ones sent with each file; the single design change is stated there. Regenerate with `python outputs/eda/_regen_submissions.py`.
 
 | # | file | date (UTC) | shown | true rank | description (head) |

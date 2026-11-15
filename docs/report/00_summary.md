@@ -16,8 +16,8 @@ names the script that produced it.
 
 The system is a two-lane instance segmentation pipeline with a learned selection layer.
 
-A YOLO11m-seg detector (Jocher and Qiu, 2024) at 1792 px, single class and trained on every
-annotator copy, and a U-Net semantic lane (Ronneberger et al., 2015) with an EfficientNet-B3
+A YOLO11m-seg detector (Jocher and Qiu, 2024) at 1792 px, single class and trained on one
+annotator copy per image (the medoid annotator's), and a U-Net semantic lane (Ronneberger et al., 2015) with an EfficientNet-B3
 encoder (Tan and Le, 2019) at 1536 px, trained with BCE + Dice + clDice (Shit et al., 2021),
 produce candidates independently. The semantic lane is a twelve-member probability ensemble (five
 cross-fold clDice models at weight 1/30, two heavily augmented members at 1/6, five blob-local
@@ -223,7 +223,7 @@ number in this report except those listed below, is tagged `solar-final-analysis
 `79dc017`); at that commit the submitted file is rebuilt byte for
 byte from the featurised test pool and the bagged selector bundle, and the tag records the SHA-256
 of the submitted file and of the bundle. The measurements added afterwards (the test-set
-inspection of §2.3, the choice of the second final submission in §3.6, the seed-noise measurement
+inspection of §2.3, the comparison with the prepared alternative in §3.6, the seed-noise measurement
 of §2.4 and the last three interventions of §4.7) change nothing in that system and are at the tag
 `solar-final-analysis-v2`.
 

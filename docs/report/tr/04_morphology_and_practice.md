@@ -177,7 +177,10 @@ dokuz sonuç genel dersler taşır.*
   referans havuzla aynıdır ve yeniden kurulan gönderim, gönderilen dosyayla bayt bayt aynıdır
   [`outputs/eda/_verify_lossless_fusion.py`]. Dedektör hattı GPU üzerinde ayrıca zamanlanmadı;
   GPU'suz, 14 iş parçacıklı bir CPU üzerinde beş modelinden biri 1792 piksellik girdide 2048²'lik bir
-  görüntü için 5.6 s sürer [`src/eda/e218_nms_tighter.py`].
+  görüntü için 5.6 s sürer [`src/eda/e218_nms_tighter.py`]. Görüntülerden başlayan tam test yolu
+  (beş dedektör, on iki semantik üye, füzyon, öznitelikler, seçici), 2026-11-15'te temiz bir
+  klondan prova edildi ve tek bir RTX 5070 Ti'de (16 GB) 17.5 dakika sürer; 17 ağın eğitimi eğitim
+  günlüklerine göre yaklaşık 30 GPU-saat sürdü (deponun README'si).
 - **`experiments/MISTAKES.md`** mühendislik başarısızlıklarını ve onlardan türetilen genel kuralları
   kaydeder (çıktı filtresi hatlarının eğitimi sessizce sonlandırması, Windows süreç başlatma
   semantiği, zincirli işlerin süreç ağaçları, varyant koşuların üretim artefaktlarının üzerine yazması

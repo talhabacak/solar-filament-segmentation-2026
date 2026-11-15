@@ -16,7 +16,8 @@ ve olumsuz sonuçlar eşlik eden depodadır; aşağıdaki her sayı, kendisini �
 
 Sistem, öğrenilmiş bir seçim katmanına sahip iki hatlı bir instance segmentasyon boru hattıdır.
 
-1792 px çözünürlükte, tek sınıflı ve her anotatör kopyası üzerinde eğitilmiş bir YOLO11m-seg
+1792 px çözünürlükte, tek sınıflı ve görüntü başına tek bir anotatör kopyasıyla (medoid anotatörün
+kopyası) eğitilmiş bir YOLO11m-seg
 dedektörü (Jocher ve Qiu, 2024) ile EfficientNet-B3 kodlayıcılı (Tan ve Le, 2019), 1536 px'te
 BCE + Dice + clDice (Shit vd., 2021) kaybıyla eğitilmiş bir U-Net semantik hattı (Ronneberger vd.,
 2015) adayları birbirinden bağımsız üretir. Semantik hat on iki üyeli bir olasılık topluluğudur
@@ -225,7 +226,7 @@ sayının arkasındaki kod durumu `solar-final-analysis-v1` etiketiyle işaretle
 `79dc017`); bu commit'te gönderilen dosya, öznitelikleri çıkarılmış test havuzundan ve torbalanmış
 (bagging) seçici paketinden bayt bayt yeniden kurulur; etiket, gönderilen dosyanın ve paketin
 SHA-256 değerlerini kaydeder. Sonradan eklenen ölçümler (§2.3'teki test kümesi incelemesi, §3.6'daki
-ikinci nihai gönderimin seçimi, §2.4'teki tohum gürültüsü ölçümü ve §4.7'deki son üç müdahale) o
+hazırlanan alternatifle karşılaştırma, §2.4'teki tohum gürültüsü ölçümü ve §4.7'deki son üç müdahale) o
 sistemde hiçbir şeyi değiştirmez ve `solar-final-analysis-v2` etiketindedir.
 
 Doğrulamamızın zamansal yakınlık nedeniyle yanlı olmadığını da varsaymadık, doğruladık. Rastgele

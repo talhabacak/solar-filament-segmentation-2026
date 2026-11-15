@@ -6184,3 +6184,31 @@ M2F'nin güveni yüksek (medyan 0.92, YOLO 0.31), güven ağırlıklı oyda 1/4 
 semantik maskeleri bastırıyor (SQ −0.049) ve sınırdaki eşleşmeleri 0.5'in altına itiyor. Karıştırıcı:
 M2F 1024 px, YOLO 1792 px. Ek kulvar olarak +0.0020 (§27t), yerine −0.081: sorgu ailesi bu hatta
 ancak tamamlayıcı olabilir, taşıyıcı olamaz.
+
+### 57. Dedektör NMS'i seçiciden geçerek, beş katta: test ayarı 0.05 ile kat-dışı 0.5 uyumsuzluğu (2026-11-15)
+
+Yeniden üretim denetiminde bulundu: test önbellekleri (`cross_m{k}n_test`) NMS **0.05** ile, seçicinin
+eğitildiği kat-dışı adaylar (`fold{k}_preds_e013`) **0.5** ile yapılmış. 0.05 ilk haftanın tek-dedektör,
+füzyonsuz taramasından geliyor (`nms_sweep.py`, +0.0105, düzlük 0.01–0.15; sub005 = sub004 tahtada);
+§54a (E218) 0.3–0.7'yi füzyon havuzunda yalnız erişimle, seçicisiz ve tek katta ölçmüştü. Önceki hiçbir
+ölçüm uyumsuzluğu fark etmemişti.
+
+`src/eda/nms_sweep_5fold.py`: her katın dedektörü NMS kapalı (iou 0.95, max_det 3000) bir kez koşuldu
+(kat 0 = E218'in CPU koşusu, 1–4 RTX 5070 Ti), NMS çevrimdışı uygulandı; havuzlar üretim yoluyla
+(`_blob5ens`, eşik 0.2) kurulup etiketlendi, her kat kendi kat-dışı seçicisinden geçti.
+Korumalar: çevrimdışı 0.5 her katta üretim önbelleğini verir (sayı 0.971–0.993, IoU 0.988–0.998);
+kat-0 dosyaları öncekilerle birebir; seçiciler gönderilen kat-dışı skorları birebir üretir (max |dp| 0);
+yeniden kurulan 0.5 havuzu gönderilen havuzu −0.0001 ile okur.
+
+| NMS | aday | pozitif | tutulan | PQ | Δ (0.5'e karşı), %95 CI | artan kat |
+|---|---|---|---|---|---|---|
+| 0.05 (test) | 9130 | 4149 | 3984 | 0.4406 | −0.0016 [−0.0037, +0.0006] | 2/5 |
+| 0.1 | 9330 | 4150 | 3991 | 0.4421 | −0.0001 [−0.0021, +0.0020] | 3/5 |
+| 0.3 | 10011 | 4150 | 3987 | 0.4420 | −0.0002 [−0.0017, +0.0013] | 3/5 |
+| **0.5** (kat-dışı) | 10043 | 4152 | 4000 | **0.4421** | — | — |
+| 0.7 | 9886 | 4148 | 4053 | 0.4419 | −0.0003 [−0.0017, +0.0012] | 3/5 |
+
+Eksen seçiciden geçince de düz; uyumsuzluğun bedeli taban-altı −0.0016. Kat-0'ın 0.10 için +0.0045'i
+(`nms_mismatch_f0.py`) beş katta −0.0001: tek kat, sonradan seçilmiş kol — benimsenmemesi doğruydu.
+Sınır: kat dışında görüntü başına tek dedektör, testte beş; bu ölçüm NMS'i kat-dışı havuzda fiyatlar.
+Gönderim değişmedi (sub036).

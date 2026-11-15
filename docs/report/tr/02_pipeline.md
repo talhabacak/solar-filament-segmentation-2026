@@ -29,10 +29,16 @@ alınmıştır; reddedilen alternatifler ablasyon defterinde (Ek A) listelenir.*
 
 ## 3.2 Dedektör hattı
 
-- **yolo11m-seg, imgsz 1792, nc=1 (single_cls), tüm-kopya dışa aktarımı**: her anotatör girişi bir
-  eğitim örneğidir (uzlaşı hedeflerine göre +0.0051 PQ). Tam argümanlar
-  `outputs/runs/e013_*/args.yaml` içinde dondurulmuştur: epochs 40, patience 15, batch 2, lr0 0.01 →
-  lrf 0.01, momentum 0.937, ağırlık azaltma 5e-4, warmup 3, mask_ratio 4, overlap_mask false.
+- **yolo11m-seg, imgsz 1792, nc=1 (single_cls), medoid hedefler**: her dedektör, görüntü başına tek
+  bir anotatör kopyasıyla, medoid anotatörün kopyasıyla eğitilir (`data/yolo_v1`'i yazan
+  `src/data/export_yolo.py`). Her anotatör girişinin bir eğitim örneği olduğu tüm-kopya dedektörü
+  sonradan kat 0'da +0.0051 PQ ölçtü (E021), ancak beş üretim dedektörü yeniden eğitilmedi. Tam
+  argümanlar, yayımlanan her kontrol noktasında (`outputs/runs/e013_*/weights/best.pt`) `train_args`
+  olarak saklıdır: epochs 40, patience 15, batch 2, optimizer
+  `auto`, lrf 0.01, ağırlık azaltma 5e-4, warmup 3, mask_ratio 4, overlap_mask false. Bu takvimde
+  (64 görüntülük yaklaşık 360 iterasyon, Ultralytics'in 10 000 sınırının altında) `auto`, lr 0.002 ve
+  momentum 0.9 ile AdamW'ye çözülür; aynı argümanlarda kayıtlı lr0 0.01 ve momentum 0.937
+  kullanılmaz.
 - Augmentasyon görüntüleme geometrisine uygundur: mosaic, mixup, copy-paste, erasing, shear ve
   perspective **kapalıdır** (tam-disk radyal bağlamı bozarlar), döndürmeler ±10° ile sınırlıdır,
   yalnızca yatay çevirme kullanılır ve fotometrik augmentasyon yalnızca parlaklıktır. Diskin sabit
@@ -53,10 +59,25 @@ alınmıştır; reddedilen alternatifler ablasyon defterinde (Ek A) listelenir.*
 - **Test zamanı** dedektör önbellekleri **NMS IoU 0.05** kullanır: ilk hafta füzyondan önce tek
   dedektörde yapılan taramanın optimumu (`src/models/nms_sweep.py`: +0.0105 PQ, 0.01–0.15 arası
   düz); bu kazancı füzyonlu topluluk soğurdu (0.05'teki sub005, sub004 ile aynı 0.36'yı okudu).
-  Kat-dışı 0.5 ile bu uyumsuzluk sistem yeniden üretilirken bulundu (2026-11-15). Kat 0'da o katın
-  kat-dışı seçicisiyle 0.05, 1927 adaydan hiçbiri eşleşme olmayan 188'ini çıkarır ve PQ'yu +0.0007
-  [−0.0043, +0.0055] değiştirir; 0.10 +0.0045 [+0.0000, +0.0088] okur, tek kat ve sonradan seçilmiş
-  olduğu için benimsenmedi (`src/eda/nms_mismatch_f0.py`).
+  Kat-dışı 0.5 ile bu uyumsuzluk sistem yeniden üretilirken bulundu (2026-11-15) ve ardından beş
+  katın hepsinde uçtan uca ölçüldü: her katın dedektörü NMS kapalı bir kez yeniden koşuldu, NMS
+  çevrimdışı uygulandı, her havuz o katın kat-dışı seçicisinden (gönderilen kat-dışı skorları
+  birebir üretir) geçirildi [`src/eda/nms_sweep_5fold.py`]:
+
+  | dedektör NMS | aday | eşleşen | tutulan | PQ | 0.5'e göre Δ, %95 CI | artan kat |
+  |---|---|---|---|---|---|---|
+  | 0.05 (test ayarı) | 9130 | 4149 | 3984 | 0.4406 | −0.0016 [−0.0037, +0.0006] | 2/5 |
+  | 0.1 | 9330 | 4150 | 3991 | 0.4421 | −0.0001 [−0.0021, +0.0020] | 3/5 |
+  | 0.3 | 10011 | 4150 | 3987 | 0.4420 | −0.0002 [−0.0017, +0.0013] | 3/5 |
+  | **0.5** (kat-dışı ayar) | 10043 | 4152 | 4000 | **0.4421** | — | — |
+  | 0.7 | 9886 | 4148 | 4053 | 0.4419 | −0.0003 [−0.0017, +0.0012] | 3/5 |
+
+  Yeniden kurulan 0.5 havuzu gönderilen havuzun PQ'sunu −0.0001 farkla okur. Eksen seçiciden
+  geçince de düzdür ve uyumsuzluğun bedeli en çok taban-altı −0.0016'dır; gönderim değişmez. Kat
+  dışında her görüntünün adayları tek dedektörden, testte beş dedektörden gelir; bu ölçüm NMS'i
+  beş dedektörlü test havuzunda değil, kat-dışı havuzda fiyatlar. Önce yapılan kat-0 okuması
+  [`src/eda/nms_mismatch_f0.py`] 0.05 için +0.0007, 0.1 için +0.0045 [+0.0000, +0.0088] vermişti;
+  ikincisi beş katta tutmaz.
 
 ## 3.3 Semantik hat
 
@@ -80,6 +101,12 @@ alınmıştır; reddedilen alternatifler ablasyon defterinde (Ek A) listelenir.*
   ölçülen tek ailedir (hata korelasyonu 0.871, mevcut her üye için 0.926–0.940; ikinci bir katta
   tekrarlandı), ancak ikinci katta bir tohum kontrolüne karşı −0.0052 kaybeder. Güç ve çeşitlilik
   birlikte gereklidir ve 707 görüntüde güçlü olan her model birbirine benzer.
+- **Örnek-dengeli (leke-yerel) varyant** yukarıdaki kaybı korur ve her bağlantılı yer gerçeği
+  örneğini 40 px yarıçap içinde eşit ağırlıklandıran bir terim ekler (ağırlık 1.0); böylece küçük
+  filamanlar büyükler kadar sayılır. Ağır augmentasyonla **60 epoch** eğitilir, kat başına bir model
+  [`train_blobloss_local.py`; yayımlanan ağırlıklar `outputs/runs_aug/bloblocal_f*_s1536_w1.0_r40`]. Tek bir kat-0 modeli işe
+  yaramadı; beş katın hepsi alanın yarısı olarak harmanlandığında **+0.0061**, %95 CI [+0.0051,
+  +0.0071] ölçtü, projenin gerçekleşmiş en büyük tek kazancı (`docs/15_ABLATION_LEDGER.md`, §7).
 - **Test zamanı semantik topluluğu `recipe_blob5_50`**, on iki üye: her biri 0.10 ağırlıklı beş
   leke-yerel model (alanın 0.50'si), 1/6 ağırlıklı ağır augmentasyonlu iki üye ve 1/30 ağırlıklı beş
   çapraz-kat clDice modeli. Her üye çevirmeli test zamanı augmentasyonu kullanır ve kendi eğitim
@@ -181,8 +208,12 @@ alınmıştır; reddedilen alternatifler ablasyon defterinde (Ek A) listelenir.*
   vermez.
 - Düzenleyicilerin açıklaması nihai çıkarımı sağlanan H-alfa kareleriyle sınırladığından, gönderim
   yolu çıkarım sırasında dış veri okuyan her kontrol noktasını reddeder.
-- **İki nihai gönderimin seçimi.** Gizli liderlik tablosu seçilen iki gönderimden daha iyisini
-  puanlar; dolayısıyla ikinci yuvanın değeri kendi beklenen skoru değil, birinciye kattığıdır:
+- **Nihai gönderimin seçimi.** Yarışma sayfası gizli liderlik tablosu için tek bir gönderimin
+  seçilmesine izin verir; seçilen, liderlik tablosunun yuvarlanmamış sıralamasında gönderimlerimiz
+  arasında birinci olan torbalanmış sistemdir (`outputs/submissions/sub036_t020pox_bag5.csv`). Bu ve
+  sonraki maddedeki analiz, iki seçim beklendiği ve gizli tablonun ikisinden daha iyisini puanlayacağı
+  dönemde yapıldı; seçilen sistemi hazırlanan en güçlü alternatifle karşılaştırdığı için korunmuştur.
+  İki seçimde ikinci yuvanın değeri kendi beklenen skoru değil, birinciye kattığıdır:
 
   $$\mathrm{gain}(B) = \mathrm{E}[\max(\mathrm{PQ}_A, \mathrm{PQ}_B)] - \mathrm{E}[\mathrm{PQ}_A].$$
 
@@ -193,16 +224,20 @@ alınmıştır; reddedilen alternatifler ablasyon defterinde (Ek A) listelenir.*
   $A$'dan iyi; 707 görüntünün tamamında $A$'ya göre +0.0008). Diğerleri +0.0003 ile +0.0007
   arasındadır; bunlara ikinci bir bootstrap tohumu ve on torba da dahildir ve tutma kararları bir
   şey katamayacak kadar $A$'nınkilere yakındır. Seçilen aday $A$'nın her maskesini içerir ve kat
-  dışında 245 aday daha kabul eder. Bu nedenle iki nihai gönderim, torbalanmış sistem ile aynı
-  sistemin kaskadlı hâlidir.
-- **Çiftin dayanıklılığı.** Gizli etiketler eğitim etiketlerinden hiçbir görüntü özelliğinin
-  göstermediği biçimlerde farklı olabileceğinden (§2.3), çift sistemin en zayıf olduğu alt gruplarda
+  dışında 245 aday daha kabul eder. Bu kaskadlı varyant hazırlanan alternatif olarak depodadır
+  (`outputs/submissions/sub042_t020pox_bag5_cascade085.csv`, nasıl kurulduğu
+  `experiments/sub042.md`'de); liderlik tablosunun yuvarlanmamış sıralamasında torbalanmış sistemin
+  altında ikinci sıradadır ve seçilmedi.
+- **Alternatifin dayanıklılığı.** Gizli etiketler eğitim etiketlerinden hiçbir görüntü özelliğinin
+  göstermediği biçimlerde farklı olabileceğinden (§2.3), ikisi sistemin en zayıf olduğu alt gruplarda
   da karşılaştırıldı [`src/eda/e219_test_generalisation.py`]. Kaskadlı varyant 13 alt grubun 9'unda
   daha iyidir ve kazançları zor rejimlerdedir: test kümesinin eğitimin iki katı oranında örneklediği
   2018–2022 karelerinde +0.0067, disk yüksek frekans enerjisinin en yoğun çeyreğinde +0.0039 ve altı
   anotatör grubunun ikisinde +0.0036 ile +0.0038. En büyük anotatör grubunda 0.0012, en sakin ikinci
-  çeyrekte 0.0032 kaybeder. Bu nedenle ikinci slot birinciyi kopyalamaz; onu daha zor bir test
-  kümesine karşı sigortalar.
+  çeyrekte 0.0032 kaybeder. İkinci bir seçim olarak birinciyi kopyalamaz, onu daha zor bir test
+  kümesine karşı sigortalardı. Tek seçimde torbalanmış sistem seçildi: kaskadın yerel kazancı
+  (+0.0008) ±0.003 tabanının altındadır ve liderlik tablosu sıralaması torbalanmış sistemi birinci
+  koyar.
 
 ## 3.7 Üretim yolunun bilerek dışında bırakılanlar
 

@@ -61,6 +61,7 @@ reworded rows are listed openly in `src/eda/gen_script_index.py`.*
 | `fuse_semantic.py` | Fuse detector + semantic candidate pools and measure the real PQ gain. |
 | `fused_shrink_eval.py` | Are the gains of mask shrinking and of the selector additive? |
 | `hf_film.py` | Conditions every encoder skip on the frame's disc high-frequency energy (FiLM). |
+| `label_pool.py` | Label a fused out-of-fold candidate pool for selector training. |
 | `limb_aug.py` | Centre-to-limb augmentation by rotating the solar sphere. |
 | `magnetogram_features.py` | Polarity inversion lines from the registered magnetogram, and per-candidate features from them. |
 | `mask_shrink.py` | Are our masks systematically too large? PQ under morphological shrinking. |
@@ -69,6 +70,7 @@ reworded rows are listed openly in `src/eda/gen_script_index.py`.*
 | `otsu_snap.py` | Intensity-guided mask snapping: push near-miss predictions over the IoU 0.5 line. |
 | `patch_selector.py` | A selector that looks at the image. |
 | `pixel_stacker.py` | A per-pixel gradient-boosted stacker over the two lanes. |
+| `pool_extra_features.py` | Compute the photometry and orientation features of a labelled candidate pool. |
 | `pooled_oof.py` | Pooled 5-fold OOF evaluation + selector v2 (all-folds training data). |
 | `pretrain_crack_yolo11m.py` | Stage 1 of crack-segmentation pretraining on the selected backbone: yolo11m on crack-seg. |
 | `pretrain_gong.py` | Stage 1: pretrain the encoder on pseudo-labelled GONG frames. |
@@ -119,6 +121,7 @@ reworded rows are listed openly in `src/eda/gen_script_index.py`.*
 ::: index
 | Script | Question it answers |
 |---|---|
+| `_near_duplicate_inflation.py` | Docs/v2 §15 asks whether random image folds leak near-duplicate frames across train and validation. 27% of training images have a cross-fold neighbour within 24 h. |
 | `agreement_boundary.py` | Is our inclusion policy at the annotator-agreement optimum? |
 | `annotator_ceiling.py` | Measure the PQ ceiling imposed by annotator disagreement. |
 | `annotator_ceiling_part2.py` | Ceiling part 2: union & strict consensus variants (lean memory), merge into JSON. |
@@ -179,7 +182,6 @@ reworded rows are listed openly in `src/eda/gen_script_index.py`.*
 | `e217_yolo_soft_masks.py` | Cache the detector's soft mask probabilities out of fold (they were never kept). |
 | `e217b_soft_extension.py` | Does the detector's soft field carry the length our masks miss, and does using it pay? |
 | `e218_nms_tighter.py` | Detector NMS tighter than 0.5 (0.3, 0.4) in today's fused pool. |
-| `nms_mismatch_f0.py` | Does the test caches' NMS 0.05, against 0.5 out of fold, cost PQ through the selector? (fold 0) |
 | `e219_test_generalisation.py` | What does the unlabelled test set let us predict about our private score? |
 | `e220_fine_structure.py` | Fine-scale structure: how much of the annotated lateral structure (barbs, side branches) do our masks recover, compared with a second annotator drawing the same filament? |
 | `e220b_barb_figure.py` | Figure for report §5.4: barbs of annotated filaments and our masks. |
@@ -235,6 +237,7 @@ reworded rows are listed openly in `src/eda/gen_script_index.py`.*
 | `make_folds.py` | Freeze the leakage-free 5-fold CV split (v1). |
 | `marginal_band_value.py` | Is a false positive or a missed filament more expensive, empirically? |
 | `mask_ratio_ceiling.py` | Representational ceiling imposed by YOLO's mask_ratio (segmentation target grid). |
+| `matched_iou_dice_distribution.py` | What do the IoU and Dice of our matched masks look like as distributions, not as a mean? |
 | `merge_proposer_precondition.py` | Can a GT-free proposer find the merge pairs the oracle found? |
 | `mismatch_cost.py` | The cost, on labelled data, of the one-detector against five-detector mismatch between validation and deployment. |
 | `morphology_correlations.py` | Morphology correlation study for MAGFiLO Kaggle 2026. |
@@ -243,6 +246,8 @@ reworded rows are listed openly in `src/eda/gen_script_index.py`.*
 | `multithresh_reach.py` | Can multi-threshold extraction reach the faint filaments no candidate ever proposed? |
 | `nearmiss_offsets.py` | The population the scorer never shows us: candidates that just miss IoU 0.5. |
 | `nearmiss_predictability.py` | Is the per-instance offset a signal, or is it the annotator's drawing noise? |
+| `nms_mismatch_f0.py` | Does the detector NMS of the test caches cost PQ? (fold 0, measured on 15 November 2026). |
+| `nms_sweep_5fold.py` | Detector NMS through the selector, five folds (measured on 15 November 2026, after submission). |
 | `opening_point_hdjojo.py` | Is the advantage of the public 0.40 recipe in the model or in the operating point? |
 | `orientation_selector_features.py` | Orientation and context features in the selector. |
 | `overlap_density.py` | Does candidate density explain why the leaderboard favours more shrink than cross-fitting does? |
@@ -260,6 +265,7 @@ reworded rows are listed openly in `src/eda/gen_script_index.py`.*
 | `pool_complementarity.py` | Selector-free pool reading: what does each configuration find that the others do not? |
 | `pq_decomposition.py` | Where does the loss come from on the easy disc (r 0.2–0.7), and is it RQ or SQ? |
 | `pq_single_yolo.py` | Fold-0 PQ for a single YOLO checkpoint, organiser-parity scorer, conf sweep. |
+| `pq_uncertainty.py` | How uncertain is the pooled out-of-fold PQ of the submitted system? |
 | `private_lb_risk.py` | How much can the private half differ from the public one, by chance alone? |
 | `public_gt_value.py` | What would the public MAGFiLO annotations score under the competition metric? |
 | `quality_features_test.py` | Image-quality and frame-relative feature blocks read through the deployed selector protocol. |
@@ -277,7 +283,9 @@ reworded rows are listed openly in `src/eda/gen_script_index.py`.*
 | `rejected_true_anatomy.py` | The 1029 rows the pool already reaches and the selector throws away. |
 | `relational_features.py` | Does a candidate's neighbourhood geometry carry signal the selector does not have? |
 | `relational_selector_test.py` | The neighbourhood-geometry features read through the selector over five folds. |
+| `report_examples_figure.py` | Draw the "examples of the segmentations" graphic of the technical report. |
 | `report_figures.py` | Figures for the final report, generated from committed measurement artefacts. |
+| `report_pipeline_figure.py` | Draw the data-pipeline graphic of the technical report. |
 | `resolution_study.py` | Resolution degradation study for MAGFiLO filament masks. |
 | `router_learned.py` | Can a router actually be learned? |
 | `router_oracle.py` | Would a learnable router beat plain averaging? |

@@ -11,7 +11,7 @@ Code, measurements and reports behind our final submission to the
 | Local score | PQ 0.443, SQ 0.678, RQ 0.653 — pooled five-fold out-of-fold, all 707 training images |
 | Public leaderboard | 0.40 |
 | Technical report (4 pages) | [`report/Technical_Report_EN.pdf`](report/Technical_Report_EN.pdf), compiled from the organisers' template ([`report/overleaf/main.tex`](report/overleaf/main.tex)) · Turkish translation: [`report/Technical_Report_TR.pdf`](report/Technical_Report_TR.pdf) |
-| Full report (62 pages) | [`report/Full_Report_EN.pdf`](report/Full_Report_EN.pdf) · Turkish: [`report/Full_Report_TR.pdf`](report/Full_Report_TR.pdf) |
+| Full report (63 pages) | [`report/Full_Report_EN.pdf`](report/Full_Report_EN.pdf) · Turkish: [`report/Full_Report_TR.pdf`](report/Full_Report_TR.pdf) |
 | Pipeline notebook | [`notebooks/00_end_to_end_pipeline.ipynb`](notebooks/00_end_to_end_pipeline.ipynb) |
 
 ## The system in brief
@@ -44,8 +44,9 @@ What the parts buy, measured out of fold:
 - **The selector:** +0.009 on top of that.
 - **The instance-balanced members:** +0.0061, CI [+0.0051, +0.0071]. This was the largest single gain
   of the project, and it appeared only once all five folds were trained (`docs/15_ABLATION_LEDGER.md`, §7).
-- **Ensemble size:** averaging *k* semantic members gains +0.0092·(1 − 1/*k*) on fold 0 (§23b). Twelve
-  members collect 92 % of what averaging can give, and more members would add at most +0.0008.
+- **Ensemble size:** averaging *k* similar semantic members gains +0.0092·(1 − 1/*k*) on fold 0 (§23b).
+  The twelve members are weighted unequally and act as nine effective members (§27), which collect
+  89 % of what averaging can give; more members of the same kind would add at most +0.0010.
 
 Training took about 30 GPU-hours. The training logs give 0.7 h per detector, 2.6–3.9 h per
 instance-balanced member, and 0.8 h and 2.5 h for the two heavy members; the clDice members did not
@@ -112,8 +113,16 @@ detector before fusion (`src/models/nms_sweep.py`: +0.0105 PQ, flat from 0.01 to
 `experiments/LOG.md`, 20 Aug), a gain the fused ensemble absorbed (sub005 at 0.05 read the same 0.36
 as sub004); in the fused pool, NMS 0.3 to 0.7 move the matchable annotations by at most 5 of 1510
 (`src/eda/e218_nms_tighter.py`, ledger §54a). The mismatch itself was found when the system was
-reproduced. Measured on fold 0 with that fold's out-of-fold selector, it does not cost: +0.0007 PQ, 95 % CI [−0.0043, +0.0055] (`src/eda/nms_mismatch_f0.py`,
-`outputs/eda/nms_mismatch_f0.json`). On another GPU architecture expect a few encodings to
+reproduced, and then measured end to end on all 707 training images: each fold's detector was
+rerun once with NMS off, NMS applied offline at 0.05, 0.1, 0.3, 0.5 and 0.7, and every pool scored
+through that fold's out-of-fold selector (`src/eda/nms_sweep_5fold.py`,
+`outputs/eda/nms_sweep_5fold.json`). Against 0.5 (PQ 0.4421, which the rebuilt pool reproduces to
+−0.0001), the test setting 0.05 reads −0.0016, 95 % CI [−0.0037, +0.0006], 2 of 5 folds up; 0.1,
+0.3 and 0.7 read −0.0001, −0.0002 and −0.0003. The axis is flat through the selector and the
+mismatch's cost is below the ±0.003 floor, so the submission is unchanged. Out of fold each image
+has one detector's candidates and at test time five, so this prices NMS on the out-of-fold pool.
+(A fold-0 reading made first, `src/eda/nms_mismatch_f0.py`, gave +0.0007 for 0.05 and +0.0045 for
+0.1; the latter does not survive five folds.) On another GPU architecture expect a few encodings to
 differ: an earlier rehearsal of the predecessor system on a different card reproduced 1091 of 1117
 exactly and changed one instance (±0.0004 PQ), floating-point noise at the keep gate.
 
@@ -177,14 +186,18 @@ Run the tests with `python -m pytest tests`.
 
 This repository is a cleaned snapshot of the development repository at its final state. Internal
 planning notes, machine-specific run scripts and third-party material were left out; the source
-code, the measurement results and the report sources are unchanged. The full report refers to two
+code and the measurement results are otherwise unchanged. The full report refers to two
 tags of the development history (`solar-final-analysis-v1`, `solar-final-analysis-v2`); this
 snapshot corresponds to the second. Added for this release: the 4-page technical report with
 its figure and measurement scripts (`src/eda/report_pipeline_figure.py`,
-`report_examples_figure.py`, `pq_uncertainty.py`, `matched_iou_dice_distribution.py`), the small artefacts that make the final stage
-reproducible from a clone, and a notebook that reproduces the final submission.
-The full report (written 2026-10-04) plans two final submissions, sub036 and sub042; the
-competition page allowed one selection, and the selected one is sub036.
+`report_examples_figure.py`, `pq_uncertainty.py`, `matched_iou_dice_distribution.py`), the
+detector NMS measurements (`src/eda/nms_mismatch_f0.py`, `src/eda/nms_sweep_5fold.py`), the small artefacts that make the final
+stage reproducible from a clone, and a notebook that reproduces the final submission.
+The full report was written on 2026-10-04, when two final submissions were planned (sub036 and
+sub042); the competition page allowed one selection, and the selected one is sub036. Where the
+reproduction check of this release found the full report wrong (the detectors' training targets and
+optimizer, the test-time detector NMS, the single final selection), its sources were corrected
+(`git log -- docs/report`).
 
 ## Licence
 

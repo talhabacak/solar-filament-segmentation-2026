@@ -1,4 +1,4 @@
-"""Does the detector NMS of the test caches cost PQ? (measured 2026-11-15, after submission)
+"""Does the detector NMS of the test caches cost PQ? (fold 0, measured on 15 November 2026)
 
 The submitted system makes its out-of-fold training candidates with detector NMS IoU 0.5 and its
 test-time candidates with 0.05 (report, Section 2.4; the 0.05 dates from week one, where it gave
@@ -18,7 +18,8 @@ to E218's own file). Each arm is then fused and labelled the production way:
 
   python src/models/build_fused_pool.py --folds 0 --sem-tag _blob5ens --sem-thr 0.2 \
       --det-tag _e013nms{05,010,005} --out fused_pool_f0_sw_nms{05,010,005}_t020.parquet
-  python src/models/label_pool.py fused_pool_f0_sw_nms{05,010,005}_t020
+  python outputs/eda/_label_one_pool.py fused_pool_f0_sw_nms{05,010,005}_t020
+  (a development-repository helper around src/eda/two_stage_selector.label_pool)
 
 Selector: the out-of-fold one for fold 0, i.e. e115c_threshold_ci.oof_scores for f = 0 (fitted on
 folds 1-4 of the shipped labelled pool, quantile reference from inner leave-one-fold-out raws).
@@ -30,6 +31,10 @@ Result (outputs/eda/nms_mismatch_f0.json): guard exact (max |dp| = 0). NMS 0.05 
 1927 candidates and none of the matching ones, and changes PQ by +0.0007 [-0.0043, +0.0055]: the
 mismatch does not cost. NMS 0.10 reads +0.0045 [+0.0000, +0.0088]; one fold, chosen after the
 fact among several arms, below the five-fold promotion protocol of the ledger, and not adopted.
+
+Superseded by the five-fold reading of the same instrument, src/eda/nms_sweep_5fold.py
+(outputs/eda/nms_sweep_5fold.json): on all 707 images 0.05 reads -0.0016 [-0.0037, +0.0006] and
+0.10 -0.0001 [-0.0021, +0.0020] against 0.5. Fold 0's +0.0045 for 0.10 does not survive.
 
 The inputs (the raw detector run, the fold-0 semantic caches the pools are fused from, the
 ground-truth cache and the training images) are in the development repository and are not

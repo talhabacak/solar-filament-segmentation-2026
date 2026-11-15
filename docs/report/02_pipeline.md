@@ -28,10 +28,16 @@ artefacts; the ablation ledger (Appendix A) lists the rejected alternatives.*
 
 ## 3.2 Detector lane
 
-- **yolo11m-seg, imgsz 1792, nc=1 (single_cls), all-copies export**: every annotator entry is a
-  training sample (+0.0051 PQ over consensus targets). The full arguments are frozen in
-  `outputs/runs/e013_*/args.yaml`: epochs 40, patience 15, batch 2, lr0 0.01 → lrf 0.01, momentum
-  0.937, weight decay 5e-4, warmup 3, mask_ratio 4, overlap_mask false.
+- **yolo11m-seg, imgsz 1792, nc=1 (single_cls), medoid targets**: each detector is trained on one
+  annotator copy per image, the medoid annotator's (`src/data/export_yolo.py`, which writes
+  `data/yolo_v1`). An all-copies detector, in which every annotator entry is a training sample,
+  later measured +0.0051 PQ on fold 0 (E021), but the five production detectors were not retrained.
+  The full arguments are stored as `train_args` in each released checkpoint
+  (`outputs/runs/e013_*/weights/best.pt`): epochs 40, patience 15, batch 2, optimizer `auto`,
+  lrf 0.01, weight decay 5e-4, warmup 3, mask_ratio 4, overlap_mask false. For this schedule
+  (about 360 iterations of 64 images, below Ultralytics' 10 000) `auto` resolves to AdamW with
+  lr 0.002 and momentum 0.9, so the lr0 0.01 and momentum 0.937 stored with the same arguments are
+  not used.
 - Augmentation respects the imaging geometry: mosaic, mixup, copy-paste, erasing, shear and
   perspective are **off** (they destroy the full-disc radial context), rotations are limited to
   ±10°, flips are horizontal only, and photometric augmentation is brightness only. Two options
@@ -52,10 +58,25 @@ artefacts; the ablation ledger (Appendix A) lists the rejected alternatives.*
 - The **test-time** detector caches use **NMS IoU 0.05**, the optimum of the first-week sweep on one
   detector before fusion (`src/models/nms_sweep.py`: +0.0105 PQ, flat from 0.01 to 0.15), a gain
   the fused ensemble absorbed (sub005 at 0.05 read the same leaderboard 0.36 as sub004). The
-  mismatch with the out-of-fold 0.5 was found when the system was reproduced (2026-11-15). On fold
-  0, with that fold's out-of-fold selector, 0.05 removes 188 of 1927 candidates, none of them a
-  match, and changes PQ by +0.0007 [−0.0043, +0.0055]; 0.10 reads +0.0045 [+0.0000, +0.0088], one
-  fold, chosen after the fact, not adopted (`src/eda/nms_mismatch_f0.py`).
+  mismatch with the out-of-fold 0.5 was found when the system was reproduced (2026-11-15) and then
+  measured end to end on all five folds: each fold's detector rerun once with NMS off, NMS applied
+  offline, every pool scored through that fold's out-of-fold selector (which reproduces the
+  shipped out-of-fold scores exactly) [`src/eda/nms_sweep_5fold.py`]:
+
+  | detector NMS | candidates | matching | kept | PQ | Δ vs 0.5, 95 % CI | folds up |
+  |---|---|---|---|---|---|---|
+  | 0.05 (test-time setting) | 9130 | 4149 | 3984 | 0.4406 | −0.0016 [−0.0037, +0.0006] | 2/5 |
+  | 0.1 | 9330 | 4150 | 3991 | 0.4421 | −0.0001 [−0.0021, +0.0020] | 3/5 |
+  | 0.3 | 10011 | 4150 | 3987 | 0.4420 | −0.0002 [−0.0017, +0.0013] | 3/5 |
+  | **0.5** (out-of-fold setting) | 10043 | 4152 | 4000 | **0.4421** | — | — |
+  | 0.7 | 9886 | 4148 | 4053 | 0.4419 | −0.0003 [−0.0017, +0.0012] | 3/5 |
+
+  The rebuilt 0.5 pool reads the shipped pool's PQ to −0.0001. The axis is flat through the
+  selector, and the mismatch costs at most a sub-floor −0.0016, so the submission is unchanged. Out
+  of fold each image has one detector's candidates and at test time five, so this prices NMS on the
+  out-of-fold pool, not on the five-detector test pool. A fold-0 reading made first
+  [`src/eda/nms_mismatch_f0.py`] gave +0.0007 for 0.05 and +0.0045 [+0.0000, +0.0088] for 0.1; the
+  latter does not survive five folds.
 
 ## 3.3 Semantic lane
 
@@ -80,6 +101,13 @@ artefacts; the ablation ledger (Appendix A) lists the rejected alternatives.*
   (error correlation 0.871 against 0.926–0.940 for every existing member, replicated on a second
   fold) yet loses −0.0052 against a seed control on the second fold. Strength and diversity are
   both necessary, and on 707 images every strong model is similar.
+- The **instance-balanced (blob-local) variant** keeps the loss above and adds a term that weights
+  each connected ground-truth instance equally within a 40 px radius (weight 1.0), so small
+  filaments count as much as large ones; it is trained with the heavy augmentation for **60
+  epochs**, one model per fold [`train_blobloss_local.py`; released weights `outputs/runs_aug/bloblocal_f*_s1536_w1.0_r40`].
+  A single fold-0 model of it did not help, but all five folds blended at half of the field
+  measured **+0.0061**, 95 % CI [+0.0051, +0.0071], the largest single realised gain of the project
+  (`docs/15_ABLATION_LEDGER.md`, §7).
 - **Test-time semantic ensemble `recipe_blob5_50`**, twelve members: five blob-local models at
   0.10 each (0.50 of the field), two heavily augmented members at 1/6, and five cross-fold clDice
   models at 1/30. Each member uses flip test-time augmentation and infers at its training size. The
@@ -180,9 +208,13 @@ artefacts; the ablation ledger (Appendix A) lists the rejected alternatives.*
   instances over 177 of 180 images; three images legitimately yield nothing above threshold.
 - The submission path refuses any checkpoint that reads external data at inference, because the
   organisers' clarification restricts final inference to the provided H-alpha frames.
-- **Choice of the two final submissions.** The private leaderboard scores the better of two
-  selected submissions, so the second slot is worth what it adds to the first, not its own
-  expected score:
+- **Choice of the final submission.** The competition page allows one submission to be selected
+  for the private leaderboard, and the selected one is the bagged system
+  (`outputs/submissions/sub036_t020pox_bag5.csv`), which the leaderboard's unrounded ordering
+  places first among our submissions. The analysis in this item and the next was made earlier, when
+  two selections were expected and the private leaderboard was to score the better of the two; it
+  is kept because it compares the selected system with the strongest prepared alternative. Under
+  two selections the second slot is worth what it adds to the first, not its own expected score:
 
   $$\mathrm{gain}(B) = \mathrm{E}[\max(\mathrm{PQ}_A, \mathrm{PQ}_B)] - \mathrm{E}[\mathrm{PQ}_A].$$
 
@@ -193,16 +225,20 @@ artefacts; the ablation ledger (Appendix A) lists the rejected alternatives.*
   on 66.5 % of the subsets; +0.0008 over $A$ on all 707 images), against +0.0003 to +0.0007 for
   the others, including a second bootstrap seed and ten bags, whose keep decisions are too close
   to $A$'s to add anything. It contains every mask of $A$ and admits 245 further candidates out of
-  fold. The two final submissions are therefore the bagged system and the same system with the
-  cascade.
-- **Robustness of the pair.** Because the hidden labels may differ from the training labels in
-  ways no image property reveals (§2.3), the pair was also compared on the subgroups where the
+  fold. This cascade variant is shipped as the prepared alternative
+  (`outputs/submissions/sub042_t020pox_bag5_cascade085.csv`, built as described in
+  `experiments/sub042.md`); on the leaderboard's unrounded ordering it places second, below the
+  bagged system, and it was not selected.
+- **Robustness of the alternative.** Because the hidden labels may differ from the training labels
+  in ways no image property reveals (§2.3), the two were also compared on the subgroups where the
   system is weakest [`src/eda/e219_test_generalisation.py`]. The cascade variant is better on 9
   of 13 subgroups, and its gains sit in the hard regimes: +0.0067 on 2018–2022 frames, which the
   test set samples at twice the training rate, +0.0039 in the busiest quartile of disc
   high-frequency energy, and +0.0036 to +0.0038 for two of the six annotator groups. It loses
-  0.0012 on the largest annotator group and 0.0032 in the second-calmest quartile. The second
-  slot therefore insures the first against a harder test set rather than duplicating it.
+  0.0012 on the largest annotator group and 0.0032 in the second-calmest quartile. As a second
+  selection it would have insured the first against a harder test set rather than duplicating it.
+  With one selection, the bagged system was chosen: the cascade's local gain (+0.0008) is below
+  the ±0.003 floor, and the leaderboard ordering places the bagged system first.
 
 ## 3.7 Deliberate exclusions from the production path
 

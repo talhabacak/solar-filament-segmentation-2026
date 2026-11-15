@@ -56,7 +56,7 @@ STRINGS = {
         "title": "Solar Filament Segmentation Challenge 2026: Method and Measured Findings",
         "subtitle": "Technical report",
         "author": "Talha Bacak (Kaggle team TalhaBacak)",
-        "date": "September 2026",
+        "date": "September 2026; corrected 15 November 2026",
         "contents": "Contents",
         "abstract": "Abstract",
         "summary": "Overview",
@@ -68,7 +68,7 @@ STRINGS = {
         "subtitle": "Teknik rapor. Raporun aslı İngilizcedir; bu, birebir çevirisidir ve her"
                     " sayı İngilizce sürümle aynıdır.",
         "author": "Talha Bacak (Kaggle takımı TalhaBacak)",
-        "date": "Eylül 2026",
+        "date": "Eylül 2026; 15 Kasım 2026'da düzeltildi",
         "contents": "İçindekiler",
         "abstract": "Özet",
         "summary": "Genel bakış",

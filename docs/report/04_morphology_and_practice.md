@@ -180,7 +180,10 @@ Appendix A; the nine results below carry general lessons.*
   every mask encoding, and the rebuilt submission is byte-identical to the submitted one
   [`outputs/eda/_verify_lossless_fusion.py`]. The detector lane was not timed separately on the
   GPU; on a 14-thread CPU without a GPU, one of its five models takes 5.6 s per 2048² image at
-  1792 px [`src/eda/e218_nms_tighter.py`].
+  1792 px [`src/eda/e218_nms_tighter.py`]. The complete test route from the images (five
+  detectors, twelve semantic members, fusion, features, selector), rehearsed from a fresh clone on
+  2026-11-15, takes 17.5 min on one RTX 5070 Ti (16 GB); training the 17 networks took about 30
+  GPU-hours by their training logs (repository README).
 - **`experiments/MISTAKES.md`** records engineering failures and the general rules derived from
   them (output-filter pipelines silently terminating training, Windows process-spawn semantics,
   process trees of chained jobs, variant runs overwriting production artefacts, and the analysis
