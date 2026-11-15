@@ -56,8 +56,8 @@ There are three levels, and the notebook runs each of them (`MODE` in its first 
 | Route | What it shows | Rehearsed |
 |---|---|---|
 | 1. `FINAL_STAGE` | the selector and keep rule turn the shipped test candidate pool into the submitted file | yes, from a fresh clone |
-| 2. `REPRODUCE` | the released networks turn the test images into the submitted file | yes, 2026-11-15: fresh clone, fresh environment from `requirements.txt`, data downloaded by the notebook, released weights; 17.5 min on one RTX 5070 Ti (16 GB, Windows); the result is byte-identical to the submitted file |
-| 3. `RETRAIN` | the raw data turn into the networks, the training pool and the selector | no (about 40 h of GPU time); every step is the command that produced the shipped artefact, and the selector's training inputs were regenerated from the pool and matched the shipped files exactly |
+| 2. `REPRODUCE` | the released networks turn the test images into the submitted file | yes, 2026-11-15: fresh clone, fresh environment from `requirements.txt`, data downloaded by the notebook, released weights; 17.5 min on one RTX 5070 Ti (16 GB, Windows); the result is byte-identical to the submitted file (run twice; the second time with nothing installed or created by hand) |
+| 3. `RETRAIN` | the raw data turn into the networks, the training pool and the selector | no (about 40 h of GPU time). Every step is the command that produced the shipped artefact. Its last stage was checked on its own: regenerated from the out-of-fold pool, the labelled pool equals the shipped one exactly and the ten extra features agree to within 4·10⁻⁵ (float rounding in two of them); a selector refitted on these regenerated inputs keeps 1109 of the 1117 submitted masks and adds 10, so a retrain is expected to come close to the submitted file, not to equal it |
 
 **1. Final stage, from this repository alone (CPU, seconds).** The repository ships the featurised
 test candidate pool and the fitted selector, so the final submission can be rebuilt and compared
@@ -82,7 +82,8 @@ weights at the repository root (see below) and run the notebook with `MODE = 'RE
 downloads the data if `data/MAGFiLO_1.0_Kaggle_2026/` is missing, runs the five detectors and the
 twelve semantic members on the test images, fuses and featurises the candidates into
 `outputs/eda/test_pool_rebuilt.parquet`, applies the shipped selector, and compares the result
-with the submitted file. Shipped files are never overwritten. The test-time detector candidates are
+with the submitted file. The shipped pool, selector and submission are never overwritten; the
+evaluation cell rewrites `outputs/eda/pq_uncertainty.json` with the same values. The test-time detector candidates are
 made with NMS IoU 0.05, the out-of-fold training candidates with 0.5; this is how the submitted
 system was built (report, Section 2.4). On another GPU architecture expect a few encodings to
 differ: an earlier rehearsal of the predecessor system on a different card reproduced 1091 of 1117
