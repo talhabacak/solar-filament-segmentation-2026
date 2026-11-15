@@ -48,7 +48,14 @@ artefacts; the ablation ledger (Appendix A) lists the rejected alternatives.*
   held-out images (strictly out of fold). NMS was measured at 0.3, 0.4, 0.6 and 0.7 without the
   selector, against a control rebuilt at 0.5 through the same path: reach moves by 0, +1, 0 and +5
   of 1510 rows. Fusion clusters overlapping detections in any case, so the axis is flat and
-  **0.5 is kept**.
+  **0.5 is kept** out of fold.
+- The **test-time** detector caches use **NMS IoU 0.05**, the optimum of the first-week sweep on one
+  detector before fusion (`src/models/nms_sweep.py`: +0.0105 PQ, flat from 0.01 to 0.15), a gain
+  the fused ensemble absorbed (sub005 at 0.05 read the same leaderboard 0.36 as sub004). The
+  mismatch with the out-of-fold 0.5 was found when the system was reproduced (2026-11-15). On fold
+  0, with that fold's out-of-fold selector, 0.05 removes 188 of 1927 candidates, none of them a
+  match, and changes PQ by +0.0007 [−0.0043, +0.0055]; 0.10 reads +0.0045 [+0.0000, +0.0088], one
+  fold, chosen after the fact, not adopted (`src/eda/nms_mismatch_f0.py`).
 
 ## 3.3 Semantic lane
 

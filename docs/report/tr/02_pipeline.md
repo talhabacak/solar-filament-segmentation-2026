@@ -49,7 +49,14 @@ alınmıştır; reddedilen alternatifler ablasyon defterinde (Ek A) listelenir.*
   **conf ≥ 0.05, NMS IoU 0.5, max_det 300** ile önbelleğe alınır. NMS seçici olmadan 0.3, 0.4, 0.6
   ve 0.7'de, aynı yoldan 0.5'te yeniden kurulan bir kontrole karşı ölçüldü: erişim 1510 satır
   üzerinden 0, +1, 0 ve +5 değişir. Füzyon örtüşen tespitleri her durumda kümelediği için eksen
-  düzdür ve **0.5 korunur**.
+  düzdür ve kat-dışında **0.5 korunur**.
+- **Test zamanı** dedektör önbellekleri **NMS IoU 0.05** kullanır: ilk hafta füzyondan önce tek
+  dedektörde yapılan taramanın optimumu (`src/models/nms_sweep.py`: +0.0105 PQ, 0.01–0.15 arası
+  düz); bu kazancı füzyonlu topluluk soğurdu (0.05'teki sub005, sub004 ile aynı 0.36'yı okudu).
+  Kat-dışı 0.5 ile bu uyumsuzluk sistem yeniden üretilirken bulundu (2026-11-15). Kat 0'da o katın
+  kat-dışı seçicisiyle 0.05, 1927 adaydan hiçbiri eşleşme olmayan 188'ini çıkarır ve PQ'yu +0.0007
+  [−0.0043, +0.0055] değiştirir; 0.10 +0.0045 [+0.0000, +0.0088] okur, tek kat ve sonradan seçilmiş
+  olduğu için benimsenmedi (`src/eda/nms_mismatch_f0.py`).
 
 ## 3.3 Semantik hat
 

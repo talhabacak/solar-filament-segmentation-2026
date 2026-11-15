@@ -179,6 +179,7 @@ reworded rows are listed openly in `src/eda/gen_script_index.py`.*
 | `e217_yolo_soft_masks.py` | Cache the detector's soft mask probabilities out of fold (they were never kept). |
 | `e217b_soft_extension.py` | Does the detector's soft field carry the length our masks miss, and does using it pay? |
 | `e218_nms_tighter.py` | Detector NMS tighter than 0.5 (0.3, 0.4) in today's fused pool. |
+| `nms_mismatch_f0.py` | Does the test caches' NMS 0.05, against 0.5 out of fold, cost PQ through the selector? (fold 0) |
 | `e219_test_generalisation.py` | What does the unlabelled test set let us predict about our private score? |
 | `e220_fine_structure.py` | Fine-scale structure: how much of the annotated lateral structure (barbs, side branches) do our masks recover, compared with a second annotator drawing the same filament? |
 | `e220b_barb_figure.py` | Figure for report §5.4: barbs of annotated filaments and our masks. |

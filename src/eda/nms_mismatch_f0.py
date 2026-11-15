@@ -5,6 +5,12 @@ test-time candidates with 0.05 (report, Section 2.4; the 0.05 dates from week on
 a single detector +0.0105 by removing duplicate boxes). The selector therefore judges test pools
 built under a setting it was never fitted on. This measures what that costs, on fold 0.
 
+Earlier NMS measurements, none of which noticed the mismatch: the week-one sweep on one detector
+before fusion (src/models/nms_sweep.py; 0.05 best, plateau 0.01-0.15); sub005 at 0.05, which read
+the same leaderboard 0.36 as sub004; and E218 (src/eda/e218_nms_tighter.py, ledger 54a), which
+measured 0.3-0.7 in the fused pool by reach, without the selector, and found the axis flat. What
+this adds is 0.05 and 0.10 in the fused pool, through the selector.
+
 Candidates: E218's fold-0 detector run with NMS effectively off (src/eda/e218_nms_tighter.py
 infer, `outputs/oof_cache/raw95_e013_f0_0of1.parquet`), to which NMS is applied offline at 0.5,
 0.10 and 0.05 (`build`, the construction of e218_nms_tighter.build; the 0.5 arm is checked equal
