@@ -169,7 +169,7 @@ Over the matched copies, IoU has median 0.683 (quartiles 0.615 and 0.742; 5th an
   \end{tabular}
 \end{table}
 
-The public leaderboard displays 0.40. The offset of $-0.04$ to $-0.05$ from the local estimate has been the same for every generation of the pipeline. Scoring the same masks against different annotators moves PQ by $-0.036$ to $+0.038$, so we attribute the offset to the test annotators and expect 0.40 to 0.42 on the private half. For the 180 test images, each of the twelve semantic members takes about 21\,s on one GPU, and fusion with featurisation takes 0.48\,s per image on a CPU.
+The public leaderboard displays 0.40, an offset of $-0.04$ to $-0.05$ from the local estimate that every generation of the pipeline has shown; scoring the same masks against different annotators moves PQ by $-0.036$ to $+0.038$, so we attribute it to the test annotators and expect 0.40 to 0.42 on the private half. Training the 17 networks took about 30 GPU-hours; fifteen are the lanes' fold models, which the out-of-fold selector needs anyway, and the test route runs in 17 minutes on one 16\,GB GPU.
 
 \subsection{Strengths}
 Mask quality is at the reproducibility of the label: on the 2483 matched copies that two annotators drew, our mask is closer to an annotator than the second annotator is in 76.2\,\% of cases (SQ 0.678 against an inter-annotator IoU of 0.634). The instance structure is clean (Table~\ref{tab:relations}). The sixteen scored false positives with the highest selector score are all visibly filaments that no annotator of that image drew, so part of the false-positive count is recall of real structure.

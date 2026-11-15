@@ -143,7 +143,7 @@ Eşleşen kopyalarda IoU'nun medyanı 0.683 (çeyrekler 0.615 ve 0.742; 5. ve 95
   \end{tabular}
 \end{table}
 
-Açık liderlik tablosu 0.40 gösterir. Yerel tahmine göre $-0.04$ ile $-0.05$ arasındaki fark, boru hattının her neslinde aynıdır. Aynı maskeleri farklı anotatörlere karşı puanlamak PQ'yu $-0.036$ ile $+0.038$ arasında oynatır; bu yüzden farkı test anotatörlerine bağlıyor ve gizli yarıda 0.40--0.42 bekliyoruz. 180 test görüntüsü için on iki semantik üyenin her biri tek GPU'da yaklaşık 21\,s sürer; füzyon ve öznitelik çıkarımı CPU'da görüntü başına 0.48\,s sürer.
+Açık liderlik tablosu 0.40 gösterir. Yerel tahmine göre $-0.04$ ile $-0.05$ arasındaki fark, boru hattının her neslinde aynıdır. Aynı maskeleri farklı anotatörlere karşı puanlamak PQ'yu $-0.036$ ile $+0.038$ arasında oynatır; bu yüzden farkı test anotatörlerine bağlıyor ve gizli yarıda 0.40--0.42 bekliyoruz. 17 ağın eğitimi yaklaşık 30 GPU-saat sürdü; on beşi kulvarların kat modelleridir ve kat-dışı seçici bunları zaten gerektirir; test yolu tek bir 16\,GB GPU'da 17 dakikada koşar.
 
 \subsection{Güçlü yönler}
 Maske kalitesi etiketin tekrarlanabilirliği düzeyindedir: iki anotatörün çizdiği 2483 eşleşen kopyada maskemiz, vakaların \%76.2'sinde bir anotatöre ikinci anotatörden daha yakındır (SQ 0.678, anotatörler arası IoU 0.634). Örnek yapısı temizdir (Tablo~\ref{tab:relations}). Seçici skoru en yüksek on altı yanlış pozitifin hepsi, o görüntünün hiçbir anotatörünün çizmediği, gözle açıkça filaman olan yapılardır; yani yanlış pozitif sayısının bir kısmı gerçek yapının yakalanmasıdır.

@@ -30,6 +30,28 @@ GONG H-alpha frame (2048 x 2048)
 Every parameter is listed in Table 1 of the technical report and set in the first code cell of the
 notebook.
 
+### Why 17 networks, and what they cost
+
+Fifteen of the networks are the five fold models of each lane: per fold one detector, one clDice
+U-Net and one instance-balanced U-Net. They exist because the selector is trained on out-of-fold
+candidates for all 707 training images, which takes one model per fold in each lane. At test time
+the same models are used together, so the ensemble costs inference only. The two
+heavy-augmentation U-Nets are the only networks trained for the test-time ensemble alone.
+
+What the parts buy, measured out of fold:
+
+- **Fusing the two lanes:** +0.021 PQ over the semantic lane alone (report, Table 3).
+- **The selector:** +0.009 on top of that.
+- **The instance-balanced members:** +0.0061, CI [+0.0051, +0.0071]. This was the largest single gain
+  of the project, and it appeared only once all five folds were trained (`docs/15_ABLATION_LEDGER.md`, §7).
+- **Ensemble size:** averaging *k* semantic members gains +0.0092·(1 − 1/*k*) on fold 0 (§23b). Twelve
+  members collect 92 % of what averaging can give, and more members would add at most +0.0008.
+
+Training took about 30 GPU-hours. The training logs give 0.7 h per detector, 2.6–3.9 h per
+instance-balanced member, and 0.8 h and 2.5 h for the two heavy members; the clDice members did not
+log their time and are estimated at about 1.2 h each. The test route runs in about 17 minutes for
+the 180 test images on one 16 GB consumer GPU.
+
 ## Reproducing the submitted predictions
 
 Install the pinned environment into a fresh Python 3.13 virtual environment (CUDA 12.8 for the GPU
