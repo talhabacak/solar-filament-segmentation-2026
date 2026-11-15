@@ -1,0 +1,38 @@
+{
+ "submission": "sub026",
+ "kaggle_ref": "56019307",
+ "file": "outputs/submissions/sub026_blob5_p060_carve70.csv",
+ "generated": "2026-09-04T20:32:31",
+ "dirty_tree": true,
+ "recipe": "recipe_blob5_50",
+ "shrink": "shrink_frac nominal 0.05 (production one-pixel ring erosion, ~18.7% area)",
+ "selector": "outputs/selector/selector_v5_shrunkblob5prodts.joblib",
+ "policy": {
+  "conf": 0.40,
+  "p": 0.60,
+  "two_stage": true,
+  "features": 32,
+  "carve_tau": 0.70
+ },
+ "hypothesis": "E098 Carve Retention Filter: reject greedy de-overlap candidates retaining < 70% of original area. Eliminates under-segmented stumps with destroyed GT IoU. Single-variable change on top of sub025.",
+ "metrics_oof_cv": {
+  "tau_070_delta_mean_pq": "+0.0051",
+  "fold0_delta": "+0.0048",
+  "fold1_delta": "+0.0029",
+  "fold2_delta": "+0.0059",
+  "fold3_delta": "+0.0054",
+  "fold4_delta": "+0.0066",
+  "positive_folds": "5/5",
+  "total_tp": "6073 (-1)",
+  "total_fp": "1406 (-161)",
+  "total_fn": "2122 (+1)"
+ },
+ "detector_models": "0n,1n,2n,3n,4n",
+ "split": "data/splits/folds_v1.parquet",
+ "sha256": {
+  "outputs/submissions/sub026_blob5_p060_carve70.csv": "5ce239bf669581b50d3ab1dc9f370f804b6ad58b5821cc2a4aeba53c0f85666e",
+  "outputs/selector/selector_v5_shrunkblob5prodts.joblib": "db4e6e13ad24ef98a31aab26c9e4ecf309de2cfff4f3a0556bca64fe4f8e12bd",
+  "data/splits/folds_v1.parquet": "5f46ae0fa8f91d687ef08d53d70b140208a0a526868dff2ee40b3adc3728addd",
+  "outputs/semantic/test_probs_recipe_blob5_50.npz": "a6eafdb673e7a358960f6490b66887ce7137f128d1ddb50f45bcb4e4dc00482b"
+ }
+}

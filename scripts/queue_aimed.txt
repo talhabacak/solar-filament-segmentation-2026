@@ -1,0 +1,14 @@
+# E174/E175 -- the two model changes the stage attribution (ledger 29b) aims at a MEASURED
+# population, unlike every earlier attention/width attempt:
+#   E174  faint copies depend on the 96 px skip (zeroing it costs them 0.104 IoU, the bright
+#         ones +0.016). A dilated-context module there (three branches 1/3/6, zero-initialised,
+#         0.14 M params) enlarges the receptive field exactly where faint objects are carried.
+#         The addressable misses (ledger 29) are faint: contrast 0.102 against 0.126 matched.
+#   E175  thin copies (<=8 px, 46% of the pool) depend on the 384 px skip (-0.106) and barely
+#         on the deep ones (-0.041). Decoder block 2 consumes that skip at 64 channels; widen
+#         it to 128 and block 3 to 48. The earlier width sweep (wdec4832) widened the
+#         FULL-RESOLUTION end instead, which the attribution says is not where the load is.
+# Both judged in ref8's clDice slot against the reference AND against the same-recipe seed
+# rerun, then read on the addressable population itself.
+ctx4_f0 | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --ctx-stage 4 --name sem_b3_f0_1536_cldice_ctx4 --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_1536_cldice_ctx4/best.pt --fold 0 --tag _ctx4 && echo "CTX4 f0 done"
+wdec2_f0 | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --decoder-channels 256,128,128,48,16 --name sem_b3_f0_1536_cldice_wdec2 --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_1536_cldice_wdec2/best.pt --fold 0 --tag _wdec2 && echo "WDEC2 f0 done"

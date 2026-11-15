@@ -1,0 +1,20 @@
+{
+ "pixel": {
+  "tp": 1736210,
+  "fp": 508978,
+  "fn": 919155,
+  "precision": 0.7733027256514822,
+  "recall": 0.6538498473844462
+ },
+ "instance": {
+  "tp": 974,
+  "fp": 235,
+  "fn": 536
+ },
+ "outcomes": {
+  "matched": 974,
+  "no overlapping prediction": 282,
+  "missed, UNDER-covered": 143,
+  "missed, OVER-covered": 111
+ }
+}

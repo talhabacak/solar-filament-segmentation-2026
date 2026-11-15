@@ -1,0 +1,5 @@
+# name | command   (run from /content/filament by scripts/remote_queue.sh; each job ends with its OOF map)
+# 1. noise floor: the production recipe run a second time -- calibrates every single-fold A100 gate of 2026-09-05 (RDN's disc-centre -30 where the filter never touched)
+baseline_rerun | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --name sem_b3_f0_1536_cldice_rerun --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_1536_cldice_rerun/best.pt --fold 0 --tag _cldice_rerun && echo "BASELINE_RERUN fold 0 done"
+# 2. decoder GELU (the activation question, second half)
+gelu | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --decoder-act gelu --name sem_b3_f0_1536_cldice_gelu --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_1536_cldice_gelu/best.pt --fold 0 --tag _gelu1536 && echo "GELU fold 0 done"

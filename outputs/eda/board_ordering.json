@@ -1,0 +1,1468 @@
+{
+ "order": [
+  {
+   "file": "sub036_t020pox_bag5.csv",
+   "shown": "0.40"
+  },
+  {
+   "file": "sub042_t020pox_bag5_cascade085.csv",
+   "shown": "0.40"
+  },
+  {
+   "file": "sub043_t020pox_bag5_seed1.csv",
+   "shown": "0.40"
+  },
+  {
+   "file": "sub045_t020pox_bag10.csv",
+   "shown": "0.40"
+  },
+  {
+   "file": "sub037_t020pox_cascade085.csv",
+   "shown": "0.40"
+  },
+  {
+   "file": "sub033_t020_photoorient_p060.csv",
+   "shown": "0.40"
+  },
+  {
+   "file": "sub035_t020pox_fillholes.csv",
+   "shown": "0.40"
+  },
+  {
+   "file": "sub040_t020pox_c45.csv",
+   "shown": "0.40"
+  },
+  {
+   "file": "sub046_t020pox_bag5_relational.csv",
+   "shown": "0.40"
+  },
+  {
+   "file": "sub048_t020pox_bag5_regime.csv",
+   "shown": "0.40"
+  },
+  {
+   "file": "sub044_t020pox_bag5_slowcls.csv",
+   "shown": "0.40"
+  },
+  {
+   "file": "sub034_t020pox_c45_p575.csv",
+   "shown": "0.40"
+  },
+  {
+   "file": "sub032_photoorient_p060.csv",
+   "shown": "0.40"
+  },
+  {
+   "file": "sub025_blob5_p060.csv",
+   "shown": "0.40"
+  },
+  {
+   "file": "sub041_t020pox_reg.csv",
+   "shown": "0.40"
+  },
+  {
+   "file": "sub049_t020pox_bag5_regimegate.csv",
+   "shown": "0.40"
+  },
+  {
+   "file": "sub026_blob5_p060_carve70.csv",
+   "shown": "0.40"
+  },
+  {
+   "file": "sub031_t020_refit_p060.csv",
+   "shown": "0.39"
+  },
+  {
+   "file": "sub020_blob5_prodshrink.csv",
+   "shown": "0.39"
+  },
+  {
+   "file": "sub029_committee_h_p060.csv",
+   "shown": "0.39"
+  },
+  {
+   "file": "sub039_t020pox_p055.csv",
+   "shown": "0.39"
+  },
+  {
+   "file": "sub047_t010_bag5.csv",
+   "shown": "0.39"
+  },
+  {
+   "file": "sub030_committee4_h_p060.csv",
+   "shown": "0.39"
+  },
+  {
+   "file": "sub024_blob5_w65.csv",
+   "shown": "0.39"
+  },
+  {
+   "file": "sub027_committee_p060.csv",
+   "shown": "0.39"
+  },
+  {
+   "file": "sub019_blob5_ts.csv",
+   "shown": "0.39"
+  },
+  {
+   "file": "sub018_prodshrink_ts.csv",
+   "shown": "0.39"
+  },
+  {
+   "file": "sub015_recipe3_tf010_ts.csv",
+   "shown": "0.39"
+  },
+  {
+   "file": "sub015_recipe3_tf010_ts.csv",
+   "shown": "0.39"
+  },
+  {
+   "file": "sub021_blob5_pure.csv",
+   "shown": "0.39"
+  },
+  {
+   "file": "sub010_drop9_c40_p35_s05.csv",
+   "shown": "0.38"
+  },
+  {
+   "file": "sub011_truefrac010_c40_p40.csv",
+   "shown": "0.38"
+  },
+  {
+   "file": "sub012_blobens_tf010.csv",
+   "shown": "0.38"
+  },
+  {
+   "file": "sub023_blob5_tf19.csv",
+   "shown": "0.38"
+  },
+  {
+   "file": "sub007_fused_v5shrunk_c40_p35_s05.csv",
+   "shown": "0.38"
+  },
+  {
+   "file": "sub008_recipe3_c40_p35_s05.csv",
+   "shown": "0.38"
+  },
+  {
+   "file": "sub017_ts_drop9_p055.csv",
+   "shown": "0.38"
+  },
+  {
+   "file": "sub009_recipe3mixed_c40_p35_s05.csv",
+   "shown": "0.38"
+  },
+  {
+   "file": "sub014_blob50_ts.csv",
+   "shown": "0.38"
+  },
+  {
+   "file": "sub016_ts_drop9.csv",
+   "shown": "0.38"
+  },
+  {
+   "file": "sub013_blob50_tf010.csv",
+   "shown": "0.38"
+  },
+  {
+   "file": "sub006_twolane_5x2.csv",
+   "shown": "0.37"
+  },
+  {
+   "file": "sub005_ens10tta_nms05.csv",
+   "shown": "0.36"
+  },
+  {
+   "file": "sub004_ens5_s25_p25.csv",
+   "shown": "0.36"
+  },
+  {
+   "file": "sub003_e013_selector_c25_p20.csv",
+   "shown": "0.35"
+  },
+  {
+   "file": "sub002_e011_f0_1536_c40_a128.csv",
+   "shown": "0.33"
+  },
+  {
+   "file": "sub001_e010_f0_1024_c40_a128.csv",
+   "shown": "0.28"
+  }
+ ],
+ "rank": {
+  "sub020": 19,
+  "sub024": 24,
+  "sub019": 26,
+  "sub018": 27,
+  "sub015": 28,
+  "sub021": 30,
+  "sub010": 31,
+  "sub011": 32,
+  "sub012": 33,
+  "sub023": 34,
+  "sub007": 35,
+  "sub008": 36,
+  "sub017": 37,
+  "sub009": 38,
+  "sub014": 39,
+  "sub016": 40,
+  "sub013": 41
+ },
+ "single": [
+  {
+   "winner": "sub020",
+   "loser": "sub024",
+   "axis": "semantic",
+   "won_with": "blob5_1of2",
+   "lost_with": "blob5_65",
+   "rank_w": 19,
+   "rank_l": 24
+  },
+  {
+   "winner": "sub020",
+   "loser": "sub019",
+   "axis": "shrink",
+   "won_with": "prod",
+   "lost_with": "true010",
+   "rank_w": 19,
+   "rank_l": 26
+  },
+  {
+   "winner": "sub020",
+   "loser": "sub018",
+   "axis": "semantic",
+   "won_with": "blob5_1of2",
+   "lost_with": "recipe3",
+   "rank_w": 19,
+   "rank_l": 27
+  },
+  {
+   "winner": "sub020",
+   "loser": "sub023",
+   "axis": "shrink",
+   "won_with": "prod",
+   "lost_with": "true019",
+   "rank_w": 19,
+   "rank_l": 34
+  },
+  {
+   "winner": "sub024",
+   "loser": "sub018",
+   "axis": "semantic",
+   "won_with": "blob5_65",
+   "lost_with": "recipe3",
+   "rank_w": 24,
+   "rank_l": 27
+  },
+  {
+   "winner": "sub019",
+   "loser": "sub015",
+   "axis": "semantic",
+   "won_with": "blob5_1of2",
+   "lost_with": "recipe3",
+   "rank_w": 26,
+   "rank_l": 28
+  },
+  {
+   "winner": "sub019",
+   "loser": "sub021",
+   "axis": "semantic",
+   "won_with": "blob5_1of2",
+   "lost_with": "blob5_pure",
+   "rank_w": 26,
+   "rank_l": 30
+  },
+  {
+   "winner": "sub019",
+   "loser": "sub023",
+   "axis": "shrink",
+   "won_with": "true010",
+   "lost_with": "true019",
+   "rank_w": 26,
+   "rank_l": 34
+  },
+  {
+   "winner": "sub019",
+   "loser": "sub014",
+   "axis": "semantic",
+   "won_with": "blob5_1of2",
+   "lost_with": "blob_1of2",
+   "rank_w": 26,
+   "rank_l": 39
+  },
+  {
+   "winner": "sub018",
+   "loser": "sub015",
+   "axis": "shrink",
+   "won_with": "prod",
+   "lost_with": "true010",
+   "rank_w": 27,
+   "rank_l": 28
+  },
+  {
+   "winner": "sub015",
+   "loser": "sub021",
+   "axis": "semantic",
+   "won_with": "recipe3",
+   "lost_with": "blob5_pure",
+   "rank_w": 28,
+   "rank_l": 30
+  },
+  {
+   "winner": "sub015",
+   "loser": "sub017",
+   "axis": "feats",
+   "won_with": "32",
+   "lost_with": "23",
+   "rank_w": 28,
+   "rank_l": 37
+  },
+  {
+   "winner": "sub015",
+   "loser": "sub014",
+   "axis": "semantic",
+   "won_with": "recipe3",
+   "lost_with": "blob_1of2",
+   "rank_w": 28,
+   "rank_l": 39
+  },
+  {
+   "winner": "sub021",
+   "loser": "sub014",
+   "axis": "semantic",
+   "won_with": "blob5_pure",
+   "lost_with": "blob_1of2",
+   "rank_w": 30,
+   "rank_l": 39
+  },
+  {
+   "winner": "sub010",
+   "loser": "sub008",
+   "axis": "feats",
+   "won_with": "23",
+   "lost_with": "32",
+   "rank_w": 31,
+   "rank_l": 36
+  },
+  {
+   "winner": "sub011",
+   "loser": "sub012",
+   "axis": "semantic",
+   "won_with": "recipe3",
+   "lost_with": "blob_1of4",
+   "rank_w": 32,
+   "rank_l": 33
+  },
+  {
+   "winner": "sub011",
+   "loser": "sub013",
+   "axis": "semantic",
+   "won_with": "recipe3",
+   "lost_with": "blob_1of2",
+   "rank_w": 32,
+   "rank_l": 41
+  },
+  {
+   "winner": "sub012",
+   "loser": "sub013",
+   "axis": "semantic",
+   "won_with": "blob_1of4",
+   "lost_with": "blob_1of2",
+   "rank_w": 33,
+   "rank_l": 41
+  },
+  {
+   "winner": "sub007",
+   "loser": "sub008",
+   "axis": "semantic",
+   "won_with": "prod5",
+   "lost_with": "recipe3",
+   "rank_w": 35,
+   "rank_l": 36
+  },
+  {
+   "winner": "sub007",
+   "loser": "sub009",
+   "axis": "semantic",
+   "won_with": "prod5",
+   "lost_with": "recipe3_mixed",
+   "rank_w": 35,
+   "rank_l": 38
+  },
+  {
+   "winner": "sub008",
+   "loser": "sub009",
+   "axis": "semantic",
+   "won_with": "recipe3",
+   "lost_with": "recipe3_mixed",
+   "rank_w": 36,
+   "rank_l": 38
+  },
+  {
+   "winner": "sub017",
+   "loser": "sub016",
+   "axis": "policy",
+   "won_with": "(0.4, 0.55)",
+   "lost_with": "(0.35, 0.5)",
+   "rank_w": 37,
+   "rank_l": 40
+  }
+ ],
+ "multi": [
+  {
+   "a": "sub020",
+   "b": "sub015",
+   "axes": [
+    "semantic",
+    "shrink"
+   ]
+  },
+  {
+   "a": "sub020",
+   "b": "sub021",
+   "axes": [
+    "semantic",
+    "shrink"
+   ]
+  },
+  {
+   "a": "sub020",
+   "b": "sub010",
+   "axes": [
+    "semantic",
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub020",
+   "b": "sub011",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub020",
+   "b": "sub012",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub020",
+   "b": "sub007",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub020",
+   "b": "sub008",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub020",
+   "b": "sub017",
+   "axes": [
+    "semantic",
+    "shrink",
+    "feats"
+   ]
+  },
+  {
+   "a": "sub020",
+   "b": "sub009",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub020",
+   "b": "sub014",
+   "axes": [
+    "semantic",
+    "shrink"
+   ]
+  },
+  {
+   "a": "sub020",
+   "b": "sub016",
+   "axes": [
+    "semantic",
+    "shrink",
+    "feats",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub020",
+   "b": "sub013",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub024",
+   "b": "sub019",
+   "axes": [
+    "semantic",
+    "shrink"
+   ]
+  },
+  {
+   "a": "sub024",
+   "b": "sub015",
+   "axes": [
+    "semantic",
+    "shrink"
+   ]
+  },
+  {
+   "a": "sub024",
+   "b": "sub021",
+   "axes": [
+    "semantic",
+    "shrink"
+   ]
+  },
+  {
+   "a": "sub024",
+   "b": "sub010",
+   "axes": [
+    "semantic",
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub024",
+   "b": "sub011",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub024",
+   "b": "sub012",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub024",
+   "b": "sub023",
+   "axes": [
+    "semantic",
+    "shrink"
+   ]
+  },
+  {
+   "a": "sub024",
+   "b": "sub007",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub024",
+   "b": "sub008",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub024",
+   "b": "sub017",
+   "axes": [
+    "semantic",
+    "shrink",
+    "feats"
+   ]
+  },
+  {
+   "a": "sub024",
+   "b": "sub009",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub024",
+   "b": "sub014",
+   "axes": [
+    "semantic",
+    "shrink"
+   ]
+  },
+  {
+   "a": "sub024",
+   "b": "sub016",
+   "axes": [
+    "semantic",
+    "shrink",
+    "feats",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub024",
+   "b": "sub013",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub019",
+   "b": "sub018",
+   "axes": [
+    "semantic",
+    "shrink"
+   ]
+  },
+  {
+   "a": "sub019",
+   "b": "sub010",
+   "axes": [
+    "semantic",
+    "shrink",
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub019",
+   "b": "sub011",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub019",
+   "b": "sub012",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub019",
+   "b": "sub007",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub019",
+   "b": "sub008",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub019",
+   "b": "sub017",
+   "axes": [
+    "semantic",
+    "feats"
+   ]
+  },
+  {
+   "a": "sub019",
+   "b": "sub009",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub019",
+   "b": "sub016",
+   "axes": [
+    "semantic",
+    "feats",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub019",
+   "b": "sub013",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub018",
+   "b": "sub021",
+   "axes": [
+    "semantic",
+    "shrink"
+   ]
+  },
+  {
+   "a": "sub018",
+   "b": "sub010",
+   "axes": [
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub018",
+   "b": "sub011",
+   "axes": [
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub018",
+   "b": "sub012",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub018",
+   "b": "sub023",
+   "axes": [
+    "semantic",
+    "shrink"
+   ]
+  },
+  {
+   "a": "sub018",
+   "b": "sub007",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub018",
+   "b": "sub008",
+   "axes": [
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub018",
+   "b": "sub017",
+   "axes": [
+    "shrink",
+    "feats"
+   ]
+  },
+  {
+   "a": "sub018",
+   "b": "sub009",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub018",
+   "b": "sub014",
+   "axes": [
+    "semantic",
+    "shrink"
+   ]
+  },
+  {
+   "a": "sub018",
+   "b": "sub016",
+   "axes": [
+    "shrink",
+    "feats",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub018",
+   "b": "sub013",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub015",
+   "b": "sub010",
+   "axes": [
+    "shrink",
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub015",
+   "b": "sub011",
+   "axes": [
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub015",
+   "b": "sub012",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub015",
+   "b": "sub023",
+   "axes": [
+    "semantic",
+    "shrink"
+   ]
+  },
+  {
+   "a": "sub015",
+   "b": "sub007",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub015",
+   "b": "sub008",
+   "axes": [
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub015",
+   "b": "sub009",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub015",
+   "b": "sub016",
+   "axes": [
+    "feats",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub015",
+   "b": "sub013",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub021",
+   "b": "sub010",
+   "axes": [
+    "semantic",
+    "shrink",
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub021",
+   "b": "sub011",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub021",
+   "b": "sub012",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub021",
+   "b": "sub023",
+   "axes": [
+    "semantic",
+    "shrink"
+   ]
+  },
+  {
+   "a": "sub021",
+   "b": "sub007",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub021",
+   "b": "sub008",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub021",
+   "b": "sub017",
+   "axes": [
+    "semantic",
+    "feats"
+   ]
+  },
+  {
+   "a": "sub021",
+   "b": "sub009",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub021",
+   "b": "sub016",
+   "axes": [
+    "semantic",
+    "feats",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub021",
+   "b": "sub013",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub010",
+   "b": "sub011",
+   "axes": [
+    "shrink",
+    "feats",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub010",
+   "b": "sub012",
+   "axes": [
+    "semantic",
+    "shrink",
+    "feats",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub010",
+   "b": "sub023",
+   "axes": [
+    "semantic",
+    "shrink",
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub010",
+   "b": "sub007",
+   "axes": [
+    "semantic",
+    "feats"
+   ]
+  },
+  {
+   "a": "sub010",
+   "b": "sub017",
+   "axes": [
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub010",
+   "b": "sub009",
+   "axes": [
+    "semantic",
+    "feats"
+   ]
+  },
+  {
+   "a": "sub010",
+   "b": "sub014",
+   "axes": [
+    "semantic",
+    "shrink",
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub010",
+   "b": "sub016",
+   "axes": [
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub010",
+   "b": "sub013",
+   "axes": [
+    "semantic",
+    "shrink",
+    "feats",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub011",
+   "b": "sub023",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub011",
+   "b": "sub007",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub011",
+   "b": "sub008",
+   "axes": [
+    "shrink",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub011",
+   "b": "sub017",
+   "axes": [
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub011",
+   "b": "sub009",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub011",
+   "b": "sub014",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub011",
+   "b": "sub016",
+   "axes": [
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub012",
+   "b": "sub023",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub012",
+   "b": "sub007",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub012",
+   "b": "sub008",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub012",
+   "b": "sub017",
+   "axes": [
+    "semantic",
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub012",
+   "b": "sub009",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub012",
+   "b": "sub014",
+   "axes": [
+    "semantic",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub012",
+   "b": "sub016",
+   "axes": [
+    "semantic",
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub023",
+   "b": "sub007",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub023",
+   "b": "sub008",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub023",
+   "b": "sub017",
+   "axes": [
+    "semantic",
+    "shrink",
+    "feats"
+   ]
+  },
+  {
+   "a": "sub023",
+   "b": "sub009",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub023",
+   "b": "sub014",
+   "axes": [
+    "semantic",
+    "shrink"
+   ]
+  },
+  {
+   "a": "sub023",
+   "b": "sub016",
+   "axes": [
+    "semantic",
+    "shrink",
+    "feats",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub023",
+   "b": "sub013",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub007",
+   "b": "sub017",
+   "axes": [
+    "semantic",
+    "shrink",
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub007",
+   "b": "sub014",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub007",
+   "b": "sub016",
+   "axes": [
+    "semantic",
+    "shrink",
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub007",
+   "b": "sub013",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub008",
+   "b": "sub017",
+   "axes": [
+    "shrink",
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub008",
+   "b": "sub014",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub008",
+   "b": "sub016",
+   "axes": [
+    "shrink",
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub008",
+   "b": "sub013",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub017",
+   "b": "sub009",
+   "axes": [
+    "semantic",
+    "shrink",
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub017",
+   "b": "sub014",
+   "axes": [
+    "semantic",
+    "feats"
+   ]
+  },
+  {
+   "a": "sub017",
+   "b": "sub013",
+   "axes": [
+    "semantic",
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub009",
+   "b": "sub014",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub009",
+   "b": "sub016",
+   "axes": [
+    "semantic",
+    "shrink",
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub009",
+   "b": "sub013",
+   "axes": [
+    "semantic",
+    "shrink",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub014",
+   "b": "sub016",
+   "axes": [
+    "semantic",
+    "feats",
+    "policy"
+   ]
+  },
+  {
+   "a": "sub014",
+   "b": "sub013",
+   "axes": [
+    "policy",
+    "two_stage"
+   ]
+  },
+  {
+   "a": "sub016",
+   "b": "sub013",
+   "axes": [
+    "semantic",
+    "feats",
+    "policy",
+    "two_stage"
+   ]
+  }
+ ]
+}

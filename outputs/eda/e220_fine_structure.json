@@ -1,0 +1,25 @@
+{
+ "definition": "barbs: pixels both thinner than the body (residue of an opening at 0.35 x body width, end caps excluded) and farther from the annotated spine than the body half-width + 2 px",
+ "spine_based_lateral_share": 0.11058278037253991,
+ "copies": 8199,
+ "copies_with_lateral": 303,
+ "lateral_share_of_area": 0.0016879235019743647,
+ "lateral_share_median_per_copy": 0.0,
+ "matched": {
+  "n": 185,
+  "ours_lateral": 0.39988920233209374,
+  "ours_body": 0.8055981505229446
+ },
+ "paired": {
+  "n": 114,
+  "ours_lateral": 0.37956551109856623,
+  "ours_body": 0.8046252318286526,
+  "human_lateral": 0.49339271976737353,
+  "human_body": 0.7971794349886746
+ },
+ "all_with_sibling": {
+  "n": 150,
+  "human_lateral": 0.48900147010180783,
+  "human_body": 0.7887781440733651
+ }
+}

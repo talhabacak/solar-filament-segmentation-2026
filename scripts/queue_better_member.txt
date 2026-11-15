@@ -1,0 +1,23 @@
+# E149 -- the only family still open: a BETTER member, not more members.
+#
+# E140 closed "add members" with a 1/k law that leaves at most +0.0008 at the
+# deployed member count. What remains is raising the quality of each member, and
+# E144 fixed how that is measured: swap the candidate member INTO the eight-member
+# reference and compare at matched member count, because the two-member field
+# gives the wrong sign (instance-IoU read -0.0024 there and +0.0015 in the
+# reference).
+#
+# Two changes have now been measured that way on fold 0, both positive, both below
+# the funding floor on their own:
+#     60 epochs instead of 30      +0.0025   CI [-0.0006, +0.0058]   P 0.947
+#     instance-IoU loss term       +0.0015   CI [-0.0012, +0.0045]   P 0.857
+# They act by different mechanisms -- more optimisation against a different
+# objective -- so the combination is the arm worth the GPU. Fold 1 comes with it
+# because fold 0 alone has reversed twice in this project, and a second fold-0 seed
+# because a single run cannot separate a +0.004 effect from run-to-run noise.
+long_inst_f0_s1 | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 60 --cldice 0.3 --inst-iou 0.5 --cache --workers 4 --batch 2 --name sem_b3_f0_1536_longinst_s1 --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_1536_longinst_s1/best.pt --fold 0 --tag _longinst_s1 && echo "LONGINST f0 s1 done"
+long_inst_f1_s1 | python src/models/train_semantic.py --fold 1 --imgsz 1536 --epochs 60 --cldice 0.3 --inst-iou 0.5 --cache --workers 4 --batch 2 --name sem_b3_f1_1536_longinst_s1 --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f1_1536_longinst_s1/best.pt --fold 1 --tag _longinst_s1 && echo "LONGINST f1 s1 done"
+long_inst_f0_s2 | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 60 --cldice 0.3 --inst-iou 0.5 --cache --workers 4 --batch 2 --name sem_b3_f0_1536_longinst_s2 --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_1536_longinst_s2/best.pt --fold 0 --tag _longinst_s2 && echo "LONGINST f0 s2 done"
+# the nested reference on fold 1, so the instrument covers both folds we test on
+nest_f1_v1 | python src/models/train_semantic.py --fold 0 --exclude 1 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --name sem_b3_nest1_v1 --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_nest1_v1/best.pt --fold 1 --tag _nest1_v1 && echo "NEST f1 v1 done"
+nest_f1_v2 | python src/models/train_semantic.py --fold 2 --exclude 1 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --name sem_b3_nest1_v2 --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_nest1_v2/best.pt --fold 1 --tag _nest1_v2 && echo "NEST f1 v2 done"

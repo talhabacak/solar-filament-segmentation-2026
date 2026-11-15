@@ -1,0 +1,105 @@
+{
+ "tag": "e010",
+ "conf": 0.4,
+ "min_area": 128,
+ "fn_total": 753,
+ "fn_classes": {
+  "partial": 266,
+  "missed": 432,
+  "merged": 37,
+  "fragmented": 18
+ },
+ "fn_class_pct": {
+  "partial": 35.3,
+  "missed": 57.4,
+  "merged": 4.9,
+  "fragmented": 2.4
+ },
+ "fp_total": 471,
+ "fp_classes": {
+  "partial_pair": 287,
+  "merge": 30,
+  "hallucination": 147,
+  "fragment": 7
+ },
+ "fn_strata": {
+  "area": {
+   "fragmented": {
+    "Q1": 0,
+    "Q2": 0,
+    "Q3": 1,
+    "Q4": 17
+   },
+   "merged": {
+    "Q1": 13,
+    "Q2": 17,
+    "Q3": 3,
+    "Q4": 4
+   },
+   "missed": {
+    "Q1": 171,
+    "Q2": 93,
+    "Q3": 92,
+    "Q4": 76
+   },
+   "partial": {
+    "Q1": 70,
+    "Q2": 52,
+    "Q3": 79,
+    "Q4": 65
+   }
+  },
+  "width": {
+   "fragmented": {
+    "Q1": 1,
+    "Q2": 2,
+    "Q3": 10,
+    "Q4": 5
+   },
+   "merged": {
+    "Q1": 5,
+    "Q2": 15,
+    "Q3": 8,
+    "Q4": 9
+   },
+   "missed": {
+    "Q1": 109,
+    "Q2": 114,
+    "Q3": 97,
+    "Q4": 112
+   },
+   "partial": {
+    "Q1": 95,
+    "Q2": 64,
+    "Q3": 58,
+    "Q4": 49
+   }
+  },
+  "radial": {
+   "fragmented": {
+    "Q1": 7,
+    "Q2": 5,
+    "Q3": 3,
+    "Q4": 3
+   },
+   "merged": {
+    "Q1": 10,
+    "Q2": 14,
+    "Q3": 8,
+    "Q4": 5
+   },
+   "missed": {
+    "Q1": 69,
+    "Q2": 77,
+    "Q3": 116,
+    "Q4": 170
+   },
+   "partial": {
+    "Q1": 83,
+    "Q2": 69,
+    "Q3": 70,
+    "Q4": 44
+   }
+  }
+ }
+}

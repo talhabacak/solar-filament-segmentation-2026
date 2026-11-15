@@ -1,0 +1,45 @@
+{
+ "spines": 7860,
+ "sinuosity_median": 1.0639214589126464,
+ "sinuosity_p90": 1.2733219736913128,
+ "length_median_px": 116.0,
+ "curvature_radius_median_px": 123.32360891292664,
+ "by_distance": [
+  {
+   "d": 10,
+   "n": 159080,
+   "straight_median_err": 0.894844602992775,
+   "arc_median_err": 0.8324494164803437,
+   "straight_inside": 0.9187578576816696,
+   "arc_inside": 0.9270995725421172,
+   "arc_better": 0.5207442796077445
+  },
+  {
+   "d": 20,
+   "n": 145973,
+   "straight_median_err": 2.487859832113353,
+   "arc_median_err": 2.504803630665982,
+   "straight_inside": 0.7120220862762292,
+   "arc_inside": 0.7068772992265693,
+   "arc_better": 0.49050851869866346
+  },
+  {
+   "d": 40,
+   "n": 121781,
+   "straight_median_err": 6.531606145099227,
+   "arc_median_err": 7.823516103465614,
+   "straight_inside": 0.43515819380691567,
+   "arc_inside": 0.3883282285413981,
+   "arc_better": 0.4343534705742275
+  },
+  {
+   "d": 80,
+   "n": 84616,
+   "straight_median_err": 16.30901166763983,
+   "arc_median_err": 23.40270731787055,
+   "straight_inside": 0.22163656991585515,
+   "arc_inside": 0.17100784721565662,
+   "arc_better": 0.3865344615675522
+  }
+ ]
+}

@@ -1,0 +1,11 @@
+{
+ "global_best": 0.42384012431455875,
+ "global_thr": 0.5,
+ "per_zone_insample": 0.4235473871077686,
+ "per_zone_thresholds": {
+  "centre": 0.55,
+  "mid": 0.5,
+  "outer": 0.3,
+  "limb": 0.15
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "n_band": 1316,
+ "pos_rate_band": 0.4126139817629179,
+ "n_region": 364,
+ "pos_rate_region": 0.36538461538461536,
+ "mean_iou_sum_region": 0.26439167117024515,
+ "break_even": 0.36141675,
+ "auc_deployed_in_region": 0.5888422354587768,
+ "auc_refit_in_region": 0.5415161279822933
+}

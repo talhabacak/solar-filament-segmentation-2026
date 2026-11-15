@@ -1,0 +1,37 @@
+{
+ "sub019 test (true .10)": {
+  "images": 178,
+  "per_image": 7.410112359550562,
+  "frac_touching": 0.0,
+  "mean_best_iou": 0.0,
+  "double_claimed": 0.0
+ },
+ "sub020 test (prod .187)": {
+  "images": 178,
+  "per_image": 7.258426966292135,
+  "frac_touching": 0.0,
+  "mean_best_iou": 0.0,
+  "double_claimed": 0.0
+ },
+ "sub015 test (true .10)": {
+  "images": 178,
+  "per_image": 7.157303370786517,
+  "frac_touching": 0.0,
+  "mean_best_iou": 0.0,
+  "double_claimed": 0.0
+ },
+ "sub018 test (prod .187)": {
+  "images": 178,
+  "per_image": 7.280898876404494,
+  "frac_touching": 0.0,
+  "mean_best_iou": 0.0,
+  "double_claimed": 0.0
+ },
+ "sub019 OOF (true .10)": {
+  "images": 690,
+  "per_image": 6.284057971014493,
+  "frac_touching": 0.0,
+  "mean_best_iou": 0.0,
+  "double_claimed": 0.0
+ }
+}

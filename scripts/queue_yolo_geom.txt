@@ -1,0 +1,8 @@
+# E185 -- the detector's augmentation contradicts the semantic lane's physics policy.
+# YOLO trains with translate 0.05 (+/-90 px of disk-centre jitter at 1792) and scale 0.10, while
+# the semantic lane deliberately excludes both because the disk is at a fixed centre with a
+# measured radius spread of 0.3%. Everything downstream (r_norm features, the R_MAX cut, the
+# magnetogram registration) assumes that fixed frame, and the detector's recall collapses exactly
+# where absolute position matters most (RQ 0.557 at r 0.8-0.9, 0.093 beyond).
+# Same recipe as e013 otherwise; read SELECTOR-FREE on pool reach (Talha's protocol correction).
+yolo_geom | python src/models/train_yolo.py --fold 0 --imgsz 1792 --epochs 40 --batch 2 --model yolo11m-seg.pt --translate 0.0 --scale 0.0 --name e013geom_yolo11m_f0_1792 && python src/models/cross_cache.py --spec 0g:outputs/runs/e013geom_yolo11m_f0_1792/weights/best.pt --splits train && echo "YOLO GEOM done"

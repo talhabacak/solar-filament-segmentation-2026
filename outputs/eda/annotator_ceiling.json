@@ -1,0 +1,53 @@
+{
+ "note": "LOAO+majority from annotator_ceiling.py run 2026-08-19 (stdout; crashed in union mode due to RAM). union/strict pending part2.",
+ "loao": {
+  "pq": 0.3399,
+  "sq": 0.6337,
+  "rq": 0.5364,
+  "tp": 4292,
+  "fp": 3709,
+  "fn": 3709
+ },
+ "loao_2copy": {
+  "pq": 0.3596
+ },
+ "loao_3copy": {
+  "pq": 0.3334
+ },
+ "loao_per_pred_pq": {
+  "p10": 0.139,
+  "p50": 0.343,
+  "p90": 0.537
+ },
+ "majority": {
+  "pq": 0.6414,
+  "sq": 0.7903,
+  "rq": 0.8116,
+  "tp": 3736,
+  "fp": 477,
+  "fn": 1257
+ },
+ "interpretation": [
+  "Single human annotator as submission: PQ ~0.34 on multi-copy scoring.",
+  "Majority-consensus masks: PQ ~0.64 (SQ 0.79, RQ 0.81) - consensus nearly doubles a single human.",
+  "Per-copy pooling makes consensus-vs-single-copy ~ the same 0.64 in expectation, so ~0.64 is the honest ceiling estimate for the hidden test regardless of its 111/30/39 multiplicity mix.",
+  "LB leader 0.53 is ~83% of this ceiling; winning target 0.55-0.60.",
+  "Training target strategy: consensus-calibrated (not single/random annotator) is metric-optimal at high score levels."
+ ],
+ "union": {
+  "pq": 0.6433696774129108,
+  "sq": 0.8242121358218409,
+  "rq": 0.78058748403576,
+  "tp": 4584,
+  "fp": 2168,
+  "fn": 409
+ },
+ "strict": {
+  "pq": 0.610019593740973,
+  "sq": 0.7873421756175629,
+  "rq": 0.7747833313546243,
+  "tp": 3263,
+  "fp": 167,
+  "fn": 1730
+ }
+}

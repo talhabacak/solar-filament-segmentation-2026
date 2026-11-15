@@ -1,0 +1,10 @@
+{
+ "n_gt": 1510,
+ "reachable": 1096,
+ "unreachable": 414,
+ "stale_gate": 440,
+ "correct_population": 414,
+ "overlap": 335,
+ "stale_only": 105,
+ "missed_by_stale": 79
+}

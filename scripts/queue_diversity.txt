@@ -1,0 +1,18 @@
+# Talha, 2026-09-12: "would a SwinV2-tiny at 512 extract different things than the b3 backbone?"
+# SwinV2 in smp needs a fixed input size (it asserts 256), so the transformer member is mit_b2
+# (SegFormer's MixTransformer encoder, 27.5M, resolution-free, ImageNet weights in smp).
+#
+# The point is DIVERSITY, not a better solo model: nine encoders already lost to b3 at matched
+# resolution, and the 1/k law (ledger 23) says another SIMILAR member is worth at most +0.0010.
+# A member with a different inductive bias is the only way past that, so the experiment is
+# ADDING a ninth member to ref8 and comparing against adding another b3 SEED -- the controlled
+# form of "does a transformer add what a CNN seed does not".
+#
+# 512 px is Talha's choice and it is a genuinely different scale regime (filaments ~1.5 px wide
+# against 4.5 px at 1536); the production ensemble already carries 768 px members at 1/6, so
+# low-resolution members are known to blend.
+mitcache | python src/data/build_semantic_cache.py --size 512 && echo "CACHE 512 done"
+mit512_f0 | python src/models/train_semantic.py --fold 0 --imgsz 512 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 8 --encoder mit_b2 --name sem_mitb2_f0_512_cldice --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_mitb2_f0_512_cldice/best.pt --fold 0 --tag _mit512 && echo "MIT512 f0 done"
+# the same architecture at the production resolution, so "different family" and "different
+# scale" are not confounded; queued second because 1536 costs 4x the time
+mit1536_f0 | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --encoder mit_b2 --name sem_mitb2_f0_1536_cldice --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_mitb2_f0_1536_cldice/best.pt --fold 0 --tag _mit1536 && echo "MIT1536 f0 done"

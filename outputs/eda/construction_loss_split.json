@@ -1,0 +1,7 @@
+{
+ "n_never": 414,
+ "n_recoverable": 147,
+ "alive_in_production": 0,
+ "killed_by_deoverlap": 75,
+ "killed_by_fusion": 72
+}

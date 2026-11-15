@@ -1,0 +1,7 @@
+{
+ "lane": "fold0_preds_tiled",
+ "n_never": 440,
+ "reach_050": 106,
+ "reach_frac": 0.2409090909090909,
+ "n_pred": 986
+}

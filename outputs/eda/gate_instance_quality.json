@@ -1,0 +1,26 @@
+{
+ "base": "outputs/semantic/fold0_probs_cldice.npz",
+ "cand": "outputs/semantic/fold0_probs_1536wdec4832.npz",
+ "per_instance_dice": {
+  "never-proposed": {
+   "base": 0.44400326990010175,
+   "cand": 0.4489610911934697
+  },
+  "matched": {
+   "base": 0.769385296827316,
+   "cand": 0.7674328577312693
+  },
+  "in-pool": {
+   "base": 0.4327995779140289,
+   "cand": 0.48238131213339436
+  }
+ },
+ "reach_net": {
+  "base": 1005,
+  "cand": 996
+ },
+ "pixel_dice": {
+  "base": 0.7084673431531574,
+  "cand": 0.7050018118483781
+ }
+}

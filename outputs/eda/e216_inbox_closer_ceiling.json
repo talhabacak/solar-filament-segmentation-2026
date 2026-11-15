@@ -1,0 +1,18 @@
+{
+ "n_copies": 1110,
+ "median_iou_now": 0.3734681586389085,
+ "box": {
+  "median_share_of_missing_inside": 0.37220808594854393,
+  "mean_share_of_missing_inside": 0.4785836873062585,
+  "median_iou_after_perfect_fill": 0.45365710712495777,
+  "copies_crossing_05": 412,
+  "pq_ceiling": 0.03359218113353153
+ },
+ "box15": {
+  "median_share_of_missing_inside": 0.8227645381659312,
+  "mean_share_of_missing_inside": 0.6907619545259084,
+  "median_iou_after_perfect_fill": 0.5126827689274649,
+  "copies_crossing_05": 592,
+  "pq_ceiling": 0.05444664376569353
+ }
+}

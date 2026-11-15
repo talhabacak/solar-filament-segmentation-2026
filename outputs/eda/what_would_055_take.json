@@ -1,0 +1,12 @@
+{
+ "sq_now": 0.6782,
+ "optimal_tiers": [
+  "1/1",
+  "1/2",
+  "2/2",
+  "2/3",
+  "3/3"
+ ],
+ "pq_perfect_recall": 0.6257741248462669,
+ "sq_overridden": true
+}

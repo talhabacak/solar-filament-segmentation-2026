@@ -1,0 +1,9 @@
+# Shell scripts must keep LF on every platform, or bash refuses them after a Windows checkout.
+*.sh text eol=lf
+# Submission files are written by pandas with the platform's native line ending, so they are
+# checked out the same way: a rebuilt file then compares equal byte for byte on any platform.
+outputs/submissions/*.csv text
+*.parquet binary
+*.joblib binary
+*.pdf binary
+*.png binary

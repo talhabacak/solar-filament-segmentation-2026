@@ -1,0 +1,5 @@
+# E181 -- anti-aliased downsampling. The encoder has no pooling to improve (ledger 29h); what it
+# has is five stride-2 convolutions that subsample without a low-pass, so content near Nyquist
+# aliases -- and a filament is 4.5 px wide at 1536, i.e. near Nyquist after two halvings.
+# conv(stride 1) + BlurPool(stride 2) keeps the pretrained weights valid and costs ~50% step time.
+blurpool_f0 | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --blurpool --name sem_b3_f0_1536_cldice_blurpool --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_1536_cldice_blurpool/best.pt --fold 0 --tag _blurpool && echo "BLURPOOL f0 done"

@@ -1,0 +1,2 @@
+# E178 replication on fold 1: one fold never funds a decision (the committee lesson, ledger 9).
+mit512_f1 | python src/models/train_semantic.py --fold 1 --imgsz 512 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 8 --encoder mit_b2 --name sem_mitb2_f1_512_cldice --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_mitb2_f1_512_cldice/best.pt --fold 1 --tag _mit512 && echo "MIT512 f1 done"

@@ -1,0 +1,6 @@
+# docs/v2 suggestion 01 section 5 (the one item of the four documents not yet measured):
+# centre-to-limb augmentation, done exactly as a rotation of the solar sphere (limb_aug.py),
+# with the frame's own limb-darkening profile and no gradient on the far-side lune. Same
+# recipe as the clDice baseline otherwise; judged in ref8's clDice slot against the seed
+# rerun (the same control WA-06 used) and, separately, on the r > 0.8 band.
+limbaug_f0 | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --limb-aug 0.35 --limb-aug-max-deg 50 --name sem_b3_f0_1536_cldice_limbaug --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_1536_cldice_limbaug/best.pt --fold 0 --tag _limbaug && echo "LIMBAUG f0 done"

@@ -1,0 +1,36 @@
+{
+ "split_recoverable": {
+  "n": 71,
+  "share": 0.034769833496571985,
+  "median_best1": 0.41617693522906796,
+  "median_union": 0.5678826895565093,
+  "drawn_by_all": 0.18309859154929578
+ },
+ "split_partial": {
+  "n": 56,
+  "share": 0.02742409402546523,
+  "median_best1": 0.2544043461673745,
+  "median_union": 0.41185494903348135,
+  "drawn_by_all": 0.05357142857142857
+ },
+ "single_too_small": {
+  "n": 573,
+  "share": 0.28060724779627816,
+  "median_best1": 0.4186851211072664,
+  "median_union": 0.4186851211072664,
+  "drawn_by_all": 0.12216404886561955
+ },
+ "other": {
+  "n": 1342,
+  "share": 0.6571988246816847,
+  "median_best1": 0.0,
+  "median_union": 0.0,
+  "drawn_by_all": 0.08196721311475409
+ },
+ "near_miss_0.4_0.5": {
+  "other": 458,
+  "single_too_small": 331,
+  "split_recoverable": 42,
+  "split_partial": 7
+ }
+}

@@ -1,0 +1,5 @@
+# E180 -- the decoder's nearest upsampling is the pipeline's one remaining lossy in-network
+# resampling (the encoder has no pooling; the label downsample was measured clean, ledger 29h).
+# Bilinear costs no parameters and no time; judged like every member, against ref8 AND the seed
+# floor, and read on the addressable population.
+interp_f0 | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --decoder-interp bilinear --name sem_b3_f0_1536_cldice_interp --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_1536_cldice_interp/best.pt --fold 0 --tag _interp && echo "INTERP f0 done"

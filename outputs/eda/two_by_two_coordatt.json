@@ -1,0 +1,95 @@
+{
+ "0": {
+  "base": {
+   "net": 1005,
+   "pixel_dice": 0.7084673431531574,
+   "dice_all": 0.6426966546732933,
+   "pops": {
+    "matched": 842,
+    "never-proposed": 104,
+    "in-pool": 59
+   },
+   "np_dice": 0.44400326990010175
+  },
+  "rerun": {
+   "net": 961,
+   "pixel_dice": 0.7044907640876334,
+   "dice_all": 0.6229135102088985,
+   "pops": {
+    "matched": 824,
+    "never-proposed": 76,
+    "in-pool": 61
+   },
+   "np_dice": 0.4134611045114861
+  },
+  "s1": {
+   "net": 948,
+   "pixel_dice": 0.6974384087455621,
+   "dice_all": 0.6196183179348331,
+   "pops": {
+    "matched": 817,
+    "never-proposed": 77,
+    "in-pool": 54
+   },
+   "np_dice": 0.4116928159189618
+  },
+  "s2": {
+   "net": 974,
+   "pixel_dice": 0.7017984719190316,
+   "dice_all": 0.6302559488357875,
+   "pops": {
+    "matched": 834,
+    "never-proposed": 88,
+    "in-pool": 52
+   },
+   "np_dice": 0.42588861916309034
+  }
+ },
+ "1": {
+  "base": {
+   "net": 1045,
+   "pixel_dice": 0.6975293218784105,
+   "dice_all": 0.6091472719133703,
+   "pops": {
+    "matched": 820,
+    "never-proposed": 117,
+    "in-pool": 108
+   },
+   "np_dice": 0.4102747829566499
+  },
+  "rerun": {
+   "net": 1039,
+   "pixel_dice": 0.6987786527709848,
+   "dice_all": 0.616507115149166,
+   "pops": {
+    "matched": 813,
+    "never-proposed": 114,
+    "in-pool": 112
+   },
+   "np_dice": 0.4117967257973535
+  },
+  "s1": {
+   "net": 1025,
+   "pixel_dice": 0.6963759344465879,
+   "dice_all": 0.6092006007169647,
+   "pops": {
+    "matched": 812,
+    "never-proposed": 108,
+    "in-pool": 105
+   },
+   "np_dice": 0.4014478810172179
+  },
+  "s2": {
+   "net": 1018,
+   "pixel_dice": 0.6954600618157329,
+   "dice_all": 0.6039032364985822,
+   "pops": {
+    "matched": 809,
+    "never-proposed": 108,
+    "in-pool": 101
+   },
+   "np_dice": 0.4001502655865962
+  }
+ },
+ "verdict": "INSIDE THE NOISE: not a replacement; committee-member candidate only"
+}

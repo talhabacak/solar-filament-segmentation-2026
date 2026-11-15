@@ -1,0 +1,26 @@
+{
+ "none": {
+  "contrast": -14.44132972317416,
+  "contrast_sd": 4.002136227377336,
+  "mask_kept": 1.0,
+  "ms_per_sample": 3.93
+ },
+ "light": {
+  "contrast": -13.80943328919129,
+  "contrast_sd": 3.7841599575462714,
+  "mask_kept": 1.0002020758038364,
+  "ms_per_sample": 13.27
+ },
+ "medium": {
+  "contrast": -13.716955011741513,
+  "contrast_sd": 4.118648102270354,
+  "mask_kept": 0.9999969073775392,
+  "ms_per_sample": 17.92
+ },
+ "heavy": {
+  "contrast": -12.91151283929698,
+  "contrast_sd": 4.420079870293314,
+  "mask_kept": 1.0004645033917219,
+  "ms_per_sample": 17.94
+ }
+}

@@ -1,0 +1,9 @@
+# Lane identity (ledger 27m): the fold-0 pilot says the selector gains +0.003 when it can see
+# which lane proposed a candidate, on top of the M2F lane's own +0.0025. The honest,
+# deployment-faithful read needs M2F candidates on every fold, so the four missing
+# Mask2Former folds are trained here (same recipe as m2f_swint_f0_1024: Swin-T COCO-instance
+# start, 1024 cached input, 25 epochs, batch 2) and their OOF candidates cached.
+m2f_f1 | python src/models/train_m2f.py --fold 1 --epochs 25 --name m2f_swint_f1_1024 && python src/models/cache_m2f_preds.py --weights outputs/runs_m2f/m2f_swint_f1_1024/last.pt --fold 1 && echo "M2F f1 done"
+m2f_f2 | python src/models/train_m2f.py --fold 2 --epochs 25 --name m2f_swint_f2_1024 && python src/models/cache_m2f_preds.py --weights outputs/runs_m2f/m2f_swint_f2_1024/last.pt --fold 2 && echo "M2F f2 done"
+m2f_f3 | python src/models/train_m2f.py --fold 3 --epochs 25 --name m2f_swint_f3_1024 && python src/models/cache_m2f_preds.py --weights outputs/runs_m2f/m2f_swint_f3_1024/last.pt --fold 3 && echo "M2F f3 done"
+m2f_f4 | python src/models/train_m2f.py --fold 4 --epochs 25 --name m2f_swint_f4_1024 && python src/models/cache_m2f_preds.py --weights outputs/runs_m2f/m2f_swint_f4_1024/last.pt --fold 4 && echo "M2F f4 done"

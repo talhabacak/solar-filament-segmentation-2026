@@ -1,0 +1,4 @@
+# Speculative but free (the A100 is otherwise idle): folds 3 and 4 of the transformer member are
+# needed the moment the fold-1 replication lands positive, and each costs ~40 min at 512.
+mit512_f3 | python src/models/train_semantic.py --fold 3 --imgsz 512 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 8 --encoder mit_b2 --name sem_mitb2_f3_512_cldice --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_mitb2_f3_512_cldice/best.pt --fold 3 --tag _mit512 && echo "MIT512 f3 done"
+mit512_f4 | python src/models/train_semantic.py --fold 4 --imgsz 512 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 8 --encoder mit_b2 --name sem_mitb2_f4_512_cldice --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_mitb2_f4_512_cldice/best.pt --fold 4 --tag _mit512 && echo "MIT512 f4 done"

@@ -1,0 +1,28 @@
+# E156 -- resolution, the one training-side question that was never asked cleanly.
+#
+# After E140 (adding members is capped), E152 (selection is at the annotator
+# ceiling) and the string of sub-floor member changes, what is left is absolute
+# mask quality: a field that agrees better with EVERY annotator, not a better
+# choice among the candidates we already have. Input resolution is the obvious
+# lever and it has never been tested on its own.
+#
+# The pipeline trains at 1536 from 2048-pixel frames, so it throws away a quarter
+# of the linear detail before the encoder sees it, and filaments are thin -- the
+# structures we lose are exactly the ones the width_proxy statistics put at 12-14
+# pixels, i.e. 9-10 pixels after the downscale. The one 2048 arm this project has
+# (sem_b3_f0_2048_cldice_b2) changed the ENCODER at the same time, because b3 at
+# 2048 did not fit on the card available then. This A100 has 80 GB, so the clean
+# single-variable run is finally possible: same b3, same recipe, same schedule,
+# 2048 instead of 1536.
+#
+# Judged the way E144 fixed: swapped into the eight-member reference at matched
+# member count, on two folds, by the exact scorer.
+# the 2048 cache does not exist on a fresh VM: the bootstrap builds 1536 only, and
+# the first attempt died in five seconds on the missing index (caught by the runner's
+# new environment-failure hold rather than burning the queue).
+cache2048 | python src/data/build_semantic_cache.py --size 2048 && echo "CACHE 2048 done"
+res2048_f0 | python src/models/train_semantic.py --fold 0 --imgsz 2048 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --name sem_b3_f0_2048_cldice --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_2048_cldice/best.pt --fold 0 --tag _res2048 && echo "RES2048 f0 done"
+res2048_f1 | python src/models/train_semantic.py --fold 1 --imgsz 2048 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --name sem_b3_f1_2048_cldice --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f1_2048_cldice/best.pt --fold 1 --tag _res2048 && echo "RES2048 f1 done"
+# completes the nested instrument on the second fold we test on
+nest_f1_v1 | python src/models/train_semantic.py --fold 0 --exclude 1 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --name sem_b3_nest1_v1 --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_nest1_v1/best.pt --fold 1 --tag _nest1_v1 && echo "NEST f1 v1 done"
+nest_f1_v2 | python src/models/train_semantic.py --fold 2 --exclude 1 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --name sem_b3_nest1_v2 --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_nest1_v2/best.pt --fold 1 --tag _nest1_v2 && echo "NEST f1 v2 done"

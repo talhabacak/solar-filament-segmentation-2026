@@ -1,0 +1,23 @@
+{
+ "nms": {
+  "0.3": {
+   "candidates": 1757,
+   "per_image": 12.55
+  },
+  "0.4": {
+   "candidates": 1882,
+   "per_image": 13.442857142857143
+  },
+  "0.5": {
+   "candidates": 1987,
+   "per_image": 14.192857142857143
+  }
+ },
+ "guard": {
+  "count_match": 0.9714285714285714,
+  "mean_iou": 0.9892746838862975,
+  "total_prod": 1991,
+  "total_new": 1987,
+  "passed": true
+ }
+}

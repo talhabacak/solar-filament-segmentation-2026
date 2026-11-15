@@ -1,0 +1,33 @@
+# credentials: never commit
+kaggle.json
+
+# competition data (large, licensed); the frozen split definitions are kept
+data/*
+!data/splits/
+
+# external material: never versioned
+data/external/
+outputs/external/
+outputs/magnetograms/
+
+# network weights and heavy derived artefacts (weights are a release asset, see README)
+*.pt
+*.pth
+*.onnx
+*.npz
+*.fits
+*.zip
+*.tar
+*.cache
+outputs/runs/
+outputs/runs_aug/
+outputs/oof_cache/
+outputs/semantic/
+outputs/submissions/*_reproduced.csv
+
+# build products
+report/short/build/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ipynb_checkpoints/

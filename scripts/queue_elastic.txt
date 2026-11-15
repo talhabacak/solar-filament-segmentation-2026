@@ -1,0 +1,6 @@
+# E177 -- elastic shape jitter, the one augmentation family never tried here. Aimed at the
+# measured shape loss (E170: the addressable misses are a shape problem, 46% lateral / 38%
+# width of the boundary band). Amplitude 3 px at 2048 moves a mask to IoU 0.73 of itself,
+# inside the annotators' own 0.629 median agreement, and the field is tapered to zero before
+# the limb so the fixed disk geometry is untouched.
+elastic_f0 | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --elastic 0.5 --name sem_b3_f0_1536_cldice_elastic --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_1536_cldice_elastic/best.pt --fold 0 --tag _elastic && echo "ELASTIC f0 done"

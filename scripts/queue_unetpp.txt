@@ -1,0 +1,6 @@
+# E187 -- UnetPlusPlus, the one mainstream U-Net variant this project never tried. Its nested
+# dense skips re-use the intermediate decoder features at every level, which is where E171
+# located the load (zeroing the 384 px skip costs thin copies 0.106 IoU, the 96 px skip costs
+# faint ones 0.104), and it costs 0.5M parameters over the 13.2M baseline. Judged like every
+# member: ref8 swap, against the reference AND the same-recipe seed rerun, then on the 41.
+unetpp_f0 | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --arch unetpp --name sem_b3_f0_1536_cldice_unetpp --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_1536_cldice_unetpp/best.pt --fold 0 --tag _unetpp && echo "UNETPP f0 done"

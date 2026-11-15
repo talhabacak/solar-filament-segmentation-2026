@@ -1,0 +1,18 @@
+# E144 -- the nested reference: make the local instrument structurally identical to
+# the submitted field. Talha: "neden en iyi submission modeline gore denemedin".
+#
+# Every local number so far was measured against a two-member field while the
+# submission uses twelve, and E140's 1/k law says that inflates any variance-
+# reduction gain about sixfold. The eight-member committee fixes the COUNT today
+# (E144, CPU), but not the KIND: the submitted field's members differ by which
+# fold they held out, i.e. by data, and no honest fold-diverse field exists
+# locally because every other fold's model has seen fold 0.
+#
+# These four runs build one. Each trains on three of folds 1-4 and never sees
+# fold 0, so averaging their fold-0 predictions is honest AND fold-diverse --
+# the same structure the submission has. After this, a change is tested by
+# swapping a member inside that reference, which is what deployment actually does.
+nest_f0_v1 | python src/models/train_semantic.py --fold 1 --exclude 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --name sem_b3_nest0_v1 --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_nest0_v1/best.pt --fold 0 --tag _nest0_v1 && echo "NEST f0 v1 done"
+nest_f0_v2 | python src/models/train_semantic.py --fold 2 --exclude 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --name sem_b3_nest0_v2 --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_nest0_v2/best.pt --fold 0 --tag _nest0_v2 && echo "NEST f0 v2 done"
+nest_f0_v3 | python src/models/train_semantic.py --fold 3 --exclude 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --name sem_b3_nest0_v3 --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_nest0_v3/best.pt --fold 0 --tag _nest0_v3 && echo "NEST f0 v3 done"
+nest_f0_v4 | python src/models/train_semantic.py --fold 4 --exclude 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --name sem_b3_nest0_v4 --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_nest0_v4/best.pt --fold 0 --tag _nest0_v4 && echo "NEST f0 v4 done"

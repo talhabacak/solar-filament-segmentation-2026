@@ -1,0 +1,44 @@
+{
+ "pool": "fused_pool_f0_committee_blob_t025.parquet",
+ "prod_0.4_0.55": {
+  "kept": 877,
+  "pq": 0.4503166410748631,
+  "tp": 969,
+  "fp": 447,
+  "fn": 541
+ },
+ "committee_0.4_0.55": {
+  "kept": 861,
+  "pq": 0.45164839537740986,
+  "tp": 963,
+  "fp": 425,
+  "fn": 547
+ },
+ "delta_0.4_0.55": 0.0013317543025467837,
+ "prod_0.4_0.6": {
+  "kept": 800,
+  "pq": 0.4473884646499998,
+  "tp": 922,
+  "fp": 374,
+  "fn": 588
+ },
+ "committee_0.4_0.6": {
+  "kept": 755,
+  "pq": 0.4445957945746439,
+  "tp": 891,
+  "fp": 328,
+  "fn": 619
+ },
+ "delta_0.4_0.6": -0.002792670075355941,
+ "control_ok": false,
+ "interval": {
+  "observed": -0.002792670075355941,
+  "ci": [
+   -0.010832204297007814,
+   0.004901026377249261
+  ],
+  "sd": 0.0040232165855881965,
+  "p_gt0": 0.2345,
+  "final": "OPEN: delta -0.0028, P(delta>0) 0.23; one fold cannot resolve it -- the seed-rerun control decides whether this is variance reduction"
+ }
+}

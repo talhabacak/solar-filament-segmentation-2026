@@ -1,0 +1,12 @@
+{
+ "a": "fused_pool_all_blob5.parquet",
+ "b": "fused_pool_all_blob5.parquet",
+ "mean_a": 0.43541513813276345,
+ "mean_b": 0.4359386370003316,
+ "paired_mean": 0.0005234988675682783,
+ "paired_sd": 0.0011272619714059338,
+ "paired_se": 0.0002520634396514092,
+ "t": 2.0768536218193736,
+ "wins": 12,
+ "n": 20
+}

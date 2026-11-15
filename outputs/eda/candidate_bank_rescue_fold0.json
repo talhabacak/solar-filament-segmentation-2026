@@ -1,0 +1,75 @@
+{
+ "fold": 0,
+ "res": {
+  "prod": {
+   "n": 849,
+   "pq": 0.5357880875375828,
+   "sq": 0.6719347580095355,
+   "rq": 0.7973811164713991,
+   "fn": 351,
+   "fp": 237,
+   "added": 0
+  },
+  "rescue": {
+   "n": 870,
+   "pq": 0.5302783047657234,
+   "sq": 0.6717774379026911,
+   "rq": 0.7893660531697342,
+   "fn": 350,
+   "fp": 268,
+   "added": 30
+  },
+  "rescue_orc": {
+   "n": 905,
+   "pq": 0.542698576942121,
+   "sq": 0.6680223254320365,
+   "rq": 0.8123958680439853,
+   "fn": 289,
+   "fp": 274,
+   "added": 84
+  }
+ },
+ "t_star": 0.88,
+ "thresholds": [
+  0.88,
+  0.9,
+  0.9,
+  0.88,
+  0.82
+ ],
+ "auc": 0.8383260711692084,
+ "ap": 0.42642386582873865,
+ "base_rate": 0.08383233532934131,
+ "ceiling": 0.04682317382725765,
+ "features": [
+  "b_area",
+  "b_r_norm",
+  "b_conf",
+  "b_n_members",
+  "b_n_det",
+  "b_from_det",
+  "b_from_sem",
+  "b_det_conf_mean",
+  "b_sem_prob_mean",
+  "b_sem_prob_p90",
+  "b_sem_frac_over_50",
+  "b_log_area",
+  "b_width",
+  "semcut_area_ratio_to_vote50",
+  "semcut_sem_prob_mean",
+  "semcut_sem_prob_p90",
+  "semcut_sem_frac_over_50",
+  "union_area_ratio_to_vote50",
+  "union_sem_prob_mean",
+  "union_sem_prob_p90",
+  "union_sem_frac_over_50",
+  "er_vote_area_ratio_to_vote50",
+  "er_vote_sem_prob_mean",
+  "er_vote_sem_prob_p90",
+  "er_vote_sem_frac_over_50",
+  "vote65_area_ratio_to_vote50",
+  "vote65_sem_prob_mean",
+  "vote65_sem_prob_p90",
+  "vote65_sem_frac_over_50"
+ ]
+}

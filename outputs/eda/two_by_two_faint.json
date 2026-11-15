@@ -1,0 +1,64 @@
+{
+ "0": {
+  "base": {
+   "net": 1005,
+   "pixel_dice": 0.7084673431531574,
+   "dice_all": 0.6426966546732933,
+   "pops": {
+    "matched": 842,
+    "never-proposed": 104,
+    "in-pool": 59
+   },
+   "np_dice": 0.44400326990010175
+  },
+  "rerun": null,
+  "s1": {
+   "net": 980,
+   "pixel_dice": 0.7031144274943443,
+   "dice_all": 0.6398823999711557,
+   "pops": {
+    "matched": 833,
+    "never-proposed": 86,
+    "in-pool": 61
+   },
+   "np_dice": 0.4332428922697117
+  },
+  "s2": null
+ },
+ "1": {
+  "base": {
+   "net": 1045,
+   "pixel_dice": 0.6975293218784105,
+   "dice_all": 0.6091472719133703,
+   "pops": {
+    "matched": 820,
+    "never-proposed": 117,
+    "in-pool": 108
+   },
+   "np_dice": 0.4102747829566499
+  },
+  "rerun": {
+   "net": 1039,
+   "pixel_dice": 0.6987786527709848,
+   "dice_all": 0.616507115149166,
+   "pops": {
+    "matched": 813,
+    "never-proposed": 114,
+    "in-pool": 112
+   },
+   "np_dice": 0.4117967257973535
+  },
+  "s1": {
+   "net": 1029,
+   "pixel_dice": 0.6937893652935083,
+   "dice_all": 0.6127425464634759,
+   "pops": {
+    "matched": 816,
+    "never-proposed": 115,
+    "in-pool": 98
+   },
+   "np_dice": 0.4190386880406634
+  },
+  "s2": null
+ }
+}

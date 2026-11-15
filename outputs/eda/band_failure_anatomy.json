@@ -1,0 +1,38 @@
+{
+ "disc r<=0.8": {
+  "reached": 4318,
+  "selector": 817,
+  "boundary": 1749,
+  "not proposed": 242,
+  "n": 7126,
+  "preds": {
+   "true": 2922,
+   "boundary": 456,
+   "hallucination": 171
+  }
+ },
+ "limb 0.8-0.9": {
+  "reached": 476,
+  "selector": 174,
+  "boundary": 268,
+  "not proposed": 46,
+  "n": 964,
+  "preds": {
+   "true": 317,
+   "hallucination": 67,
+   "boundary": 53
+  }
+ },
+ "far limb >0.9": {
+  "reached": 8,
+  "selector": 38,
+  "boundary": 25,
+  "not proposed": 34,
+  "n": 105,
+  "preds": {
+   "hallucination": 8,
+   "true": 6,
+   "boundary": 1
+  }
+ }
+}

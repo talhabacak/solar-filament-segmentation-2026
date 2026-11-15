@@ -1,0 +1,7 @@
+# WA-06 pilot (docs/30): does a pretext task on the H-alpha frames themselves beat the
+# ImageNet start? Block-masked reconstruction (64 px blocks, 40% of on-disk blocks, L1 on
+# the hidden disk pixels) of the production U-Net on the 566 frames outside fold 0, then
+# the unchanged fold-0 recipe from those weights (--init). Judged at matched member count
+# against ref8 like every other member. Fold 1 only if fold 0 clears the floor.
+mim_x0 | python src/models/pretrain_mim.py --exclude-fold 0 --epochs 40 --name mim_x0 --resume
+mimft_f0 | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --init outputs/runs_semantic/mim_x0/mim.pt --name sem_b3_f0_1536_cldice_mimft --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_1536_cldice_mimft/best.pt --fold 0 --tag _mimft && echo "MIMFT f0 done"

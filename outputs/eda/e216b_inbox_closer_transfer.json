@@ -1,0 +1,20 @@
+{
+ "box": {
+  "pairs": 351,
+  "a_crossings": 166,
+  "b_crossings": 18,
+  "b_lost": 8,
+  "transfer": 0.060240963855421686,
+  "median_b_delta": 0.0044539260955583915,
+  "mean_b_delta": 0.01126665801487177
+ },
+ "box15": {
+  "pairs": 351,
+  "a_crossings": 216,
+  "b_crossings": 59,
+  "b_lost": 5,
+  "transfer": 0.25,
+  "median_b_delta": 0.015680242816079104,
+  "mean_b_delta": 0.032400870775590146
+ }
+}

@@ -1,0 +1,15 @@
+{
+ "n": 8199,
+ "outcome": {
+  "matched": 4802,
+  "shape": 2042,
+  "selector": 1029,
+  "never": 326
+ },
+ "auc_phys": 0.8044236793201538,
+ "auc_agree": 0.6583721249008576,
+ "auc_both": 0.8410793044846758,
+ "n_unambiguous": 1563,
+ "n_unambiguous_missed": 166,
+ "headroom_pq": 0.01576662143826323
+}

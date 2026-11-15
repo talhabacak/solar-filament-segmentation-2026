@@ -1,0 +1,24 @@
+# E151 -- the ranking axis, which E150 measured at +0.0321 and which is an order of
+# magnitude larger than anything else still open.
+#
+# Holding candidates, masks, budget and operating point fixed and improving only
+# the ranking takes 0.4422 to 0.4743. A perfect ranking swaps just 571 of the 4001
+# kept candidates: it drops ones that are 71.5% false with mean realised value
+# 0.181 and takes ones that are 23.1% false with value 0.594.
+#
+# The production selector cannot make those swaps because it never sees the image.
+# This trains a ResNet-18 on a three-channel patch per candidate -- H-alpha image,
+# probability field, the candidate's own mask -- and emits two out-of-fold columns
+# for the existing GBDT. Single variable: same gate, same policy, 42 features
+# against 44.
+#
+# Two sizes because the right patch scale is not obvious: filaments span two orders
+# of magnitude in area, and 128 may be too coarse for the small ones that E142
+# showed are dropped most often.
+patch_128 | python src/models/patch_selector.py --folds 0,1,2,3,4 --size 128 --epochs 12 --tag patch128 && echo "PATCH 128 done"
+patch_192 | python src/models/patch_selector.py --folds 0,1,2,3,4 --size 192 --epochs 12 --tag patch192 && echo "PATCH 192 done"
+# resumed after the ranking work: the second seed of the combined member, which
+# measures how much of a reference-swap reading is run-to-run noise
+long_inst_f0_s2 | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 60 --cldice 0.3 --inst-iou 0.5 --cache --workers 4 --batch 2 --name sem_b3_f0_1536_longinst_s2 --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_1536_longinst_s2/best.pt --fold 0 --tag _longinst_s2 && echo "LONGINST f0 s2 done"
+nest_f1_v1 | python src/models/train_semantic.py --fold 0 --exclude 1 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --name sem_b3_nest1_v1 --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_nest1_v1/best.pt --fold 1 --tag _nest1_v1 && echo "NEST f1 v1 done"
+nest_f1_v2 | python src/models/train_semantic.py --fold 2 --exclude 1 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --name sem_b3_nest1_v2 --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_nest1_v2/best.pt --fold 1 --tag _nest1_v2 && echo "NEST f1 v2 done"

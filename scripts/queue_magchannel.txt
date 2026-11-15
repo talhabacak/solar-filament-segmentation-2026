@@ -1,0 +1,30 @@
+# E162 -- the magnetogram as a U-Net input channel, the one funded use of the field.
+#
+# E161: magnetic inputs alone predict "some annotator marked this pixel" at AUC
+# 0.673 and lift the production field's own pixel AUC 0.884 -> 0.911. The selector
+# summaries (E160, TIED) and the generation prior (E159) did not pay; the pixel level
+# is where the information is, and only the network can use it there.
+#
+# Same recipe as the baseline in every respect except --channels mag: the raw image
+# keeps its slot, channel 2 is the smoothed signed field (+/-50 G, polarity is the
+# information), channel 3 is log distance to the nearest polarity inversion line.
+# Channel dropout 15% in training so a frame without a magnetogram (SDO eclipse
+# seasons) is in-distribution. Judged at matched member count on folds 0 and 1,
+# exactly as E156b judged resolution.
+magch_f0 | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --channels mag --name sem_b3_f0_1536_cldice_mag --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_1536_cldice_mag/best.pt --fold 0 --tag _mag && echo "MAGCH f0 done"
+magch_f1 | python src/models/train_semantic.py --fold 1 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --channels mag --name sem_b3_f1_1536_cldice_mag --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f1_1536_cldice_mag/best.pt --fold 1 --tag _mag && echo "MAGCH f1 done"
+# E163 -- the STUDENT: H-alpha only at input, an auxiliary head regressing the two
+# magnetic channels during training (privileged information), dropped at inference.
+# This is the only form in which the field can reach the final model under the
+# organiser's rule (inference solely on the provided H-alpha). Same recipe as the
+# baseline otherwise; judged at matched member count like everything else.
+auxmag_f0 | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --aux-mag 0.5 --name sem_b3_f0_1536_cldice_auxmag --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_1536_cldice_auxmag/best.pt --fold 0 --tag _auxmag && echo "AUXMAG f0 done"
+auxmag_f1 | python src/models/train_semantic.py --fold 1 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --aux-mag 0.5 --name sem_b3_f1_1536_cldice_auxmag --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f1_1536_cldice_auxmag/best.pt --fold 1 --tag _auxmag && echo "AUXMAG f1 done"
+# second seed of the student on fold 0: the noise floor for the student-vs-baseline
+# comparison, needed whatever the teacher verdict turns out to be
+# fold-0 teacher re-run under a NEW name (no --resume collision): the first run's files
+# score 0.28 val Dice on reload against a logged 0.70, while fold 1 reproduces exactly;
+# the likeliest cause is two overlapping runner instances writing the same directory
+
+magch_f0_v2 | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --channels mag --name sem_b3_f0_1536_cldice_mag_v2 && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_1536_cldice_mag_v2/best.pt --fold 0 --tag _mag_v2 && echo "MAGCH f0 v2 done"
+auxmag_f0_s2 | python src/models/train_semantic.py --fold 0 --imgsz 1536 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --aux-mag 0.5 --name sem_b3_f0_1536_cldice_auxmag_s2 --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f0_1536_cldice_auxmag_s2/best.pt --fold 0 --tag _auxmag_s2 && echo "AUXMAG f0 s2 done"

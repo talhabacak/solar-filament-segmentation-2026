@@ -1,0 +1,22 @@
+{
+  "baseline_pq": 0.43600932310136425,
+  "baseline_sq": 0.6789604812058434,
+  "baseline_rq": 0.6421718718105736,
+  "fn_breakdown": {
+    "missed": 2392,
+    "partial": 802,
+    "fragmented": 82,
+    "merged": 204
+  },
+  "fp_breakdown": {
+    "partial_pair": 1039,
+    "hallucination": 618,
+    "fragment": 36,
+    "merge": 86
+  },
+  "n_topological_fn": 286,
+  "topological_fn_pct": 8.218390804597702,
+  "oracle_pq": 0.45733089407647487,
+  "oracle_delta_pq": 0.021321570975110615,
+  "gate_passed": true
+}

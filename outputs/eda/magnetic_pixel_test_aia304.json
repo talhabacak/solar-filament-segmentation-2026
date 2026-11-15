@@ -1,0 +1,9 @@
+{
+ "n_images": 89,
+ "n_pixels": 278199,
+ "auc_magnetic": 0.6849569888575613,
+ "auc_halpha": 0.8814877533897203,
+ "auc_both": 0.8998239705377487,
+ "auc_matched_control": 0.8889417180971083,
+ "auc_shuffled": 0.8891816688889767
+}

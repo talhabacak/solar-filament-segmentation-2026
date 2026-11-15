@@ -1,0 +1,95 @@
+{
+ "0": {
+  "base": {
+   "net": 1005,
+   "pixel_dice": 0.7084673431531574,
+   "dice_all": 0.6426966546732933,
+   "pops": {
+    "matched": 842,
+    "never-proposed": 104,
+    "in-pool": 59
+   },
+   "np_dice": 0.44400326990010175
+  },
+  "rerun": {
+   "net": 961,
+   "pixel_dice": 0.7044907640876334,
+   "dice_all": 0.6229135102088985,
+   "pops": {
+    "matched": 824,
+    "never-proposed": 76,
+    "in-pool": 61
+   },
+   "np_dice": 0.4134611045114861
+  },
+  "s1": {
+   "net": 1022,
+   "pixel_dice": 0.7035675983969283,
+   "dice_all": 0.6651660430761719,
+   "pops": {
+    "matched": 849,
+    "never-proposed": 92,
+    "in-pool": 81
+   },
+   "np_dice": 0.4570397010357186
+  },
+  "s2": {
+   "net": 1039,
+   "pixel_dice": 0.7073531703071044,
+   "dice_all": 0.6689690525597818,
+   "pops": {
+    "matched": 857,
+    "never-proposed": 100,
+    "in-pool": 82
+   },
+   "np_dice": 0.4700405680426743
+  }
+ },
+ "1": {
+  "base": {
+   "net": 1045,
+   "pixel_dice": 0.6975293218784105,
+   "dice_all": 0.6091472719133703,
+   "pops": {
+    "matched": 820,
+    "never-proposed": 117,
+    "in-pool": 108
+   },
+   "np_dice": 0.4102747829566499
+  },
+  "rerun": {
+   "net": 1039,
+   "pixel_dice": 0.6987786527709848,
+   "dice_all": 0.616507115149166,
+   "pops": {
+    "matched": 813,
+    "never-proposed": 114,
+    "in-pool": 112
+   },
+   "np_dice": 0.4117967257973535
+  },
+  "s1": {
+   "net": 1090,
+   "pixel_dice": 0.7006307655163618,
+   "dice_all": 0.6469354290080377,
+   "pops": {
+    "matched": 835,
+    "never-proposed": 125,
+    "in-pool": 130
+   },
+   "np_dice": 0.43780768854921653
+  },
+  "s2": {
+   "net": 1094,
+   "pixel_dice": 0.7050730414927479,
+   "dice_all": 0.6561368096908128,
+   "pops": {
+    "matched": 829,
+    "never-proposed": 117,
+    "in-pool": 148
+   },
+   "np_dice": 0.4572494794570129
+  }
+ },
+ "verdict": "PASS: beats the baseline seed mean on every fold by more than the seed spread"
+}

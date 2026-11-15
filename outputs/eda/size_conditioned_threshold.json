@@ -1,0 +1,22 @@
+{
+ "production fixed 0.30": {
+  "matched": 842,
+  "unreachable": 2,
+  "other": 161
+ },
+ "doc rule, mild": {
+  "matched": 838,
+  "unreachable": 5,
+  "other": 159
+ },
+ "doc rule, as written": {
+  "matched": 834,
+  "unreachable": 9,
+  "other": 155
+ },
+ "inverted (sanity)": {
+  "matched": 842,
+  "unreachable": 8,
+  "other": 155
+ }
+}

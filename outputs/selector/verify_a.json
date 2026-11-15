@@ -1,0 +1,68 @@
+{
+  "deoverlap_rebuild": {
+    "n_saved": 1921,
+    "n_rebuilt": 1921,
+    "n_id_match": 1921,
+    "n_rle_equal": 1921
+  },
+  "label_reproduction": {
+    "all_cand_pq": 0.309403048693036,
+    "weight_equal": 1921,
+    "of": 1921,
+    "iou_sum_maxdiff": 0.0
+  },
+  "exact_parity": {
+    "baseline": {
+      "pq": 0.4177755259534218,
+      "claimed": 0.4177755259534218,
+      "diff": 0.0,
+      "tp": 872,
+      "fp": 428,
+      "fn": 638,
+      "n_kept": 805
+    },
+    "hybrid": {
+      "pq": 0.4280248506863912,
+      "claimed": 0.4280248506863912,
+      "diff": 0.0,
+      "tp": 958,
+      "fp": 532,
+      "fn": 552,
+      "n_kept": 934
+    },
+    "oracle": {
+      "pq": 0.5114237355724789,
+      "claimed": 0.5114237355724789,
+      "diff": 0.0,
+      "tp": 1070,
+      "fp": 212,
+      "fn": 440,
+      "n_kept": 771
+    },
+    "selector_t30": {
+      "pq": 0.4146996186238736,
+      "claimed": 0.4146996186238736,
+      "diff": 0.0,
+      "tp": 935,
+      "fp": 577,
+      "fn": 575,
+      "n_kept": 942
+    }
+  },
+  "auc": {
+    "saved": 0.8698516889415214,
+    "reproduced": 0.8698516889415214,
+    "p_maxdiff": 0.0,
+    "fresh_seeds": [
+      0.8739762025601985,
+      0.8728246771555855,
+      0.8728348277223257
+    ],
+    "fresh_mean": 0.8732119024793699
+  },
+  "feature_spotcheck": {
+    "n_checked": 25,
+    "n_mismatch": 0,
+    "mismatches": []
+  }
+}

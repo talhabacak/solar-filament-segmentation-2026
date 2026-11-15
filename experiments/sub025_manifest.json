@@ -1,0 +1,33 @@
+{
+ "submission": "sub025",
+ "kaggle_ref": "56019001",
+ "file": "outputs/submissions/sub025_blob5_p060.csv",
+ "generated": "2026-09-04T19:27:31",
+ "dirty_tree": true,
+ "recipe": "recipe_blob5_50",
+ "shrink": "shrink_frac nominal 0.05 (production one-pixel ring erosion, ~18.7% area)",
+ "selector": "outputs/selector/selector_v5_shrunkblob5prodts.joblib",
+ "policy": {
+  "conf": 0.40,
+  "p": 0.60,
+  "two_stage": true,
+  "features": 32
+ },
+ "metrics_oof_cv": {
+  "delta_mean_pq": "+0.0053",
+  "fold0_delta": "+0.0073",
+  "fold1_delta": "+0.0036",
+  "fold2_delta": "+0.0068",
+  "fold3_delta": "+0.0051",
+  "fold4_delta": "+0.0036",
+  "fp_reduction": "-471 FPs on OOF pool"
+ },
+ "detector_models": "0n,1n,2n,3n,4n",
+ "split": "data/splits/folds_v1.parquet",
+ "sha256": {
+  "outputs/submissions/sub025_blob5_p060.csv": "405850fa37ca2fda2f3e632b5d4cec4b72a65c8c737e68b70d4a3219698ef56a",
+  "outputs/selector/selector_v5_shrunkblob5prodts.joblib": "db4e6e13ad24ef98a31aab26c9e4ecf309de2cfff4f3a0556bca64fe4f8e12bd",
+  "data/splits/folds_v1.parquet": "5f46ae0fa8f91d687ef08d53d70b140208a0a526868dff2ee40b3adc3728addd",
+  "outputs/semantic/test_probs_recipe_blob5_50.npz": "a6eafdb673e7a358960f6490b66887ce7137f128d1ddb50f45bcb4e4dc00482b"
+ }
+}

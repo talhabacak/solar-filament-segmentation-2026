@@ -1,0 +1,5 @@
+# Speculative: the fold-0/1 resolution verdict (E156b) is about 25 minutes away and
+# the shared card is idle. Fold 2 starts now on the bet that it passes; if E156b reads
+# negative this job is killed and at most half an hour of card time is lost. Folds 3
+# and 4 are added only on a positive verdict.
+res2048_f2 | python src/models/train_semantic.py --fold 2 --imgsz 2048 --epochs 30 --cldice 0.3 --cache --workers 4 --batch 2 --name sem_b3_f2_2048_cldice --resume && python src/models/semantic_candidates.py --weights outputs/runs_semantic/sem_b3_f2_2048_cldice/best.pt --fold 2 --tag _res2048 && echo "RES2048 f2 done"

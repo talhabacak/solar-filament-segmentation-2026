@@ -1,0 +1,95 @@
+[
+ {
+  "imgsz": 1024,
+  "batch": 2,
+  "decoder_channels": null,
+  "ckpt": false,
+  "status": "OOM"
+ },
+ {
+  "imgsz": 1024,
+  "batch": 2,
+  "decoder_channels": null,
+  "ckpt": true,
+  "peak_gb": 18.438108444213867,
+  "ms_step": 11649.913430213928
+ },
+ {
+  "imgsz": 1024,
+  "batch": 2,
+  "decoder_channels": 128,
+  "ckpt": false,
+  "status": "OOM"
+ },
+ {
+  "imgsz": 1024,
+  "batch": 2,
+  "decoder_channels": 128,
+  "ckpt": true,
+  "peak_gb": 18.390435218811035,
+  "ms_step": 14326.722741127014
+ },
+ {
+  "imgsz": 1024,
+  "batch": 2,
+  "decoder_channels": 64,
+  "ckpt": false,
+  "status": "OOM"
+ },
+ {
+  "imgsz": 1024,
+  "batch": 2,
+  "decoder_channels": 64,
+  "ckpt": true,
+  "peak_gb": 18.376778602600098,
+  "ms_step": 12785.65263748169
+ },
+ {
+  "imgsz": 768,
+  "batch": 2,
+  "decoder_channels": null,
+  "ckpt": false,
+  "peak_gb": 14.795117855072021,
+  "ms_step": 1513.1981372833252
+ },
+ {
+  "imgsz": 768,
+  "batch": 2,
+  "decoder_channels": null,
+  "ckpt": true,
+  "peak_gb": 6.286203384399414,
+  "ms_step": 324.2964744567871
+ },
+ {
+  "imgsz": 768,
+  "batch": 2,
+  "decoder_channels": 128,
+  "ckpt": false,
+  "peak_gb": 14.217010974884033,
+  "ms_step": 425.25315284729004
+ },
+ {
+  "imgsz": 768,
+  "batch": 2,
+  "decoder_channels": 128,
+  "ckpt": true,
+  "peak_gb": 6.244633674621582,
+  "ms_step": 291.1769151687622
+ },
+ {
+  "imgsz": 768,
+  "batch": 2,
+  "decoder_channels": 64,
+  "ckpt": false,
+  "peak_gb": 13.928637504577637,
+  "ms_step": 332.8012228012085
+ },
+ {
+  "imgsz": 768,
+  "batch": 2,
+  "decoder_channels": 64,
+  "ckpt": true,
+  "peak_gb": 6.229771614074707,
+  "ms_step": 278.2588005065918
+ }
+]

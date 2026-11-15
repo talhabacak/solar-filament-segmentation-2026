@@ -1,0 +1,38 @@
+{
+ "cc0.2": {
+  "never": 98,
+  "matched": 841
+ },
+ "cc0.3": {
+  "never": 105,
+  "matched": 844
+ },
+ "cc0.4": {
+  "never": 104,
+  "matched": 835
+ },
+ "cc0.5": {
+  "never": 90,
+  "matched": 817
+ },
+ "cc0.6": {
+  "never": 95,
+  "matched": 809
+ },
+ "cc0.7": {
+  "never": 93,
+  "matched": 788
+ },
+ "cc0.8": {
+  "never": 91,
+  "matched": 780
+ },
+ "hyst": {
+  "never": 93,
+  "matched": 800
+ },
+ "oracle_thr": {
+  "never": 138,
+  "matched": 861
+ }
+}

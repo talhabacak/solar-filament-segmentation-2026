@@ -1,0 +1,13 @@
+{
+ "counts": {
+  "rejected false": 5134,
+  "kept true": 3245,
+  "REJECTED TRUE": 907,
+  "kept false": 756
+ },
+ "n_rejected_true": 907,
+ "in_band_auc": 0.6009387096774194,
+ "band_n": 1620,
+ "band_purity": 0.38271604938271603,
+ "top20_purity": 0.5061728395061729
+}

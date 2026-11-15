@@ -1,0 +1,70 @@
+{
+ "fold": 0,
+ "res": {
+  "prod": {
+   "n": 849,
+   "pq": 0.5357880875375828,
+   "sq": 0.6719347580095355,
+   "rq": 0.7973811164713991,
+   "fn": 351,
+   "fp": 237,
+   "deviations": 0,
+   "dev_help": 0,
+   "dev_hurt": 0,
+   "margin": 9.9
+  },
+  "asym_m0.10": {
+   "n": 849,
+   "pq": 0.5344725337873074,
+   "sq": 0.672027423332221,
+   "rq": 0.7953135768435562,
+   "fn": 354,
+   "fp": 240,
+   "deviations": 3,
+   "dev_help": 0,
+   "dev_hurt": 3,
+   "margin": 0.1
+  },
+  "asym_m0": {
+   "n": 843,
+   "pq": 0.5190425753758555,
+   "sq": 0.6770528264162017,
+   "rq": 0.7666204986149584,
+   "fn": 401,
+   "fp": 273,
+   "deviations": 543,
+   "dev_help": 206,
+   "dev_hurt": 246,
+   "margin": 0.0
+  }
+ },
+ "margin": 0.1,
+ "margins": [
+  0.12,
+  0.04,
+  0.1,
+  0.13,
+  0.04
+ ],
+ "spearman": 0.14533516596409624,
+ "ceiling": 0.04682317382725765,
+ "features": [
+  "v_idx",
+  "area_ratio",
+  "log_area_b",
+  "width_b",
+  "r_norm",
+  "conf_b",
+  "n_members",
+  "n_det",
+  "from_det",
+  "from_sem",
+  "det_conf_mean",
+  "union_ratio",
+  "v65_ratio",
+  "sem_prob_b",
+  "d_sem_prob",
+  "d_sem_p90",
+  "d_sem_frac"
+ ]
+}

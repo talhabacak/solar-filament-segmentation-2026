@@ -1,0 +1,31 @@
+kept 3963: TP 3211, partial_pair 521, hallucination 231
+
+medians per class
+cls                  TP  hallucination  partial_pair
+area           1297.000        698.000      1222.000
+bbox_aspect       1.684          1.711         1.645
+eccentricity      0.978          0.969         0.976
+solidity          0.623          0.736         0.643
+compactness       4.649          3.420         4.357
+skel_len        113.000         69.000       107.000
+width_proxy      13.852         12.500        13.730
+contrast          0.137          0.127         0.124
+dark_core         0.736          0.758         0.748
+fg_p05          100.000        100.000       101.000
+sem_prob_mean     0.894          0.861         0.882
+p_oof             0.824          0.682         0.727
+r_norm            0.574          0.670         0.570
+abs_lat          19.735         21.352        20.579
+from_det          1.000          1.000         1.000
+from_sem          1.000          1.000         1.000
+
+hallucinations by r band: <0.5 63, 0.5-0.8 92, 0.8-0.9 71, >0.9 5
+
+TP dark_core p10 = 0.661
+hallucinations compact (solidity>=0.8 & aspect<=2): 63/231 = 27.3%
+hallucinations compact AND darker than TP p10: 2/231 = 0.9%  <- sunspot-shaped proxy
+TPs that would trip the same proxy: 22/3211
+
+hallucinations by solidity bin: (0.0, 0.5] 26, (0.5, 0.65] 40, (0.65, 0.8] 72, (0.8, 0.9] 51, (0.9, 1.0] 34
+hallucinations by dark_core bin: (0.0, 0.5] 0, (0.5, 0.65] 13, (0.65, 0.8] 171, (0.8, 0.9] 47, (0.9, 2.0] 0
+hallucinations by provenance: (1, 0) 10, (1, 1) 221

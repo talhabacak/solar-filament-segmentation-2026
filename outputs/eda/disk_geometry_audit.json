@@ -1,0 +1,13 @@
+{
+ "n": 887,
+ "radius_median": 904.0611602847567,
+ "radius_min": 897.9122095086911,
+ "radius_max": 1034.2500051759648,
+ "assumed_radius": 900.0,
+ "rmax_true_median": 0.9656426338733839,
+ "within_site_sd": 27.296119284852367,
+ "between_site_sd": 3.0501603457713107,
+ "gt_rows": 8199,
+ "cut_true": 0,
+ "cut_assumed": 0
+}

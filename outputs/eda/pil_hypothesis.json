@@ -1,0 +1,64 @@
+{
+ "n_rows": 1876,
+ "n_images": 146,
+ "control_ok": true,
+ "medians": {
+  "pil_dist_mean": {
+   "dropped": 56.47669792175293,
+   "found": 49.00132942199707,
+   "never proposed": 47.788923263549805
+  },
+  "pil_frac_near": {
+   "dropped": 0.0,
+   "found": 0.0,
+   "never proposed": 0.0
+  },
+  "pil_strength": {
+   "dropped": 0.0,
+   "found": 0.0,
+   "never proposed": 0.0
+  },
+  "b_abs_mean": {
+   "dropped": 1.7342710494995117,
+   "found": 1.7900768518447876,
+   "never proposed": 1.8895343542099
+  },
+  "b_grad_mean": {
+   "dropped": 0.512135237455368,
+   "found": 0.5329139828681946,
+   "never proposed": 0.5442006587982178
+  }
+ },
+ "by_cat": {
+  "pil_dist_mean|dropped": {
+   "Left": 49.546688079833984,
+   "Right": 59.30769348144531,
+   "Unidentifiable": 56.22035598754883
+  },
+  "pil_dist_mean|found": {
+   "Left": 44.799156188964844,
+   "Right": 54.237985610961914,
+   "Unidentifiable": 51.40650177001953
+  },
+  "pil_dist_mean|never proposed": {
+   "Left": 44.68556785583496,
+   "Right": 46.50717544555664,
+   "Unidentifiable": 53.01764678955078
+  },
+  "pil_strength|dropped": {
+   "Left": 0.0,
+   "Right": 0.0,
+   "Unidentifiable": 0.0
+  },
+  "pil_strength|found": {
+   "Left": 0.0,
+   "Right": 0.0,
+   "Unidentifiable": 0.0
+  },
+  "pil_strength|never proposed": {
+   "Left": 0.0,
+   "Right": 0.0,
+   "Unidentifiable": 0.0
+  }
+ }
+}
