@@ -150,9 +150,7 @@ def main():
     if a.check:
         # compared with line endings normalised: a checkout or a ZIP download may hold the reference
         # file with LF while pandas writes the platform's ending (CRLF on Windows)
-        norm = lambda f: Path(f).read_bytes().replace(b"
-", b"
-")
+        norm = lambda f: Path(f).read_bytes().replace(b"\r\n", b"\n")
         same = norm(out) == norm(ROOT / a.check)
         print(f"byte-identical to {a.check} (line endings normalised): {same}")
         if not same:
