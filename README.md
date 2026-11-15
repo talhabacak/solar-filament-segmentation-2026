@@ -85,7 +85,9 @@ twelve semantic members on the test images, fuses and featurises the candidates 
 with the submitted file. The shipped pool, selector and submission are never overwritten; the
 evaluation cell rewrites `outputs/eda/pq_uncertainty.json` with the same values. The test-time detector candidates are
 made with NMS IoU 0.05, the out-of-fold training candidates with 0.5; this is how the submitted
-system was built (report, Section 2.4). On another GPU architecture expect a few encodings to
+system was built (report, Section 2.4). Measured on fold 0 with that fold's out-of-fold selector,
+the mismatch does not cost: +0.0007 PQ, 95 % CI [−0.0043, +0.0055] (`src/eda/nms_mismatch_f0.py`,
+`outputs/eda/nms_mismatch_f0.json`). On another GPU architecture expect a few encodings to
 differ: an earlier rehearsal of the predecessor system on a different card reproduced 1091 of 1117
 exactly and changed one instance (±0.0004 PQ), floating-point noise at the keep gate.
 
