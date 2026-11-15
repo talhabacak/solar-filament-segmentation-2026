@@ -11,9 +11,16 @@ $endfor$
 <header id="title-block-header">
 <h1 class="title">$title$</h1>
 <p class="subtitle">$subtitle$</p>
+$for(author)$
 <p class="author">$author$</p>
-<p class="repo">$repo$</p>
+$endfor$
 </header>
+$if(abstract)$
+<section class="abstract">
+<h1 class="unnumbered">$abstract-title$</h1>
+$abstract$
+</section>
+$endif$
 $body$
 </body>
 </html>

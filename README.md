@@ -10,7 +10,7 @@ Code, measurements and reports behind our two final submissions to the
 | Second final submission | `outputs/submissions/sub042_t020pox_bag5_cascade085.csv` (1182 instances) |
 | Local score | PQ 0.443, SQ 0.678, RQ 0.653 — pooled five-fold out-of-fold, all 707 training images |
 | Public leaderboard | 0.40 |
-| Technical report (4 pages) | [`report/Technical_Report_EN.pdf`](report/Technical_Report_EN.pdf) · Turkish: [`report/Technical_Report_TR.pdf`](report/Technical_Report_TR.pdf) |
+| Technical report (4 pages) | source in the organisers' template: [`report/overleaf/main.tex`](report/overleaf/main.tex) · layout preview: [`report/Technical_Report_EN_preview.pdf`](report/Technical_Report_EN_preview.pdf) · Turkish translation: [`report/Technical_Report_TR_preview.pdf`](report/Technical_Report_TR_preview.pdf) |
 | Full report (62 pages) | [`report/Full_Report_EN.pdf`](report/Full_Report_EN.pdf) · Turkish: [`report/Full_Report_TR.pdf`](report/Full_Report_TR.pdf) |
 | Pipeline notebook | [`notebooks/00_end_to_end_pipeline.ipynb`](notebooks/00_end_to_end_pipeline.ipynb) |
 
@@ -79,7 +79,8 @@ selector and writes the submissions.
 ### Released weights
 
 The 17 network checkpoints (0.9 GB) are not in the Git history. They are published as a release
-asset of this repository, `artifacts_v1.tar`; unpacking it at the repository root restores
+asset of this repository (release tag `weights-v1`, file `artifacts_v1.tar`); unpacking it at the
+repository root restores
 
 ```
 outputs/runs/e013_yolo11m_f{0..4}_1792/weights/best.pt          detector, one per fold
@@ -99,13 +100,13 @@ notebook prints the hashes of what is on disk.
 | `src/data/` | Cache builders and training-set exports |
 | `src/models/` | Training, inference, fusion (`build_fused_pool.py`), selector (`fit_selector_bagged.py`), submission (`submit_v2.py`, `submit_from_pool.py`, `validate_submission.py`) |
 | `src/eda/` | One script per measurement, named for the question it answers; indexed in Appendix D of the full report |
-| `scripts/` | Chained training runs and the report builders |
+| `scripts/` | Chained training runs and the report builders (`build_overleaf_preview.py` checks the LaTeX source and prints a layout preview without a LaTeX engine) |
 | `notebooks/` | The end-to-end pipeline notebook |
 | `tests/` | Scorer tests, including equality with the organisers' published scorer |
 | `data/splits/` | The frozen fold assignment (`folds_v1.parquet`), grouped by physical image |
 | `outputs/eda/`, `outputs/selector/` | Committed measurement results (JSON, Markdown, small tables) that the reports cite by path |
 | `outputs/submissions/` | The two final submission files and rehearsal rebuilds |
-| `report/` | The technical report and the full report, English and Turkish; `report/short/` holds the source of the 4-page report |
+| `report/` | The technical report and the full report, English and Turkish; `report/overleaf/` is the Overleaf project of the 4-page report (organisers' template, bibliography, figures) |
 | `docs/report/` | Source of the full report |
 | `docs/15_ABLATION_LEDGER.md`, `experiments/` | The working record of every experiment and of our own mistakes, as it was kept during the competition (in Turkish) |
 
@@ -131,8 +132,9 @@ This repository is a cleaned snapshot of the development repository at its final
 planning notes, machine-specific run scripts and third-party material were left out; the source
 code, the measurement results and the report sources are unchanged. The full report refers to two
 tags of the development history (`solar-final-analysis-v1`, `solar-final-analysis-v2`); this
-snapshot corresponds to the second. Added for this release: the 4-page technical report,
-`src/eda/matched_iou_dice_distribution.py`, the small artefacts that make the final stage
+snapshot corresponds to the second. Added for this release: the 4-page technical report with
+its three figure and uncertainty scripts (`src/eda/report_pipeline_figure.py`,
+`report_examples_figure.py`, `pq_uncertainty.py`, `matched_iou_dice_distribution.py`), the small artefacts that make the final stage
 reproducible from a clone, and a notebook that reproduces the two final submissions.
 
 ## Licence
